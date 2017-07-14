@@ -2,12 +2,6 @@ const BaseDbModule = require('./base_module');
 
 class ChatsAndUsersModule extends BaseDbModule {
 
-  _getMethodsToDecorate() {
-    return ['createOrUpdateChat',
-            'createOrUpdateUser',
-            'addUserToChat'];
-  };
-
   async createOrUpdateChat(client, chat) {
     var QUERY = '\
       INSERT INTO tg_chat\

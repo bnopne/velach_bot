@@ -4,10 +4,10 @@ const modules = require('./modules');
 
 class Db {
 
-  constructor(poolConfig) {
-    this._pool = new pg.Pool(poolConfig);
+  constructor(client) {
+    this._client = client;
 
-    this.chatsAndUsers = new modules.ChatsAndUsersModule(this._pool, {});
+    this.chatsAndUsers = new modules.ChatsAndUsersModule(this._client, {});
   };
 
 };
