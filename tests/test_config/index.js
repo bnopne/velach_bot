@@ -5,7 +5,7 @@ var config = require('../../config');
 describe('Test config module', function() {
 
   it('has keys in it', function() {
-    var k = config.get('database:postgres:puk');
+    var k = config.get('database:postgres:host');
 
     assert.typeOf(k, 'string');
   })
