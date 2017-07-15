@@ -14,9 +14,9 @@ CREATE TABLE tg_user (
 GRANT ALL PRIVILEGES ON tg_user TO velach_bot;
 
 CREATE TABLE tg_chat_user_mtm (
-  id SERIAL PRIMARY KEY,
   tg_chat_id BIGINT REFERENCES tg_chat (id),
-  tg_user_id BIGINT REFERENCES tg_user (id)
+  tg_user_id BIGINT REFERENCES tg_user (id),
+  PRIMARY KEY (tg_chat_id, tg_user_id)
 );
 
 GRANT ALL PRIVILEGES ON tg_chat_user_mtm TO velach_bot;
