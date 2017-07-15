@@ -39,6 +39,12 @@ class MessageHandler {
       this._extractNewChatMember()
     );
 
+    var botData = await this._bot.getMe();
+
+    if (this._extractNewChatMember().id == botData.id) {
+      return;
+    };
+
     var greetingMessage = await this._db.chatsAndUsers.getChatGreetingMessage(this._extractChat());
 
     if (!greetingMessage) {

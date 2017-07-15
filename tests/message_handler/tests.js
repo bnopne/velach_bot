@@ -7,16 +7,26 @@ class BotMock {
 
   constructor() {
     this.sendMessageCallCount = 0;
+    this.getMeCallCount = 0;
   };
 
   async sendMessage(chatId, text) {
     this.sendMessageCallCount += 1;
   };
 
+  async getMe() {
+    this.getMeCallCount += 1;
+
+    return {
+      id: 123,
+      username: 'test'
+    };
+  };
+
 };
 
-exports.makeSureUserNewChatMemberAndChatExist = new TransactionScopeTest(
-  'make sure user, new chat member and chat exist',
+exports.testHandleNewChatMemberWhenAddAnotherUser = new TransactionScopeTest(
+  'test _handleNewChatMember when add another user',
   async function(client) {
 
     const message = {
@@ -72,5 +82,51 @@ exports.makeSureUserNewChatMemberAndChatExist = new TransactionScopeTest(
     assert.equal(queryResult1.rowCount, 1);
     assert.equal(queryResult2.rowCount, 1);
     assert.equal(bot.sendMessageCallCount, 1);
+    assert.equal(bot.getMeCallCount, 1);
   }
-)
+);
+
+exports.testHandleNewChatMemberWhenAddBot = new TransactionScopeTest(
+  'test _handleNewChatMember when add bot',
+  async function(client) {
+
+    const message = {
+      message_id: 380,
+      from:
+      { id: 128540035,
+        first_name: 'Вася',
+        last_name: 'Цветомузыка',
+        username: 'vasya_cvetomuzika' },
+      chat:
+      { id: -153286219,
+        title: 'VelachBotTest',
+        type: 'group',
+        all_members_are_administrators: true },
+      date: 1500128213,
+      new_chat_participant: {
+        id: 123,
+        username: 'test'
+      },
+      new_chat_member: {
+        id: 123,
+        username: 'test'
+      },
+      new_chat_members: [
+        {
+          id: 123,
+          username: 'test'
+        }
+      ]
+    };
+
+    const db = new Db(client);
+    const bot = new BotMock();
+
+    var handler = new MessageHandler(message, bot, db);
+
+    await handler.handleMessage();
+
+    assert.equal(bot.sendMessageCallCount, 0);
+    assert.equal(bot.getMeCallCount, 1);
+  }
+);
