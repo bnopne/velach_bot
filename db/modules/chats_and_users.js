@@ -44,6 +44,26 @@ class ChatsAndUsersModule extends BaseDbModule {
     return queryResult.rows[0];
   };
 
+  async makeSureChatAndUserExist(chat, user) {
+    await this.createOrUpdateChat(chat);
+
+    if (user) {
+      await this.createOrUpdateUser(user);
+      await this.addUserToChat(user, chat);
+    };
+  };
+
+  async getChatGreetingMessage(chat) {
+    var QUERY = 'SELECT greeting_message FROM tg_chat WHERE id = $1';
+
+    var queryResult = await this._client.query(QUERY, [chat.id]);
+
+    if (queryResult.rowCount == 0) {
+      throw new Error(`chat ${chat.id} does not exist!`);
+    };
+
+    return queryResult.rows[0].greeting_message;
+  };
 
 };
 

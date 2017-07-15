@@ -1,4 +1,4 @@
-class DbTestCase {
+class TransactionScopeTest {
 
   constructor(description, test) {
     this._description = description;
@@ -21,4 +21,4 @@ class DbTestCase {
 
 };
 
-module.exports = DbTestCase;
+module.exports = TransactionScopeTest;

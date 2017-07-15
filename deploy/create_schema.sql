@@ -1,5 +1,6 @@
 CREATE TABLE tg_chat (
-  id BIGINT PRIMARY KEY
+  id BIGINT PRIMARY KEY,
+  greeting_message TEXT
 );
 
 GRANT ALL PRIVILEGES ON tg_chat TO velach_bot;
@@ -16,6 +17,7 @@ GRANT ALL PRIVILEGES ON tg_user TO velach_bot;
 CREATE TABLE tg_chat_user_mtm (
   tg_chat_id BIGINT REFERENCES tg_chat (id),
   tg_user_id BIGINT REFERENCES tg_user (id),
+  bike_check BOOLEAN DEFAULT FALSE NOT NULL,
   PRIMARY KEY (tg_chat_id, tg_user_id)
 );
 

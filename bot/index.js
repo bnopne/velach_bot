@@ -23,7 +23,12 @@ class Bot {
     try {
 
       var db = new Db(client);
-      var messageHandler = new MessageHandler(message, db);
+
+      var messageHandler = new MessageHandler(
+        message,
+        this._telegramBot,
+        db
+      );
 
       await messageHandler.handleMessage();
 
@@ -31,6 +36,7 @@ class Bot {
 
     } catch (err) {
 
+      console.error(err);
       await client.query('ROLLBACK');
 
     } finally {
