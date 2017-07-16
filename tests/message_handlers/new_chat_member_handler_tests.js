@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
 const TransactionScopeTest = require('../transaction_scope_test');
-const MessageHandler = require('../../message_handler');
 const Db = require('../../db');
+const messageHandlers = require('../../message_handlers');
 
 class BotMock {
 
@@ -26,7 +26,7 @@ class BotMock {
 };
 
 exports.testHandleNewChatMemberWhenAddAnotherUser = new TransactionScopeTest(
-  'test _handleNewChatMember when add another user',
+  'test add non-bot user',
   async function(client) {
 
     const message = {
@@ -61,9 +61,9 @@ exports.testHandleNewChatMemberWhenAddAnotherUser = new TransactionScopeTest(
     const db = new Db(client);
     const bot = new BotMock();
 
-    var handler = new MessageHandler(message, bot, db);
+    var handler = new messageHandlers.NewChatMemberHandler(message, bot, db);
 
-    await handler.handleMessage();
+    await handler.handle();
 
     var queryResult1 = await client.query('\
       SELECT *\
@@ -87,7 +87,7 @@ exports.testHandleNewChatMemberWhenAddAnotherUser = new TransactionScopeTest(
 );
 
 exports.testHandleNewChatMemberWhenAddBot = new TransactionScopeTest(
-  'test _handleNewChatMember when add bot',
+  'test add bot',
   async function(client) {
 
     const message = {
@@ -122,9 +122,9 @@ exports.testHandleNewChatMemberWhenAddBot = new TransactionScopeTest(
     const db = new Db(client);
     const bot = new BotMock();
 
-    var handler = new MessageHandler(message, bot, db);
+    var handler = new messageHandlers.NewChatMemberHandler(message, bot, db);
 
-    await handler.handleMessage();
+    await handler.handle();
 
     assert.equal(bot.sendMessageCallCount, 0);
     assert.equal(bot.getMeCallCount, 1);
