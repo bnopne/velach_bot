@@ -1,5 +1,5 @@
 const Db = require('../db');
-const MessageHandler = require('../message_handler');
+const MessageRouter = require('../message_router');
 
 class Bot {
 
@@ -24,13 +24,13 @@ class Bot {
 
       var db = new Db(client);
 
-      var messageHandler = new MessageHandler(
+      var router = new MessageRouter(
         message,
         this._telegramBot,
         db
       );
 
-      await messageHandler.handleMessage();
+      await router.routeMessage();
 
       await client.query('COMMIT');
 

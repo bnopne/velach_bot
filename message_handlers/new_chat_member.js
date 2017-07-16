@@ -1,39 +1,8 @@
-class MessageHandler {
+const BaseMessageHandler = require('./base_message_handler');
 
-  constructor(message, bot, db) {
-    this._message = message;
-    this._bot = bot;
-    this._db = db;
-  };
+class NewChatMemberHandler extends BaseMessageHandler {
 
-  async handleMessage() {
-    var chat = this._extractChat();
-    var user = this._extractUser();
-
-    await this._db.chatsAndUsers.makeSureChatAndUserExist(chat, user);
-
-    if ('new_chat_member' in this._message) {
-      await this._handleNewChatMember();
-    };
-  };
-
-  _extractChat() {
-    return this._message.chat;
-  };
-
-  _extractUser() {
-    return this._message.from || null;
-  };
-
-  _extractNewChatMember() {
-    if ('new_chat_member' in this._message) {
-      return this._message.new_chat_member;
-    } else {
-      throw new Error('no new chat member in message');
-    };
-  };
-
-  async _handleNewChatMember() {
+  async handle() {
     await this._db.chatsAndUsers.makeSureChatAndUserExist(
       this._extractChat(),
       this._extractNewChatMember()
@@ -62,6 +31,14 @@ class MessageHandler {
     );
   };
 
+  _extractNewChatMember() {
+    if ('new_chat_member' in this._message) {
+      return this._message.new_chat_member;
+    } else {
+      throw new Error('no new chat member in message');
+    };
+  };
+
   _concatUserAndGreetingMessage(user, greetingMessage) {
     return (user.username)
       ? `${userMention} ${greetingMessage}`.trim()
@@ -70,4 +47,4 @@ class MessageHandler {
 
 };
 
-module.exports = MessageHandler;
+module.exports = NewChatMemberHandler;
