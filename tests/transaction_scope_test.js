@@ -1,13 +1,6 @@
-class TransactionScopeTest {
+const BaseUnitTest = require('./base_unit_test');
 
-  constructor(description, test) {
-    this._description = description;
-    this._test = test;
-  };
-
-  getDescription() {
-    return this._description;
-  };
+class TransactionScopeTest extends BaseUnitTest {
 
   async run(pool) {
     const client = await pool.connect();

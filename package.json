@@ -4,7 +4,7 @@
   "description": "Small bot for /bi chat.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --recursive tests"
+    "test": "./run_tests.sh"
   },
   "author": "",
   "license": "GPL-3.0",
