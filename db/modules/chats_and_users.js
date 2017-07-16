@@ -65,6 +65,17 @@ class ChatsAndUsersModule extends BaseDbModule {
     return queryResult.rows[0].greeting_message;
   };
 
+  async setGreetingMessage(chat, message) {
+    var QUERY = '\
+      UPDATE tg_chat\
+      SET greeting_message = $1\
+      WHERE id = $2\
+      RETURNING *';
+
+    const queryResult = await this._client.query(QUERY, [message, chat.id]);
+    return queryResult.rows[0];
+  };
+
 };
 
 module.exports = ChatsAndUsersModule;
