@@ -1,3 +1,1 @@
-./node_modules/mocha/bin/mocha tests/auth_providers
-./node_modules/mocha/bin/mocha tests/db
-./node_modules/mocha/bin/mocha tests/message_handlers
+find ./tests -maxdepth 1 -type d -exec ./node_modules/mocha/bin/mocha {} \;
