@@ -8,6 +8,10 @@ class BaseMessageHandler {
     this.handle = this._wrapHandle(this.handle);
   };
 
+  async fitsMessage() {
+    throw new Error('not implemented');
+  };
+
   async handle() {
     throw new Error('not implemented');
   };

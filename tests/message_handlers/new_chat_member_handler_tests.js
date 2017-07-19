@@ -26,6 +26,72 @@ class BotMock {
 
 };
 
+exports.testFitsMessage = new TransactionScopeTest(
+  'test fitsMessage on message with new_chat_member',
+  async function(client) {
+
+    const message = {
+      message_id: 496,
+      from:
+      { id: 128540035,
+        first_name: 'Вася',
+        last_name: 'Цветомузыка',
+        username: 'vasya_cvetomuzika' },
+      chat:
+      { id: -153286219,
+        title: 'VelachBotTest',
+        type: 'group',
+        all_members_are_administrators: true },
+      date: 1500506061,
+      new_chat_participant: { id: 322950358, first_name: 'Denis' },
+      new_chat_member: { id: 322950358, first_name: 'Denis' },
+      new_chat_members: [ { id: 322950358, first_name: 'Denis' } ]
+    };
+
+    const db = new Db(client);
+    const bot = new BotMock();
+
+    var handler = new messageHandlers.commandHandlers.NewChatMemberHandler(message, bot, db);
+
+    const fitsMessage = await handler.fitsMessage();
+
+    assert.isTrue(fitsMessage);
+
+  }
+);
+
+exports.testFitsMessage2 = new TransactionScopeTest(
+  'test fitsMessage on message without new_chat_member',
+  async function(client) {
+
+    const message = {
+      message_id: 496,
+      from:
+      { id: 128540035,
+        first_name: 'Вася',
+        last_name: 'Цветомузыка',
+        username: 'vasya_cvetomuzika' },
+      chat:
+      { id: -153286219,
+        title: 'VelachBotTest',
+        type: 'group',
+        all_members_are_administrators: true },
+      date: 1500506061,
+      text: 'test'
+    };
+
+    const db = new Db(client);
+    const bot = new BotMock();
+
+    var handler = new messageHandlers.commandHandlers.NewChatMemberHandler(message, bot, db);
+
+    const fitsMessage = await handler.fitsMessage();
+
+    assert.isFalse(fitsMessage);
+
+  }
+);
+
 exports.testHandleNewChatMemberWhenAddAnotherUser = new TransactionScopeTest(
   'test add non-bot user',
   async function(client) {

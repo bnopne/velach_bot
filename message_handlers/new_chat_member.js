@@ -2,6 +2,10 @@ const BaseMessageHandler = require('./base_message_handler');
 
 class NewChatMemberHandler extends BaseMessageHandler {
 
+  async fitsMessage() {
+    return this._message.getNewChatMember() !== null;
+  };
+
   async handle() {
     await this._db.chatsAndUsers.makeSureChatAndUserExist(
       this._message.getChat(),

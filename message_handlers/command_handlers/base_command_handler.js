@@ -49,6 +49,16 @@ class BaseCommandHandler extends BaseMessageHandler {
 
   };
 
+  async fitsMessage() {
+    const command = this._message.getCommand();
+
+    if (command === null) {
+      return false;
+    };
+
+    return command == this._getCommand();
+  };
+
 };
 
 module.exports = BaseCommandHandler;
