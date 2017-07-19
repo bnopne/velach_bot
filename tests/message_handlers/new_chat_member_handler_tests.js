@@ -2,6 +2,7 @@ const assert = require('chai').assert;
 const TransactionScopeTest = require('../transaction_scope_test');
 const Db = require('../../db');
 const messageHandlers = require('../../message_handlers');
+const TelegramMessage = require('../../telegram_entities').TelegramMessage;
 
 class BotMock {
 
@@ -29,7 +30,7 @@ exports.testHandleNewChatMemberWhenAddAnotherUser = new TransactionScopeTest(
   'test add non-bot user',
   async function(client) {
 
-    const message = {
+    const message = new TelegramMessage({
       message_id: 380,
       from:
       { id: 128540035,
@@ -56,7 +57,7 @@ exports.testHandleNewChatMemberWhenAddAnotherUser = new TransactionScopeTest(
           first_name: 'Denis'
         }
       ]
-    };
+    });
 
     const db = new Db(client);
     const bot = new BotMock();
@@ -90,7 +91,7 @@ exports.testHandleNewChatMemberWhenAddBot = new TransactionScopeTest(
   'test add bot',
   async function(client) {
 
-    const message = {
+    const message = new TelegramMessage({
       message_id: 380,
       from:
       { id: 128540035,
@@ -117,7 +118,7 @@ exports.testHandleNewChatMemberWhenAddBot = new TransactionScopeTest(
           username: 'test'
         }
       ]
-    };
+    });
 
     const db = new Db(client);
     const bot = new BotMock();

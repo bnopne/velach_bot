@@ -1,6 +1,7 @@
 const assert = require('chai').assert;
 const SimpleUnitTest = require('../simple_unit_test');
 const ChatAdminAuthProvider = require('../../message_handlers/auth_providers').ChatAdminAuthProvider;
+const TelegramMessage = require('../../telegram_entities').TelegramMessage;
 
 class BotMock {
 
@@ -39,7 +40,7 @@ exports.testAuthorizeChatAdmin = new SimpleUnitTest(
   'test authorize chat admin should success',
   async function() {
 
-    const message = {
+    const message = new TelegramMessage({
       message_id: 380,
       from:
       { id: 128540035,
@@ -52,7 +53,7 @@ exports.testAuthorizeChatAdmin = new SimpleUnitTest(
         type: 'group',
         all_members_are_administrators: true },
       date: 1500128213
-    };
+    });
 
     const bot = new BotMock();
 
@@ -69,7 +70,7 @@ exports.testAuthorizeNonChatAdmin = new SimpleUnitTest(
   'test authorize non chat admin should fail',
   async function() {
 
-    const message = {
+    const message = new TelegramMessage({
       message_id: 380,
       from:
       { id: 1,
@@ -82,7 +83,7 @@ exports.testAuthorizeNonChatAdmin = new SimpleUnitTest(
         type: 'group',
         all_members_are_administrators: true },
       date: 1500128213
-    };
+    });
 
     const bot = new BotMock();
 

@@ -1,6 +1,7 @@
 const assert = require('chai').assert;
 const SimpleUnitTest = require('../simple_unit_test');
 const NoAuthProvider = require('../../message_handlers/auth_providers').NoAuthProvider;
+const TelegramMessage = require('../../telegram_entities').TelegramMessage;
 
 class BotMock {
 
@@ -38,7 +39,7 @@ exports.testAuthorize = new SimpleUnitTest(
   'test authorize user',
   async function() {
 
-    const message = {
+    const message = new TelegramMessage({
       message_id: 380,
       from:
       { id: 128540035,
@@ -51,7 +52,7 @@ exports.testAuthorize = new SimpleUnitTest(
         type: 'group',
         all_members_are_administrators: true },
       date: 1500128213
-    };
+    });
 
     const bot = new BotMock();
 

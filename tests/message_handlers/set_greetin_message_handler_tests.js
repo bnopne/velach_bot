@@ -2,6 +2,7 @@ const assert = require('chai').assert;
 const TransactionScopeTest = require('../transaction_scope_test');
 const Db = require('../../db');
 const messageHandlers = require('../../message_handlers');
+const TelegramMessage = require('../../telegram_entities').TelegramMessage;
 
 class BotMock {
 
@@ -39,7 +40,7 @@ exports.testSetGreetingMessage = new TransactionScopeTest(
   'test set greeting message',
   async function(client) {
 
-    const message = {
+    const message = new TelegramMessage({
       message_id: 380,
       from:
       { id: 128540035,
@@ -53,7 +54,7 @@ exports.testSetGreetingMessage = new TransactionScopeTest(
         all_members_are_administrators: true },
       date: 1500128213,
       text: '/set_greeting kek puk'
-    };
+    });
 
     const db = new Db(client);
     const bot = new BotMock();
