@@ -76,6 +76,43 @@ class ChatsAndUsersModule extends BaseDbModule {
     return queryResult.rows[0];
   };
 
+  async checkBike(userId, chatId) {
+    var QUERY = '\
+      UPDATE tg_chat_user_mtm\
+      SET bike_check = true\
+      WHERE tg_chat_id = $1 AND tg_user_id = $2\
+      RETURNING *';
+
+    const queryResult = await this._client.query(QUERY, [chatId, userId]);
+    return queryResult.rows[0];
+  };
+
+  async uncheckBike(user, chat) {
+    var QUERY = '\
+      UPDATE tg_chat_user_mtm\
+      SET bike_check = false\
+      WHERE tg_chat_id = $1 AND tg_user_id = $2\
+      RETURNING *';
+
+    const queryResult = await this._client.query(QUERY, [chat.id, user.id]);
+    return queryResult.rows[0];
+  };
+
+  async getBikecheckList(chat) {
+    var QUERY = '\
+      SELECT T.username, T.first_name, T.last_name\
+      FROM\
+      (\
+        (SELECT tg_user_id FROM tg_chat_user_mtm WHERE tg_chat_id = $1 AND bike_check = FALSE) T1\
+        INNER JOIN\
+        (SELECT id, username, first_name, last_name FROM tg_user) T2\
+        ON T1.tg_user_id = T2.id\
+      ) T';
+
+    const queryResult = await this._client.query(QUERY, [chat.id]);
+    return queryResult.rows;
+  };
+
 };
 
 module.exports = ChatsAndUsersModule;

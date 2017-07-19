@@ -9,6 +9,7 @@
   "author": "",
   "license": "GPL-3.0",
   "dependencies": {
+    "camelcase": "^4.1.0",
     "nconf": "^0.8.4",
     "node-telegram-bot-api": "^0.27.1",
     "path": "^0.12.7",
