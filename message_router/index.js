@@ -26,7 +26,7 @@ class MessageRouter {
     switch (command) {
 
       case 'set_greeting': {
-        const handler = new messageHandlers.SetGreetingMessageHandler(
+        const handler = new messageHandlers.commandHandlers.SetGreetingMessageHandler(
           this._message,
           this._bot,
           this._db
@@ -37,7 +37,7 @@ class MessageRouter {
       }
 
       case 'check_bike': {
-        const handler = new messageHandlers.CheckBikeHandler(
+        const handler = new messageHandlers.commandHandlers.CheckBikeHandler(
           this._message,
           this._bot,
           this._db
@@ -48,7 +48,18 @@ class MessageRouter {
       }
 
       case 'uncheck_bike': {
-        const handler = new messageHandlers.UncheckBikeHandler(
+        const handler = new messageHandlers.commandHandlers.UncheckBikeHandler(
+          this._message,
+          this._bot,
+          this._db
+        );
+
+        await handler.handle();
+        break;
+      }
+
+      case 'bikecheck': {
+        const handler = new messageHandlers.commandHandlers.BikecheckHandler(
           this._message,
           this._bot,
           this._db
