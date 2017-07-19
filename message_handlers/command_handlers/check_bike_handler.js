@@ -28,26 +28,26 @@ class CheckBikeCommandHandler extends BaseCommandHandler {
 
   async handle() {
 
-    if (this._commandArguments.userId) {
-
-      await this._db.chatsAndUsers.checkBike(
-        this._commandArguments.userId,
-        this._commandArguments.chatId
-      );
+    if (!this._commandArguments.userId) {
 
       await this._bot.sendMessage(
         this._commandArguments.chatId,
-        'Чекнул, кекнул!'
+        'Ответь кому-нибудь, чтобы подтвердить, что он показал свой велик, пук!'
       );
 
-    } else {
-
-      await this._bot.sendMessage(
-        this._commandArguments.chatId,
-        'Некого чекать, некого кекоть, пук!'
-      );
+      return;
 
     };
+
+    await this._db.chatsAndUsers.checkBike(
+      this._commandArguments.userId,
+      this._commandArguments.chatId
+    );
+
+    await this._bot.sendMessage(
+      this._commandArguments.chatId,
+      'Чекнул, кекнул!'
+    );
 
   };
 

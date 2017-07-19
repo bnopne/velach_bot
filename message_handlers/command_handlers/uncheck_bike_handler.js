@@ -28,26 +28,26 @@ class UncheckBikeCommandHandler extends BaseCommandHandler {
 
   async handle() {
 
-    if (this._commandArguments.userId) {
-
-      await this._db.chatsAndUsers.uncheckBike(
-        this._commandArguments.userId,
-        this._commandArguments.chatId
-      );
+    if (!this._commandArguments.userId) {
 
       await this._bot.sendMessage(
         this._commandArguments.chatId,
-        'Снова беспруфный кукарек, кек!'
+        'Ответь кому-нибудь, чтобы подтвердить, что он не показал свой велик, пук!'
       );
 
-    } else {
-
-      await this._bot.sendMessage(
-        this._commandArguments.chatId,
-        'Ответь на чье-нибудь сообщение, пук!'
-      );
+      return;
 
     };
+
+    await this._db.chatsAndUsers.uncheckBike(
+      this._commandArguments.userId,
+      this._commandArguments.chatId
+    );
+
+    await this._bot.sendMessage(
+      this._commandArguments.chatId,
+      'Теперь он беспруфный кукарек без велика, кек!'
+    );
 
   };
 
