@@ -17,7 +17,7 @@ class NewChatMemberHandler extends BaseMessageHandler {
     var greetingMessage = await this._db.chatsAndUsers.getChatGreetingMessage(this._message.getChat());
 
     if (!greetingMessage) {
-      greetingMessage = 'test';
+      return;
     };
 
     var msgText = this._concatUserAndGreetingMessage(

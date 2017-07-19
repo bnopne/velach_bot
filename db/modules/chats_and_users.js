@@ -120,6 +120,13 @@ class ChatsAndUsersModule extends BaseDbModule {
     return queryResult.rows;
   };
 
+  async bikeCheck(userId, chatId) {
+    var QUERY = 'SELECT bike_check FROM tg_chat_user_mtm WHERE tg_user_id = $1 AND tg_chat_id = $2';
+
+    const queryResult = await this._client.query(QUERY, [userId, chatId]);
+    return queryResult.rows[0].bike_check;
+  };
+
 };
 
 module.exports = ChatsAndUsersModule;

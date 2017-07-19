@@ -47,8 +47,8 @@ class MessageRouter {
         break;
       }
 
-      case 'get_bikecheck_list': {
-        const handler = new messageHandlers.GetBikecheckListHandler(
+      case 'uncheck_bike': {
+        const handler = new messageHandlers.UncheckBikeHandler(
           this._message,
           this._bot,
           this._db
