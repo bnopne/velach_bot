@@ -8,14 +8,6 @@ class BaseMessageHandler {
     this.handle = this._wrapHandle(this.handle);
   };
 
-  _extractChat() {
-    return this._message.chat;
-  };
-
-  _extractUser() {
-    return this._message.from || null;
-  };
-
   async handle() {
     throw new Error('not implemented');
   };
@@ -23,10 +15,10 @@ class BaseMessageHandler {
   _wrapHandle(handle) {
 
     return async () => {
-      const chat = this._extractChat();
-      const user = this._extractUser();
-
-      await this._db.chatsAndUsers.makeSureChatAndUserExist(chat, user);
+      await this._db.chatsAndUsers.makeSureChatAndUserExist(
+        this._message.getChat(),
+        this._message.getSender()
+      );
 
       await handle.apply(this, []);
     };

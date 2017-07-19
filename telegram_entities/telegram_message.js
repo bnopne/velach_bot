@@ -44,10 +44,16 @@ class TelegramMessage {
       return null;
     };
 
-    return this._message.text.substring(
+    return this._rawMessage.text.substring(
       1,
       msgText.indexOf(' ')
     );
+  };
+
+  getReplyToMessage() {
+    return ('reply_to_message' in this._rawMessage)
+      ? new TelegramMessage(this._rawMessage.reply_to_message)
+      : null;
   };
 
 };

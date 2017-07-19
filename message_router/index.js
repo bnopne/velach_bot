@@ -1,37 +1,17 @@
 const messageHandlers = require('../message_handlers');
+const TelegramMessage = require('../telegram_entities').TelegramMessage;
 
 class MessageRouter {
 
   constructor(message, bot, db) {
-    this._message = message;
+    this._message = new TelegramMessage(message);
     this._bot = bot;
     this._db = db;
   };
 
-  _isNewChatMember() {
-    return 'new_chat_member' in this._message;
-  };
-
-  _isContainText() {
-    return 'text' in this._message;
-  };
-
-  _tryParseCommand() {
-    if (this._isContainText()) {
-      if (this._message.text.startsWith('/')) {
-        return this._message.text.substring(
-          1,
-          this._message.text.indexOf(' ')
-        );
-      };
-    };
-
-    return null;
-  };
-
   async routeMessage() {
 
-    if (this._isNewChatMember()) {
+    if (this._message.getNewChatMember()) {
       const handler = new messageHandlers.NewChatMemberHandler(
         this._message,
         this._bot,
@@ -41,7 +21,7 @@ class MessageRouter {
       await handler.handle();
     };
 
-    const command = this._tryParseCommand();
+    const command = this._message.getCommand();
 
     switch (command) {
 
@@ -53,6 +33,18 @@ class MessageRouter {
         );
 
         await handler.handle();
+        break;
+      }
+
+      case 'check_bike': {
+        const handler = new messageHandlers.CheckBikeHandler(
+          this._message,
+          this._bot,
+          this._db
+        );
+
+        await handler.handle();
+        break;
       }
 
     };

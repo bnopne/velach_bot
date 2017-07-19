@@ -11,12 +11,12 @@ class ChatsAndUsersModule extends BaseDbModule {
       ON CONFLICT (id) DO NOTHING\
       RETURNING *';
 
-    var queryResult = await this._client.query(QUERY, [chat.id]);
+    var queryResult = await this._client.query(QUERY, [chat.getId()]);
     return queryResult.rows[0];
   };
 
   async createOrUpdateUser(user) {
-    var QUERY = '\
+    const QUERY = '\
       INSERT INTO tg_user\
         (id, username, first_name, last_name)\
       VALUES\
@@ -27,7 +27,14 @@ class ChatsAndUsersModule extends BaseDbModule {
         last_name = $4\
       RETURNING *';
 
-    var queryResult = await this._client.query(QUERY, [user.id, user.username, user.first_name, user.last_name]);
+    const QUERY_PARAMS = [
+      user.getId(),
+      user.getUsername(),
+      user.getFirstName(),
+      user.getLastName()
+    ];
+
+    var queryResult = await this._client.query(QUERY, QUERY_PARAMS);
     return queryResult.rows[0];
   };
 
@@ -40,7 +47,7 @@ class ChatsAndUsersModule extends BaseDbModule {
       ON CONFLICT (tg_chat_id, tg_user_id) DO NOTHING\
       RETURNING *';
 
-    var queryResult = await this._client.query(QUERY, [chat.id, user.id]);
+    var queryResult = await this._client.query(QUERY, [chat.getId(), user.getId()]);
     return queryResult.rows[0];
   };
 
@@ -56,23 +63,23 @@ class ChatsAndUsersModule extends BaseDbModule {
   async getChatGreetingMessage(chat) {
     var QUERY = 'SELECT greeting_message FROM tg_chat WHERE id = $1';
 
-    var queryResult = await this._client.query(QUERY, [chat.id]);
+    var queryResult = await this._client.query(QUERY, [chat.getId()]);
 
     if (queryResult.rowCount == 0) {
-      throw new Error(`chat ${chat.id} does not exist!`);
+      throw new Error(`chat ${chat.getId()} does not exist!`);
     };
 
     return queryResult.rows[0].greeting_message;
   };
 
-  async setGreetingMessage(chat, message) {
+  async setGreetingMessage(chatId, message) {
     var QUERY = '\
       UPDATE tg_chat\
       SET greeting_message = $1\
       WHERE id = $2\
       RETURNING *';
 
-    const queryResult = await this._client.query(QUERY, [message, chat.id]);
+    const queryResult = await this._client.query(QUERY, [message, chatId]);
     return queryResult.rows[0];
   };
 
@@ -87,18 +94,18 @@ class ChatsAndUsersModule extends BaseDbModule {
     return queryResult.rows[0];
   };
 
-  async uncheckBike(user, chat) {
+  async uncheckBike(userId, chatId) {
     var QUERY = '\
       UPDATE tg_chat_user_mtm\
       SET bike_check = false\
       WHERE tg_chat_id = $1 AND tg_user_id = $2\
       RETURNING *';
 
-    const queryResult = await this._client.query(QUERY, [chat.id, user.id]);
+    const queryResult = await this._client.query(QUERY, [chatId, userId]);
     return queryResult.rows[0];
   };
 
-  async getBikecheckList(chat) {
+  async getBikecheckList(chatId) {
     var QUERY = '\
       SELECT T.username, T.first_name, T.last_name\
       FROM\
@@ -109,7 +116,7 @@ class ChatsAndUsersModule extends BaseDbModule {
         ON T1.tg_user_id = T2.id\
       ) T';
 
-    const queryResult = await this._client.query(QUERY, [chat.id]);
+    const queryResult = await this._client.query(QUERY, [chatId]);
     return queryResult.rows;
   };
 

@@ -26,17 +26,24 @@ class BaseCommandHandler extends BaseMessageHandler {
   _wrapHandle(handle) {
 
     return async () => {
-      const chat = this._extractChat();
-      const user = this._extractUser();
-
-      await this._db.chatsAndUsers.makeSureChatAndUserExist(chat, user);
+      await this._db.chatsAndUsers.makeSureChatAndUserExist(
+        this._message.getChat(),
+        this._message.getSender()
+      );
 
       const isUserAuthorized = await this._authProvider.isAuthorized();
 
       if (isUserAuthorized) {
+
         await handle.apply(this, []);
+
       } else {
-        await this._bot.sendMessage(this._extractChat().id, 'Unautorized');
+
+        await this._bot.sendMessage(
+          this._message.getChat().getId(),
+          'Unautorized'
+        );
+
       };
     };
 

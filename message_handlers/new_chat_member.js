@@ -4,43 +4,35 @@ class NewChatMemberHandler extends BaseMessageHandler {
 
   async handle() {
     await this._db.chatsAndUsers.makeSureChatAndUserExist(
-      this._extractChat(),
-      this._extractNewChatMember()
+      this._message.getChat(),
+      this._message.getNewChatMember()
     );
 
     var botData = await this._bot.getMe();
 
-    if (this._extractNewChatMember().id == botData.id) {
+    if (this._message.getNewChatMember().getId() == botData.id) {
       return;
     };
 
-    var greetingMessage = await this._db.chatsAndUsers.getChatGreetingMessage(this._extractChat());
+    var greetingMessage = await this._db.chatsAndUsers.getChatGreetingMessage(this._message.getChat());
 
     if (!greetingMessage) {
       greetingMessage = 'test';
     };
 
     var msgText = this._concatUserAndGreetingMessage(
-      this._extractNewChatMember(),
+      this._message.getNewChatMember(),
       greetingMessage
     );
 
     await this._bot.sendMessage(
-      this._extractChat().id,
+      this._message.getChat().getId(),
       msgText
     );
   };
 
-  _extractNewChatMember() {
-    if ('new_chat_member' in this._message) {
-      return this._message.new_chat_member;
-    } else {
-      throw new Error('no new chat member in message');
-    };
-  };
-
   _concatUserAndGreetingMessage(user, greetingMessage) {
-    return (user.username)
+    return (user.getUsername())
       ? `${userMention} ${greetingMessage}`.trim()
       : greetingMessage;
   };

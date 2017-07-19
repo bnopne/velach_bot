@@ -13,17 +13,17 @@ class SetGreetingMessageHandler extends BaseCommandHandler {
 
   _parseCommandArguments() {
     return {
-      greetingMessage: this._message.text.split(`/${this._getCommand()} `)[1] || ''
+      greetingMessage: this._message.getText().split(`/${this._getCommand()} `)[1] || ''
     };
   };
 
   async handle() {
     await this._db.chatsAndUsers.setGreetingMessage(
-      this._extractChat(),
+      this._message.getChat().getId(),
       this._commandArguments.greetingMessage
     );
 
-    await this._bot.sendMessage(this._extractChat().id, 'OK');
+    await this._bot.sendMessage(this._message.getChat().getId(), 'OK');
   };
 
 };

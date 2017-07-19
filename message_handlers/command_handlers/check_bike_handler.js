@@ -13,14 +13,14 @@ class CheckBikeCommandHandler extends BaseCommandHandler {
 
   _parseCommandArguments() {
     const result = {
-      chatId: this._message.chat.id,
+      chatId: this._message.getChat().getId(),
       userId: null
     };
 
-    if ('reply_to_message' in this._message) {
-      if ('from' in this._message.reply_to_message) {
-          result.userId = this._message.reply_to_message.id
-      };
+    const reply = this._message.getReplyToMessage();
+
+    if (reply) {
+      result.userId = reply.getSender().getId();
     };
 
     return result;
@@ -47,7 +47,7 @@ class CheckBikeCommandHandler extends BaseCommandHandler {
         'Некого чекать, некого кекоть, пук!'
       );
 
-    }
+    };
 
   };
 

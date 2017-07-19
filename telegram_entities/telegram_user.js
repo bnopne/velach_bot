@@ -20,7 +20,7 @@ class TelegramUser {
     return this._rawUser.last_name;
   };
 
-  getUser() {
+  getFullInfo() {
     return {
       id: this.getId(),
       username: this.getUsername(),

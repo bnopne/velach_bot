@@ -1,10 +1,10 @@
 const BaseCommandHandler = require('./base_command_handler');
 const ChatAdminAuthProvider = require('../auth_providers').ChatAdminAuthProvider;
 
-class CheckBikeCommandHandler extends BaseCommandHandler {
+class UncheckBikeCommandHandler extends BaseCommandHandler {
 
   _getCommand() {
-    return 'check_bike';
+    return 'uncheck_bike';
   };
 
   _getAuthProvider() {
@@ -13,14 +13,14 @@ class CheckBikeCommandHandler extends BaseCommandHandler {
 
   _parseCommandArguments() {
     const result = {
-      chatId: this._message.chat.id,
+      chatId: this._message.getChat().getId(),
       userId: null
     };
 
-    if ('reply_to_message' in this._message) {
-      if ('from' in this._message.reply_to_message) {
-          result.userId = this._message.reply_to_message.id
-      };
+    const reply = this._message.getReplyToMessage();
+
+    if (reply) {
+      result.userId = reply.getSender().getId();
     };
 
     return result;
@@ -30,27 +30,27 @@ class CheckBikeCommandHandler extends BaseCommandHandler {
 
     if (this._commandArguments.userId) {
 
-      await this._db.chatsAndUsers.checkBike(
+      await this._db.chatsAndUsers.uncheckBike(
         this._commandArguments.userId,
         this._commandArguments.chatId
       );
 
       await this._bot.sendMessage(
         this._commandArguments.chatId,
-        'Чекнул, кекнул!'
+        'Снова беспруфный кукарек, кек!'
       );
 
     } else {
 
       await this._bot.sendMessage(
         this._commandArguments.chatId,
-        'Некого чекать, некого кекоть, пук!'
+        'Ответь на чье-нибудь сообщение, пук!'
       );
 
-    }
+    };
 
   };
 
 };
 
-module.exports = CheckBikeCommandHandler;
+module.exports = UncheckBikeCommandHandler;
