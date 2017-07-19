@@ -47,6 +47,17 @@ class MessageRouter {
         break;
       }
 
+      case 'get_bikecheck_list': {
+        const handler = new messageHandlers.GetBikecheckListHandler(
+          this._message,
+          this._bot,
+          this._db
+        );
+
+        await handler.handle();
+        break;
+      }
+
     };
 
    };

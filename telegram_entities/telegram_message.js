@@ -44,10 +44,9 @@ class TelegramMessage {
       return null;
     };
 
-    return this._rawMessage.text.substring(
-      1,
-      msgText.indexOf(' ')
-    );
+    return (msgText.indexOf(' ') != -1)
+      ? msgText.substring(1, msgText.indexOf(' '))
+      : msgText.substring(1);
   };
 
   getReplyToMessage() {
