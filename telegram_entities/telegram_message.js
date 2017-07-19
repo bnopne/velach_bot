@@ -1,5 +1,6 @@
 const TelegramChat = require('./telegram_chat');
 const TelegramUser = require('./telegram_user');
+const TelegramMessageEntity = require('./telegram_message_entity');
 
 class TelegramMessage {
 
@@ -29,24 +30,39 @@ class TelegramMessage {
       : null;
   };
 
+  getEntities() {
+    return ('entities' in this._rawMessage)
+      ? this._rawMessage.entities.map((el, i, arr) => {
+          return new TelegramMessageEntity(el);
+        })
+      : [];
+  };
+
   getCommand() {
-    const msgText = this.getText();
 
-    if (!msgText) {
-      return null;
+    const entities = this.getEntities();
+
+    const commandEntities = entities.filter((el, i, arr) => {
+      return el.isCommand();
+    });
+
+    for (var i = 0; i < commandEntities.length; i++) {
+      let commandEntity = commandEntities[i];
+
+      if (commandEntity.getOffset() == 0) {
+
+        return this.getText().substring(
+          commandEntity.getOffset(),
+          commandEntity.getLength()
+        )
+          .slice(1)
+          .split('@');
+
+      };
     };
 
-    if (!msgText.startsWith('/')) {
-      return null;
-    };
+    return null;
 
-    if (msgText.length < 2) {
-      return null;
-    };
-
-    return (msgText.indexOf(' ') != -1)
-      ? msgText.substring(1, msgText.indexOf(' '))
-      : msgText.substring(1);
   };
 
   getReplyToMessage() {

@@ -62,7 +62,7 @@ exports.testHandleNewChatMemberWhenAddAnotherUser = new TransactionScopeTest(
     const db = new Db(client);
     const bot = new BotMock();
 
-    var handler = new messageHandlers.NewChatMemberHandler(message, bot, db);
+    var handler = new messageHandlers.commandHandlers.NewChatMemberHandler(message, bot, db);
 
     await handler.handle();
 
@@ -123,7 +123,7 @@ exports.testHandleNewChatMemberWhenAddBot = new TransactionScopeTest(
     const db = new Db(client);
     const bot = new BotMock();
 
-    var handler = new messageHandlers.NewChatMemberHandler(message, bot, db);
+    var handler = new messageHandlers.commandHandlers.NewChatMemberHandler(message, bot, db);
 
     await handler.handle();
 

@@ -59,7 +59,7 @@ exports.testSetGreetingMessage = new TransactionScopeTest(
     const db = new Db(client);
     const bot = new BotMock();
 
-    const handler = new messageHandlers.SetGreetingMessageHandler(message, bot, db);
+    const handler = new messageHandlers.commandHandlers.SetGreetingMessageHandler(message, bot, db);
 
     await handler.handle();
 
