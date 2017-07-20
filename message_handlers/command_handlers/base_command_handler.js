@@ -41,7 +41,10 @@ class BaseCommandHandler extends BaseMessageHandler {
 
         await this._bot.sendMessage(
           this._message.getChat().getId(),
-          'Unautorized'
+          '\
+            1) во первых иди нахуй что ты мне сделаешь\
+            2) вовторых эту команду могут только админы выполнять\
+            3) в третих я в другом городе что ты мне сделаешь за мат извени'
         );
 
       };
