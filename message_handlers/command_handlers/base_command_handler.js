@@ -6,7 +6,6 @@ class BaseCommandHandler extends BaseMessageHandler {
     super(message, bot, db);
 
     this._command = this._getCommand();
-    this._commandArguments = this._parseCommandArguments();
 
     this._authProvider = this._getAuthProvider();
   };
@@ -35,6 +34,7 @@ class BaseCommandHandler extends BaseMessageHandler {
 
       if (isUserAuthorized) {
 
+        this._commandArguments = this._parseCommandArguments();
         await handle.apply(this, []);
 
       } else {

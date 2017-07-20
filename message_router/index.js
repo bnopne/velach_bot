@@ -11,64 +11,19 @@ class MessageRouter {
 
   async routeMessage() {
 
-    if (this._message.getNewChatMember()) {
-      const handler = new messageHandlers.NewChatMemberHandler(
-        this._message,
-        this._bot,
-        this._db
-      );
+    const handlers = [
+      new messageHandlers.NewChatMemberHandler(this._message, this._bot, this._db),
+      new messageHandlers.commandHandlers.SetGreetingMessageHandler(this._message, this._bot, this._db),
+      new messageHandlers.commandHandlers.CheckBikeHandler(this._message, this._bot, this._db),
+      new messageHandlers.commandHandlers.UncheckBikeHandler(this._message, this._bot, this._db),
+      new messageHandlers.commandHandlers.BikecheckHandler(this._message, this._bot, this._db)
+    ];
 
-      await handler.handle();
-    };
-
-    const command = this._message.getCommand();
-
-    switch (command) {
-
-      case 'set_greeting': {
-        const handler = new messageHandlers.commandHandlers.SetGreetingMessageHandler(
-          this._message,
-          this._bot,
-          this._db
-        );
-
-        await handler.handle();
+    for (let i = 0; i < handlers.length; i++) {
+      if (await handlers[i].fitsMessage()) {
+        await handlers[i].handle();
         break;
-      }
-
-      case 'check_bike': {
-        const handler = new messageHandlers.commandHandlers.CheckBikeHandler(
-          this._message,
-          this._bot,
-          this._db
-        );
-
-        await handler.handle();
-        break;
-      }
-
-      case 'uncheck_bike': {
-        const handler = new messageHandlers.commandHandlers.UncheckBikeHandler(
-          this._message,
-          this._bot,
-          this._db
-        );
-
-        await handler.handle();
-        break;
-      }
-
-      case 'bikecheck': {
-        const handler = new messageHandlers.commandHandlers.BikecheckHandler(
-          this._message,
-          this._bot,
-          this._db
-        );
-
-        await handler.handle();
-        break;
-      }
-
+      };
     };
 
    };
