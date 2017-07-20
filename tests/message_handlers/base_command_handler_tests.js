@@ -30,7 +30,7 @@ exports.test1 = new TransactionScopeTest(
   'test fitsMessage on valid message',
   async function(client) {
 
-    const message = {
+    const message = new TelegramMessage({
       message_id: 497,
       from:
       { id: 128540035,
@@ -45,7 +45,7 @@ exports.test1 = new TransactionScopeTest(
       date: 1500506659,
       text: '/test sdfgasdfas',
       entities: [ { type: 'bot_command', offset: 0, length: 5 } ]
-    };
+    });
 
     const db = new Db(client);
     const bot = new BotMock();
@@ -66,7 +66,7 @@ exports.test2 = new TransactionScopeTest(
   'test fitsMessage on message without command',
   async function(client) {
 
-    const message = {
+    const message = new TelegramMessage({
       message_id: 497,
       from:
       { id: 128540035,
@@ -80,7 +80,7 @@ exports.test2 = new TransactionScopeTest(
         all_members_are_administrators: true },
       date: 1500506659,
       text: 'sdfgasdfas',
-    };
+    });
 
     const db = new Db(client);
     const bot = new BotMock();
@@ -101,7 +101,7 @@ exports.test3 = new TransactionScopeTest(
   'test fitsMessage on message with invalid command',
   async function(client) {
 
-    const message = {
+    const message = new TelegramMessage({
       message_id: 497,
       from:
       { id: 128540035,
@@ -116,7 +116,7 @@ exports.test3 = new TransactionScopeTest(
       date: 1500506659,
       text: '/test sdfgasdfas',
       entities: [ { type: 'bot_command', offset: 0, length: 5 } ]
-    };
+    });
 
     const db = new Db(client);
     const bot = new BotMock();

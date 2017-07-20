@@ -8,11 +8,18 @@ class BotMock {
 
   constructor() {
     this.sendMessageCallCount = 0;
+    this.sendMessageArguments = {
+      chatId: null,
+      text: null
+    };
+
     this.getMeCallCount = 0;
   };
 
   async sendMessage(chatId, text) {
     this.sendMessageCallCount += 1;
+    this.sendMessageArguments.chatId = chatId;
+    this.sendMessageArguments.text = text;
   };
 
   async getMe() {
@@ -70,5 +77,7 @@ exports.test1 = new TransactionScopeTest(
     await handler.handle();
 
     assert.equal(bot.sendMessageCallCount, 1);
+    assert.equal(bot.sendMessageArguments.chatId, -153286219);
+    assert.equal(bot.sendMessageArguments.text, 'Этот почтенный велан показал свою повозку, кек!');
   }
 );
