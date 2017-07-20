@@ -25,3 +25,50 @@ class BotMock {
   };
 
 };
+
+exports.test1 = new TransactionScopeTest(
+  'test handle',
+  async function(client) {
+
+    const message = new TelegramMessage({
+      message_id: 498,
+      from:
+      { id: 128540035,
+        first_name: 'Вася',
+        last_name: 'Цветомузыка',
+        username: 'vasya_cvetomuzika' },
+      chat:
+      { id: -153286219,
+        title: 'VelachBotTest',
+        type: 'group',
+        all_members_are_administrators: true },
+      date: 1500507577,
+      reply_to_message:
+      { message_id: 494,
+        from:
+          { id: 128540035,
+            first_name: 'Вася',
+            last_name: 'Цветомузыка',
+            username: 'vasya_cvetomuzika' },
+        chat:
+          { id: -153286219,
+            title: 'VelachBotTest',
+            type: 'group',
+            all_members_are_administrators: true },
+        date: 1500503495,
+        text: '/kek@velach_test_bot',
+        entities: [ [Object] ] },
+      text: '/bikecheck',
+      entities: [ { type: 'bot_command', offset: 0, length: 10 } ]
+    });
+
+    const db = new Db(client);
+    const bot = new BotMock();
+
+    const handler = new messageHandlers.commandHandlers.BikecheckHandler(message, bot, db);
+
+    await handler.handle();
+
+    assert.equal(bot.sendMessageCallCount, 1);
+  }
+);

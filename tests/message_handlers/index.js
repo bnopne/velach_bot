@@ -3,6 +3,7 @@ const config = require('../../config');
 const newChatMemberHandlerTests = require('./new_chat_member_handler_tests');
 const setGreetingMessageHandlerTests = require('./set_greetin_message_handler_tests');
 const baseCommandHandlerTests = require('./base_command_handler_tests');
+const bikecheckHandlerTests = require('./bikecheck_handler_tests');
 
 const pool = new pg.Pool(config.get('database:postgres'));
 
@@ -39,6 +40,20 @@ describe('Test SetGreetingMessageHandler', function() {
   for (var testName in setGreetingMessageHandlerTests) {
 
     test = setGreetingMessageHandlerTests[testName];
+
+    it(test.getDescription(), async function() {
+      return await test.run(pool);
+    });
+
+  };
+
+});
+
+describe('Test BikecheckHandler', function() {
+
+  for (var testName in bikecheckHandlerTests) {
+
+    test = bikecheckHandlerTests[testName];
 
     it(test.getDescription(), async function() {
       return await test.run(pool);
