@@ -13,14 +13,14 @@ class CheckBikeCommandHandler extends BaseCommandHandler {
 
   _parseCommandArguments() {
     const result = {
-      chatId: this._message.getChat().getId(),
-      userId: null
+      chat: this._message.getChat(),
+      user: null
     };
 
     const reply = this._message.getReplyToMessage();
 
     if (reply) {
-      result.userId = reply.getSender().getId();
+      result.user = reply.getSender();
     };
 
     return result;
@@ -28,10 +28,10 @@ class CheckBikeCommandHandler extends BaseCommandHandler {
 
   async handle() {
 
-    if (!this._commandArguments.userId) {
+    if (!this._commandArguments.user) {
 
       await this._bot.sendMessage(
-        this._commandArguments.chatId,
+        this._commandArguments.chat.getId(),
         'Ответь кому-нибудь, чтобы подтвердить, что он показал свой велик, пук!'
       );
 
@@ -39,13 +39,18 @@ class CheckBikeCommandHandler extends BaseCommandHandler {
 
     };
 
+    await this._db.makeSureChatAndUserExist(
+      this._commandArguments.chat,
+      this._commandArguments.user
+    );
+
     await this._db.chatsAndUsers.checkBike(
-      this._commandArguments.userId,
-      this._commandArguments.chatId
+      this._commandArguments.user.getId(),
+      this._commandArguments.chat.getId()
     );
 
     await this._bot.sendMessage(
-      this._commandArguments.chatId,
+      this._commandArguments.chat.getId(),
       'Чекнул, кекнул!'
     );
 
