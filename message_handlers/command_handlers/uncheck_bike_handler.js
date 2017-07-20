@@ -39,7 +39,7 @@ class UncheckBikeCommandHandler extends BaseCommandHandler {
 
     };
 
-    await this._db.makeSureChatAndUserExist(
+    await this._db.chatsAndUsers.makeSureChatAndUserExist(
       this._commandArguments.chat,
       this._commandArguments.user
     );
