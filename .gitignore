@@ -62,3 +62,10 @@ typings/
 
 # App config
 config/config.json
+
+# Content
+media/pictures/bikes/*
+!media/pictures/bikes/.anchor
+
+media/temp/*
+!media/temp/.anchor

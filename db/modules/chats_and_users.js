@@ -83,14 +83,14 @@ class ChatsAndUsersModule extends BaseDbModule {
     return queryResult.rows[0];
   };
 
-  async checkBike(userId, chatId) {
+  async checkBike(userId, chatId, bikePhotoId) {
     var QUERY = '\
       UPDATE tg_chat_user_mtm\
-      SET bike_check = true\
+      SET bike_check = true, bike_photo_id = $3\
       WHERE tg_chat_id = $1 AND tg_user_id = $2\
       RETURNING *';
 
-    const queryResult = await this._client.query(QUERY, [chatId, userId]);
+    const queryResult = await this._client.query(QUERY, [chatId, userId, bikePhotoId]);
     return queryResult.rows[0];
   };
 
