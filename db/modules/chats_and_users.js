@@ -97,7 +97,9 @@ class ChatsAndUsersModule extends BaseDbModule {
   async uncheckBike(userId, chatId) {
     var QUERY = '\
       UPDATE tg_chat_user_mtm\
-      SET bike_check = false\
+      SET\
+        bike_check = false,\
+        bike_photo_id = NULL\
       WHERE tg_chat_id = $1 AND tg_user_id = $2\
       RETURNING *';
 
