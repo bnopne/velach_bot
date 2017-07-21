@@ -86,7 +86,7 @@ class ChatsAndUsersModule extends BaseDbModule {
   async checkBike(userId, chatId, bikePhotoId) {
     var QUERY = '\
       UPDATE tg_chat_user_mtm\
-      SET bike_check = true, bike_photo_id = $3\
+      SET bike_photo_id = $3\
       WHERE tg_chat_id = $1 AND tg_user_id = $2\
       RETURNING *';
 
@@ -97,9 +97,7 @@ class ChatsAndUsersModule extends BaseDbModule {
   async uncheckBike(userId, chatId) {
     var QUERY = '\
       UPDATE tg_chat_user_mtm\
-      SET\
-        bike_check = false,\
-        bike_photo_id = NULL\
+      SET bike_photo_id = NULL\
       WHERE tg_chat_id = $1 AND tg_user_id = $2\
       RETURNING *';
 
@@ -107,11 +105,11 @@ class ChatsAndUsersModule extends BaseDbModule {
     return queryResult.rows[0];
   };
 
-  async bikeCheck(userId, chatId) {
-    var QUERY = 'SELECT bike_check FROM tg_chat_user_mtm WHERE tg_user_id = $1 AND tg_chat_id = $2';
+  async getBikePhotoId(userId, chatId) {
+    var QUERY = 'SELECT bike_photo_id FROM tg_chat_user_mtm WHERE tg_user_id = $1 AND tg_chat_id = $2';
 
     const queryResult = await this._client.query(QUERY, [userId, chatId]);
-    return queryResult.rows[0].bike_check;
+    return queryResult.rows[0].bike_photo_id;
   };
 
 };

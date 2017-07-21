@@ -9,6 +9,10 @@ class TelegramMessage {
     this._rawMessage = rawMessage;
   };
 
+  getId() {
+    return this._rawMessage.message_id;
+  };
+
   getSender() {
     return ('from' in this._rawMessage)
       ? new TelegramUser(this._rawMessage.from)

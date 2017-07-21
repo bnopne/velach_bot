@@ -44,18 +44,29 @@ class BikecheckHandler extends BaseCommandHandler {
       this._commandArguments.user
     );
 
-    const bikeCheck = await this._db.chatsAndUsers.bikeCheck(
+    const bikePhotoId = await this._db.chatsAndUsers.getBikePhotoId(
       this._commandArguments.user.getId(),
       this._commandArguments.chat.getId()
     );
 
-    const msgText = (bikeCheck)
-      ? 'Этот почтенный велан показал свою повозку, кек!'
-      : 'Этот беспруфный кукарек не показывал свою повозку, пук!';
+    if (!bikePhotoId) {
 
-    await this._bot.sendMessage(
+      await this._bot.sendMessage(
+        this._commandArguments.chat.getId(),
+        'Этот беспруфный кукарек не показывал свою повозку, пук!'
+      );
+
+      return;
+
+    };
+
+    await this._bot.sendPhoto(
       this._commandArguments.chat.getId(),
-      msgText
+      bikePhotoId,
+      {
+        reply_to_message_id: this._message.getId(),
+        caption: 'Этот почтенный велан показал свою повозку, кек!'
+      }
     );
 
   };
