@@ -61,7 +61,7 @@ class TelegramMessage {
           commandEntity.getLength()
         )
           .slice(1)
-          .split('@');
+          .split('@')[0];
 
       };
     };
