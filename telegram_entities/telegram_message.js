@@ -1,6 +1,7 @@
 const TelegramChat = require('./telegram_chat');
 const TelegramUser = require('./telegram_user');
 const TelegramMessageEntity = require('./telegram_message_entity');
+const TelegramPhotoSize = require('./telegram_photo_size');
 
 class TelegramMessage {
 
@@ -69,6 +70,16 @@ class TelegramMessage {
     return ('reply_to_message' in this._rawMessage)
       ? new TelegramMessage(this._rawMessage.reply_to_message)
       : null;
+  };
+
+  getPhoto() {
+    if ('photo' in this._rawMessage) {
+      return this._rawMessage.photo.map(rawPhotoSize => {
+        return new TelegramPhotoSize(rawPhotoSize);
+      });
+    } else {
+      return null;
+    };
   };
 
 };
