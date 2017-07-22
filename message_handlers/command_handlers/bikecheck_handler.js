@@ -21,23 +21,14 @@ class BikecheckHandler extends BaseCommandHandler {
 
     if (reply) {
       result.user = reply.getSender();
+    } else {
+      result.user = this._message.getSender();
     };
 
     return result;
   };
 
   async handle() {
-
-    if (!this._commandArguments.user) {
-
-      await this._bot.sendMessage(
-        this._commandArguments.chat.getId(),
-        'Ответь кому-нибудь, чтобы проверить показывал ли он свой велик, пук!'
-      );
-
-      return;
-
-    };
 
     await this._db.chatsAndUsers.makeSureChatAndUserExist(
       this._commandArguments.chat,
@@ -53,7 +44,10 @@ class BikecheckHandler extends BaseCommandHandler {
 
       await this._bot.sendMessage(
         this._commandArguments.chat.getId(),
-        'Этот беспруфный кукарек не показывал свою повозку, пук!'
+        'Этот беспруфный кукарек не показывал свою повозку, пук!',
+        {
+          reply_to_message_id: this._message.getId()
+        }
       );
 
       return;
