@@ -37,7 +37,7 @@ class NewChatMemberHandler extends BaseMessageHandler {
 
   _concatUserAndGreetingMessage(user, greetingMessage) {
     return (user.getUsername())
-      ? `${userMention} ${greetingMessage}`.trim()
+      ? `@${user.getUsername()} ${greetingMessage}`.trim()
       : greetingMessage;
   };
 
