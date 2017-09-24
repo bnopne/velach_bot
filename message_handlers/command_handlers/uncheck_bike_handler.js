@@ -4,7 +4,7 @@ const ChatAdminAuthProvider = require('../auth_providers').ChatAdminAuthProvider
 class UncheckBikeCommandHandler extends BaseCommandHandler {
 
   _getCommand() {
-    return 'uncheck_bike';
+    return 'uncheckbike';
   };
 
   _getAuthProvider() {

@@ -4,7 +4,7 @@ const ChatAdminAuthProvider = require('../auth_providers').ChatAdminAuthProvider
 class SetGreetingMessageHandler extends BaseCommandHandler {
 
   _getCommand() {
-    return 'set_greeting';
+    return 'setgreeting';
   };
 
   _getAuthProvider() {

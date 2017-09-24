@@ -6,7 +6,7 @@ const TelegramDownloadManager = require('../../telegram_download_manager');
 class CheckBikeCommandHandler extends BaseCommandHandler {
 
   _getCommand() {
-    return 'check_bike';
+    return 'checkbike';
   };
 
   _getAuthProvider() {
