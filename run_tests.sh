@@ -1,1 +1,0 @@
-find ./tests -maxdepth 1 -type d -exec ./node_modules/mocha/bin/mocha {} \;

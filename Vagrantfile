@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.network "forwarded_port", guest: 5432, host: 6543
 
-  config.vm.synced_folder ".", "/home/ubuntu/velach_bot"
+  config.vm.synced_folder ".", "/home/vagrant/velach_bot"
 
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"
