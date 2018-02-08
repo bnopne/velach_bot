@@ -7,13 +7,19 @@ class Bot {
     this._pool = pool
     this._telegramBot = telegramBot;
 
+    this._bindEventHandlers();
+  };
+
+  start() {
+    this._telegramBot.startPolling();
+  }
+
+  _bindEventHandlers() {
     this._telegramBot.on(
       'message',
       this._messageCallback.bind(this)
     );
-
-    this._telegramBot.startPolling();
-  };
+  }
 
   async _messageCallback(message) {
     var client = await this._pool.connect();
