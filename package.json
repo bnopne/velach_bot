@@ -1,28 +1,32 @@
 {
   "name": "velach_bot",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "Small bot for /bi chat.",
   "main": "index.js",
-  "scripts": {
-    "lint": "eslint ."
-  },
-  "author": "",
+  "author": "bnopne",
   "license": "GPL-3.0",
   "dependencies": {
-    "camelcase": "^5.0.0",
-    "nconf": "^0.10.0",
+    "convict": "^4.3.2",
+    "lodash": "^4.17.11",
+    "minimist": "^1.2.0",
+    "moment": "^2.22.2",
     "node-telegram-bot-api": "^0.30.0",
-    "path": "^0.12.7",
-    "pg": "^7.6.0",
-    "winston": "^3.1.0"
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.38.0"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "chai": "^4.1.0",
-    "eslint": "^5.8.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "mocha": "^5.2.0"
+    "ava": "1.0.0-rc.1",
+    "eslint": "^5.2.0",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "sequelize-cli": "^4.0.0"
+  },
+  "scripts": {
+    "start": "node ./src/index.js",
+    "create-schema": "node ./src/cli.js create-schema",
+    "seed-db": "node ./src/cli.js seed-db",
+    "apply-migrations": "node ./src/cli.js apply-migrations",
+    "test": "ava --verbose tests/*"
   }
 }
