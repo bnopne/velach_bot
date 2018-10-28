@@ -38,16 +38,11 @@ class BaseCommandHandler extends BaseMessageHandler {
         await handle.apply(this, []);
 
       } else {
-
         await this._bot.sendMessage(
           this._message.getChat().getId(),
-          '\
-            1) во первых иди нахуй что ты мне сделаешь\
-            2) вовторых эту команду могут только админы выполнять\
-            3) в третих я в другом городе что ты мне сделаешь за мат извени'
+          '1) Во первых иди нахуй что ты мне сделаешь\n2) Вовторых эту команду могут только админы выполнять\n3) В третих я в другом городе что ты мне сделаешь за мат извени'
         );
-
-      };
+      }
     };
 
   };
@@ -57,11 +52,10 @@ class BaseCommandHandler extends BaseMessageHandler {
 
     if (command === null) {
       return false;
-    };
-
-    return command == this._getCommand();
+    }
+    return command === this._getCommand();
   };
 
-};
+}
 
 module.exports = BaseCommandHandler;

@@ -5,19 +5,20 @@ class ChatAdminAuthProvider extends BaseAuthProvider {
   async isAuthorized() {
     const userToAuthorize = this._message.getSender();
 
-    const chatAdmins = await this._bot.getChatAdministrators(this._message.getChat().getId());
+    const chatAdmins = await this._bot.getChatAdministrators(this._message.getChat()
+      .getId());
 
-    for (var i = 0; i < chatAdmins.length; i++) {
+    let isAdmin = false;
 
-      if (chatAdmins[i].user.id == userToAuthorize.getId()) {
-        return true;
-      };
+    for (let i = 0; i < chatAdmins.length; i++) {
+      if (chatAdmins[i].user.id === userToAuthorize.getId()) {
+        isAdmin = true;
+        break;
+      }
+    }
 
-      return false;
-
-    };
-  };
-
-};
+    return isAdmin;
+  }
+}
 
 module.exports = ChatAdminAuthProvider;
