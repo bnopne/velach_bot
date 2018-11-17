@@ -1,8 +1,8 @@
 {
   "name": "velach_bot",
-  "version": "0.3.0",
+  "version": "2.0.0",
   "description": "Small bot for /bi chat.",
-  "main": "index.js",
+  "main": "./src/index.js",
   "author": "bnopne",
   "license": "GPL-3.0",
   "dependencies": {
