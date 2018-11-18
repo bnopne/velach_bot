@@ -18,7 +18,7 @@ class MetricsServer {
   }
 
   start() {
-    this.server.listen(settings.get('metrics.server.port'));
+    this.server.listen(settings.get('metrics.server.port'), settings.get('metrics.server.host'));
   }
 }
 
