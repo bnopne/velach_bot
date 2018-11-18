@@ -16,6 +16,12 @@ const settings = convict({
         default: 3091,
         env: 'METRICS_SERVER_PORT',
       },
+      host: {
+        doc: 'Host for metrics server to listen to',
+        format: String,
+        default: '127.0.0.1',
+        env: 'METRICS_SERVER_HOST',
+      },
     },
   },
   db: {
@@ -36,7 +42,7 @@ const settings = convict({
     token: {
       doc: 'Telegram bot token',
       format: String,
-      default: '342387136:AAGiuMdiRjsswdkj75-sF14bvF34ZdTmw1k',
+      default: '',
       env: 'TELEGRAM_TOKEN',
     },
     messageTTL: {
