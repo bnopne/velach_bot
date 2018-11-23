@@ -7,10 +7,12 @@
   "license": "GPL-3.0",
   "dependencies": {
     "convict": "^4.3.2",
+    "dropbox": "^4.0.13",
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "minimist": "^1.2.0",
     "moment": "^2.22.2",
+    "node-fetch": "^2.3.0",
     "node-telegram-bot-api": "^0.30.0",
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",

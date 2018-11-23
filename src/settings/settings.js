@@ -25,11 +25,35 @@ const settings = convict({
     },
   },
   db: {
-    connectionString: {
-      doc: 'Database connection string',
+    database: {
+      doc: 'Database name',
       format: String,
-      default: 'postgres://velach_bot:qwerty@localhost:5432/velach_bot',
-      env: 'DB_CONNECTION_STRING',
+      default: 'velach_bot',
+      env: 'DB_DATABASE',
+    },
+    host: {
+      doc: 'Database host',
+      format: 'ipaddress',
+      default: '127.0.0.1',
+      env: 'DB_HOST',
+    },
+    port: {
+      doc: 'Database port',
+      format: 'port',
+      default: 5432,
+      env: 'DB_PORT',
+    },
+    user: {
+      doc: 'Database user',
+      format: String,
+      default: 'velach_bot',
+      env: 'DB_USER',
+    },
+    password: {
+      doc: 'Database password',
+      format: String,
+      default: 'qwerty',
+      env: 'DB_PASSWORD',
     },
     dialect: {
       doc: 'Database dialect',
@@ -50,6 +74,14 @@ const settings = convict({
       format: Number,
       default: 60,
       env: 'TELEGRAM_MESSAGE_TTL',
+    },
+  },
+  dropbox: {
+    accessToken: {
+      doc: 'Dropbox app access token',
+      format: String,
+      default: '',
+      env: 'DROPBOX_ACCESS_TOKEN',
     },
   },
 });

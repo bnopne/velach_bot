@@ -1,8 +1,13 @@
 const { exec } = require('child_process');
 const fs = require('fs');
+const path = require('path');
 
 const minimist = require('minimist');
+const moment = require('moment');
+const { Dropbox } = require('dropbox');
+const fetch = require('node-fetch');
 
+const settings = require('./settings');
 const models = require('./models');
 const User = require('./entities/User');
 const Chat = require('./entities/Chat');
@@ -91,6 +96,45 @@ async function execute(argv) {
     } finally {
       await models.sequelize.connectionManager.close();
     }
+  }
+
+  if (argv._.includes('backup-db')) {
+    const dumpFilename = `velach_bot_database_dump_${moment().format('DD-MM-YYYY')}.sql`;
+    const dumpFullname = path.join('/tmp', dumpFilename);
+
+    await new Promise((resolve, reject) => {
+      exec(
+        `pg_dump ${settings.get('db.database')} > ${dumpFullname}`,
+        {
+          env: {
+            PGHOST: settings.get('db.host'),
+            PGPORT: settings.get('db.port'),
+            PGUSER: settings.get('db.user'),
+            PGPASSWORD: settings.get('db.password'),
+          },
+        },
+        (err) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+
+          resolve();
+        },
+      );
+    });
+
+    const dropbox = new Dropbox({
+      fetch,
+      accessToken: settings.get('dropbox.accessToken'),
+    });
+
+    const dump = fs.readFileSync(dumpFullname);
+
+    await dropbox.filesUpload({
+      contents: dump,
+      path: `/${dumpFilename}`,
+    });
   }
 }
 
