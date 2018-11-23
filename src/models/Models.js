@@ -10,8 +10,13 @@ const settings = require('../settings');
 class Models {
   constructor() {
     this.sequelize = new Sequelize(
-      settings.get('db.connectionString'),
       {
+        host: settings.get('db.host'),
+        port: settings.get('db.port'),
+        username: settings.get('db.user'),
+        password: settings.get('db.password'),
+        database: settings.get('db.database'),
+        dialect: settings.get('db.dialect'),
         logging: false,
         define: {
           timestamps: false,
