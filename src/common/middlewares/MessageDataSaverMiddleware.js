@@ -6,13 +6,13 @@ const UserChatMtm = require('../../entities/UserChatMtm');
 
 class MessageDataSaverMiddleware extends Middleware {
   async process(message) { // eslint-disable-line
-    const chat = await Chat.createOrUpdate({
+    await Chat.createOrUpdate({
       id: message.chat.id,
       type: message.chat.type,
       title: message.chat.title,
     });
 
-    const user = await User.createOrUpdate({
+    await User.createOrUpdate({
       id: message.from.id,
       isBot: message.from.isBot,
       firstName: message.from.firstName,
@@ -21,9 +21,25 @@ class MessageDataSaverMiddleware extends Middleware {
     });
 
     await UserChatMtm.createOrUpdate({
-      userId: user.id,
-      chatId: chat.id,
+      userId: message.from.id,
+      chatId: message.chat.id,
     });
+
+    if (message.replyToMessage) {
+      await Chat.createOrUpdate({
+        id: message.replyToMessage.chat.id,
+        type: message.replyToMessage.chat.type,
+        title: message.replyToMessage.chat.title,
+      });
+
+      await User.createOrUpdate({
+        id: message.replyToMessage.from.id,
+        isBot: message.replyToMessage.from.isBot,
+        firstName: message.replyToMessage.from.firstName,
+        lastName: message.replyToMessage.from.lastName,
+        username: message.replyToMessage.from.username,
+      });
+    }
 
     return message;
   }
