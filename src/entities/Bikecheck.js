@@ -2,7 +2,6 @@ const Entity = require('./Entity');
 const models = require('../models');
 const BikecheckVote = require('./BikecheckVote');
 const BikecheckChatMtm = require('./BikecheckChatMtm');
-const BikecheckReport = require('./BikecheckReport');
 
 
 class Bikecheck extends Entity {
@@ -67,7 +66,6 @@ class Bikecheck extends Entity {
 
   async getScore() {
     const votes = await BikecheckVote.getAllForBikecheck(this);
-    const reports = await BikecheckReport.getAllForBikecheck(this);
 
     const likeCount = votes
       .filter(vote => vote.isLike)
@@ -77,12 +75,9 @@ class Bikecheck extends Entity {
       .filter(vote => vote.isDislike)
       .length;
 
-    const reportCount = reports.length;
-
     return {
       likeCount,
       dislikeCount,
-      reportCount,
     };
   }
 

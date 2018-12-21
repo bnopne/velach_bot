@@ -43,8 +43,12 @@ class Models {
     Object.assign(this, models);
   }
 
-  createSchema() {
+  createTables() {
     return this.sequelize.sync({ force: true });
+  }
+
+  dropTables() {
+    return this.sequelize.drop({ cascade: true });
   }
 
   closeConnections() {

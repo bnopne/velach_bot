@@ -28,9 +28,10 @@
   },
   "scripts": {
     "start": "node ./src/index.js",
-    "create-schema": "node ./src/cli.js create-schema",
-    "seed-db": "node ./src/cli.js seed-db",
-    "apply-migrations": "node ./src/cli.js apply-migrations",
+    "create-tables": "node ./cli.js create-tables",
+    "drop-tables": "node ./cli.js drop-tables",
+    "seed-db": "node ./cli.js seed-db",
+    "apply-migrations": "node ./cli.js apply-migrations",
     "test": "ava --verbose tests/*"
   }
 }
