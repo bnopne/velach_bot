@@ -9,7 +9,6 @@ const UnbanBikecheckRoute = require('./messageRoutes/UnbanBikecheckRoute/UnbanBi
 // callback query routes
 const LikeRoute = require('./callbackQueryRoutes/LikeRoute/LikeRoute');
 const DislikeRoute = require('./callbackQueryRoutes/DislikeRoute/DislikeRoute');
-const ReportRoute = require('./callbackQueryRoutes/ReportRoute/ReportRoute');
 
 
 class VelachBotApp extends Application {
@@ -26,7 +25,6 @@ class VelachBotApp extends Application {
     return [
       LikeRoute,
       DislikeRoute,
-      ReportRoute,
     ];
   }
 }

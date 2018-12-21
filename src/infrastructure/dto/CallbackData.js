@@ -16,13 +16,6 @@ class CallbackData extends DTO {
     return data;
   }
 
-  static createReportForBikecheck(bikecheck) {
-    const data = new this();
-    data.setField('command', 'report');
-    data.setField('bikecheckId', bikecheck.id);
-    return data;
-  }
-
   static deserialize(dataString) {
     const rawObject = JSON.parse(dataString);
     return new this(rawObject);

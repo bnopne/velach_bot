@@ -9,13 +9,12 @@ class BikecheckService extends Service {
     return InlineKeyboardMarkup.createFromButtons([
       InlineKeyboardButton.createWithCallbackData('👍', CallbackData.createLikeForBikecheck(bikecheck)),
       InlineKeyboardButton.createWithCallbackData('👎', CallbackData.createDislikeForBikecheck(bikecheck)),
-      InlineKeyboardButton.createWithCallbackData('⛔️', CallbackData.createReportForBikecheck(bikecheck)),
     ]);
   }
 
   async getCaption(bikecheck) { // eslint-disable-line
     const score = await bikecheck.getScore();
-    return `Голосов за: ${score.likeCount}\nГолосов против: ${score.dislikeCount}\nЖалоб: ${score.reportCount}`;
+    return `Голосов за: ${score.likeCount}\nГолосов против: ${score.dislikeCount}`;
   }
 }
 
