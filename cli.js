@@ -66,7 +66,7 @@ async function execute(argv) {
   }
 
   if (argv._.includes('backup-db')) {
-    const dumpFilename = `velach_bot_database_dump_${moment().format('DD-MM-YYYY_HH:mm:ss')}.sql`;
+    const dumpFilename = `velach_bot_database_dump_${moment().format('DD-MM-YYYY_HH_mm_ss')}.sql`;
     const dumpFullname = path.join('/tmp', dumpFilename);
 
     await new Promise((resolve, reject) => {
