@@ -1,28 +1,11 @@
 const convict = require('convict');
 
-
 const settings = convict({
   env: {
     doc: 'Application environment',
     format: String,
     default: 'dev',
     env: 'NODE_ENV',
-  },
-  metrics: {
-    server: {
-      port: {
-        doc: 'Port for metrics server to listen to',
-        format: 'port',
-        default: 3091,
-        env: 'METRICS_SERVER_PORT',
-      },
-      host: {
-        doc: 'Host for metrics server to listen to',
-        format: String,
-        default: '127.0.0.1',
-        env: 'METRICS_SERVER_HOST',
-      },
-    },
   },
   db: {
     database: {
@@ -66,7 +49,7 @@ const settings = convict({
     token: {
       doc: 'Telegram bot token',
       format: String,
-      default: '',
+      default: '342387136:AAGiuMdiRjsswdkj75-sF14bvF34ZdTmw1k',
       env: 'TELEGRAM_TOKEN',
     },
     messageTTL: {
@@ -74,6 +57,12 @@ const settings = convict({
       format: Number,
       default: 60,
       env: 'TELEGRAM_MESSAGE_TTL',
+    },
+    proxyUrl: {
+      doc: 'Proxy for dealing with RKN Telegram blocks',
+      format: String,
+      default: '',
+      env: 'TELEGRAM_PROXY_URL',
     },
   },
   dropbox: {
@@ -87,6 +76,5 @@ const settings = convict({
 });
 
 settings.validate();
-
 
 module.exports = settings;
