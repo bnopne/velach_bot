@@ -4,8 +4,6 @@ const settings = require('../settings');
 const TelegramMessage = require('./dto/TelegramMessage');
 const CallbackQuery = require('./dto/CallbackQuery');
 const Router = require('./Router');
-const metrics = require('./metrics');
-const MetricsServer = require('./MetricsServer');
 
 
 class Application {
@@ -18,8 +16,15 @@ class Application {
   }
 
   constructor() {
-    this.bot = new TelegramBot(settings.get('telegram.token'));
-    this.metricsServer = new MetricsServer();
+    const botOptions = settings.get('telegram.proxyUrl')
+      ? {
+        request: {
+          proxy: settings.get('telegram.proxyUrl'),
+        },
+      }
+      : {};
+
+    this.bot = new TelegramBot(settings.get('telegram.token'), botOptions);
 
     const messageRoutes = this.constructor.messageRoutes.map(RouteCls => new RouteCls(this.bot));
     this.messageRouter = new Router(messageRoutes);
@@ -42,38 +47,25 @@ class Application {
     );
 
     this.bot.startPolling();
-    this.metricsServer.start();
   }
 
   async onMessage(rawMessageObject) {
     const message = new TelegramMessage(rawMessageObject);
 
-    metrics.totalMessages.inc();
-    const stopTimer = metrics.messageProcessingDuration.startTimer();
-
     try {
       await this.messageRouter.route(message);
     } catch (error) {
       console.error(error);
-      metrics.messageProcessingErrors.inc();
-    } finally {
-      stopTimer();
     }
   }
 
   async onCallbackQuery(rawCallbackQueryObject) {
     const callbackQuery = new CallbackQuery(rawCallbackQueryObject);
 
-    metrics.totalCallbackQueries.inc();
-    const stopTimer = metrics.callbackQueryProcessingDuration.startTimer();
-
     try {
       await this.callbackQueryRouter.route(callbackQuery);
     } catch (error) {
       console.error(error);
-      metrics.callbackQueryProcessingErrors.inc();
-    } finally {
-      stopTimer();
     }
   }
 }
