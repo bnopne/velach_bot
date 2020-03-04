@@ -6,7 +6,6 @@ const Sequelize = require('sequelize');
 
 const settings = require('../settings');
 
-
 class Models {
   constructor() {
     this.sequelize = new Sequelize(

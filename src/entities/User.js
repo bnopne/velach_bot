@@ -1,7 +1,6 @@
 const Entity = require('./Entity');
 const models = require('../models');
 
-
 class User extends Entity {
   static get modelClass() {
     return models.User;
@@ -20,7 +19,15 @@ class User extends Entity {
   get id() {
     return this.model.id;
   }
-}
 
+  get stravaLink() {
+    return this.model.stravaLink;
+  }
+
+  setStravaLink(value) {
+    this.model.stravaLink = value;
+    return this.model.save();
+  }
+}
 
 module.exports = User;

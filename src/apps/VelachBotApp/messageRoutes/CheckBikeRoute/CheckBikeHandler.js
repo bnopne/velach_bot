@@ -1,7 +1,7 @@
 const Handler = require('../../../../infrastructure/Handler');
 const Bikecheck = require('../../../../entities/Bikecheck');
 const User = require('../../../../entities/User');
-
+const messages = require('../../../../text/messages');
 
 class CheckBikeHandler extends Handler {
   async handle(message) {
@@ -10,7 +10,7 @@ class CheckBikeHandler extends Handler {
     if (!repliedMessage) {
       await this.bot.sendMessage(
         message.chat.id,
-        'Ответь на свое сообщение, в котором есть картинка с велосипедом!',
+        messages.checkBike.replyOnYourMessage(),
       );
 
       return;
@@ -19,7 +19,7 @@ class CheckBikeHandler extends Handler {
     if (repliedMessage.from.id !== message.from.id) {
       await this.bot.sendMessage(
         message.chat.id,
-        'Это не твое сообщение, запости картинку сам!',
+        messages.checkBike.notYourMessage(),
       );
 
       return;
@@ -28,7 +28,7 @@ class CheckBikeHandler extends Handler {
     if (!(repliedMessage.photo)) {
       await this.bot.sendMessage(
         message.chat.id,
-        'Не вижу фотокарточки с велосипедом!',
+        messages.checkBike.cantSeePhoto(),
       );
 
       return;
@@ -48,11 +48,10 @@ class CheckBikeHandler extends Handler {
 
     await this.bot.sendMessage(
       message.chat.id,
-      'Чекнул, кекнул!',
+      messages.checkBike.done(),
       { reply_to_message_id: message.messageId },
     );
   }
 }
-
 
 module.exports = CheckBikeHandler;

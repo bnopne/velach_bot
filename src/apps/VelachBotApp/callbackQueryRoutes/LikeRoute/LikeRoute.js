@@ -2,7 +2,6 @@ const Route = require('../../../../infrastructure/Route');
 const CallbackQueryDataSaverMiddleware = require('../../../../common/middlewares/CallbackQueryDataSaverMiddleware');
 const VoteUpHandler = require('./LikeHandler');
 
-
 class LikeRoute extends Route {
   static get middlewareClsList() {
     return [
@@ -22,6 +21,5 @@ class LikeRoute extends Route {
     return callbackQuery.data.command === 'like';
   }
 }
-
 
 module.exports = LikeRoute;

@@ -1,6 +1,5 @@
 const _ = require('lodash');
 
-
 class DTO {
   constructor(rawObject = {}) {
     this.rawObject = rawObject;
@@ -49,6 +48,5 @@ class DTO {
     _.set(this.rawObject, [key], recursivelyGetRawObjects(dtos));
   }
 }
-
 
 module.exports = DTO;

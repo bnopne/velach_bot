@@ -1,6 +1,5 @@
 const { NotImplementedError } = require('../infrastructure/errors');
 
-
 class Entity {
   static get modelClass() {
     throw new NotImplementedError();

@@ -1,21 +1,19 @@
 const Route = require('../../../../infrastructure/Route');
+const SetStravaHandler = require('./SetStravaHandler');
 const DataSaverMiddleware = require('../../../../common/middlewares/MessageDataSaverMiddleware');
-const AdminAuthMiddleware = require('../../../../common/middlewares/AdminAuthMiddleware');
 const MessageAgeCheckMiddleware = require('../../../../common/middlewares/MessageAgeCheckMiddleware');
-const UnbanHandler = require('./UnbanBikecheckHandler');
-const { unbanBikecheck } = require('../../../../text/commands');
+const { setstrava } = require('../../../../text/commands');
 
-class BanBikecheckRoute extends Route {
+class CheckBikeRoute extends Route {
   static get middlewareClsList() {
     return [
       DataSaverMiddleware,
       MessageAgeCheckMiddleware,
-      AdminAuthMiddleware,
     ];
   }
 
   static get HandlerCls() {
-    return UnbanHandler;
+    return SetStravaHandler;
   }
 
   isMatching(message) {
@@ -23,9 +21,9 @@ class BanBikecheckRoute extends Route {
       return false;
     }
 
-    return (message.text === `${unbanBikecheck}@${this.bot.info.username}`)
-      || (message.text === `${unbanBikecheck}`);
+    return (message.text === `${setstrava}@${this.bot.info.username}`)
+      || (message.text === `${setstrava}`);
   }
 }
 
-module.exports = BanBikecheckRoute;
+module.exports = CheckBikeRoute;

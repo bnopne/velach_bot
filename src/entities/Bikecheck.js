@@ -3,7 +3,6 @@ const models = require('../models');
 const BikecheckVote = require('./BikecheckVote');
 const BikecheckChatMtm = require('./BikecheckChatMtm');
 
-
 class Bikecheck extends Entity {
   static get modelClass() {
     return models.Bikecheck;
@@ -67,18 +66,15 @@ class Bikecheck extends Entity {
   async getScore() {
     const votes = await BikecheckVote.getAllForBikecheck(this);
 
-    const likeCount = votes
+    const likes = votes
       .filter(vote => vote.isLike)
       .length;
 
-    const dislikeCount = votes
+    const dislikes = votes
       .filter(vote => vote.isDislike)
       .length;
 
-    return {
-      likeCount,
-      dislikeCount,
-    };
+    return { likes, dislikes };
   }
 
   async isBannedInChat(chat) {
@@ -106,6 +102,5 @@ class Bikecheck extends Entity {
     await bikecheckChatMtm.unban();
   }
 }
-
 
 module.exports = Bikecheck;

@@ -2,7 +2,7 @@ const Handler = require('../../../../infrastructure/Handler');
 const User = require('../../../../entities/User');
 const Chat = require('../../../../entities/Chat');
 const Bikecheck = require('../../../../entities/Bikecheck');
-
+const messages = require('../../../../text/messages');
 
 class BanBikecheckHandler extends Handler {
   async handle(message) {
@@ -11,7 +11,7 @@ class BanBikecheckHandler extends Handler {
     if (!repliedMessage) {
       await this.bot.sendMessage(
         message.chat.id,
-        'Ответь кому-нибудь!',
+        messages.unbanBikecheck.replySomeone(),
       );
 
       return;
@@ -20,7 +20,7 @@ class BanBikecheckHandler extends Handler {
     if (repliedMessage.from.id === message.from.id) {
       await this.bot.sendMessage(
         message.chat.id,
-        'Ты не мог забанить свой байк, значит не можешь и разбанить!',
+        messages.unbanBikecheck.cantUnbanOwnBike(),
       );
 
       return;
@@ -32,7 +32,7 @@ class BanBikecheckHandler extends Handler {
     if (!bikecheck) {
       await this.bot.sendMessage(
         message.chat.id,
-        'Похоже, что у этого товарища нет велосипеда!',
+        messages.unbanBikecheck.doesntHaveBike(),
       );
 
       return;
@@ -43,10 +43,9 @@ class BanBikecheckHandler extends Handler {
 
     await this.bot.sendMessage(
       message.chat.id,
-      'Разбанил!',
+      messages.unbanBikecheck.done(),
     );
   }
 }
-
 
 module.exports = BanBikecheckHandler;
