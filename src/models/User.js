@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
     username: {
       type: DataTypes.STRING,
     },
+    stravaLink: {
+      type: DataTypes.TEXT,
+    },
   },
   {
     associate: () => {},

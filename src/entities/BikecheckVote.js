@@ -2,7 +2,6 @@ const Entity = require('./Entity');
 const models = require('../models');
 const constants = require('./constants');
 
-
 class BikecheckVote extends Entity {
   static get modelClass() {
     return models.BikecheckVote;
@@ -67,6 +66,5 @@ class BikecheckVote extends Entity {
     return this.model.save();
   }
 }
-
 
 module.exports = BikecheckVote;

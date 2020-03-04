@@ -1,7 +1,6 @@
 const Entity = require('./Entity');
 const models = require('../models');
 
-
 class Chat extends Entity {
   static get modelClass() {
     return models.Chat;
@@ -19,6 +18,5 @@ class Chat extends Entity {
     return this.model.id;
   }
 }
-
 
 module.exports = Chat;

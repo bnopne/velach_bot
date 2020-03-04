@@ -1,7 +1,6 @@
 const Entity = require('./Entity');
 const models = require('../models');
 
-
 class BikecheckChatMtm extends Entity {
   static get modelClass() {
     return models.BikecheckChatMtm;
@@ -39,6 +38,5 @@ class BikecheckChatMtm extends Entity {
     return this.model.save();
   }
 }
-
 
 module.exports = BikecheckChatMtm;

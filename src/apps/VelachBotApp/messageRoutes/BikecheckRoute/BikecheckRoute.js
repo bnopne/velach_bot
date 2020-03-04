@@ -2,7 +2,7 @@ const Route = require('../../../../infrastructure/Route');
 const BikecheckHandler = require('./BikecheckHandler');
 const DataSaverMiddleware = require('../../../../common/middlewares/MessageDataSaverMiddleware');
 const MessageAgeCheckMiddleware = require('../../../../common/middlewares/MessageAgeCheckMiddleware');
-
+const { bikecheck } = require('../../../../text/commands');
 
 class BikecheckRoute extends Route {
   static get middlewareClsList() {
@@ -21,10 +21,9 @@ class BikecheckRoute extends Route {
       return false;
     }
 
-    return (message.text === `/bikecheck@${this.bot.info.username}`)
-      || (message.text === '/bikecheck');
+    return (message.text === `${bikecheck}@${this.bot.info.username}`)
+      || (message.text === `${bikecheck}`);
   }
 }
-
 
 module.exports = BikecheckRoute;

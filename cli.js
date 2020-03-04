@@ -48,6 +48,23 @@ async function execute(argv) {
     });
   }
 
+  if (argv._.includes('create-migration')) {
+    await new Promise((resolve, reject) => {
+      exec(
+        `npx sequelize --config ${path.join('src', 'settings', 'settings_wrapper_for_sequelize_cli.js')} migration:generate --name ${argv.name}`,
+        (err, stdout, stderr) => {
+          if (err) {
+            console.error(stderr);
+            reject(err);
+          } else {
+            console.log(stdout);
+            resolve();
+          }
+        },
+      );
+    });
+  }
+
   if (argv._.includes('apply-migrations')) {
     await new Promise((resolve, reject) => {
       exec(
@@ -104,7 +121,6 @@ async function execute(argv) {
     });
   }
 }
-
 
 const parsedArgs = minimist(process.argv.slice(2));
 execute(parsedArgs);

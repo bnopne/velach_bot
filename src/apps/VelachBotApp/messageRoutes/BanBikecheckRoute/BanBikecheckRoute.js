@@ -3,7 +3,7 @@ const DataSaverMiddleware = require('../../../../common/middlewares/MessageDataS
 const AdminAuthMiddleware = require('../../../../common/middlewares/AdminAuthMiddleware');
 const MessageAgeCheckMiddleware = require('../../../../common/middlewares/MessageAgeCheckMiddleware');
 const BanHandler = require('./BanBikecheckHandler');
-
+const { banBikecheck } = require('../../../../text/commands');
 
 class BanBikecheckRoute extends Route {
   static get middlewareClsList() {
@@ -23,10 +23,9 @@ class BanBikecheckRoute extends Route {
       return false;
     }
 
-    return (message.text === `/ban_bikecheck@${this.bot.info.username}`)
-      || (message.text === '/ban_bikecheck');
+    return (message.text === `${banBikecheck}@${this.bot.info.username}`)
+      || (message.text === `${banBikecheck}`);
   }
 }
-
 
 module.exports = BanBikecheckRoute;

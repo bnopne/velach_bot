@@ -29,6 +29,7 @@
     "create-tables": "node ./cli.js create-tables",
     "drop-tables": "node ./cli.js drop-tables",
     "seed-db": "node ./cli.js seed-db",
+    "create-migration": "node ./cli.js create-migration",
     "apply-migrations": "node ./cli.js apply-migrations"
   }
 }

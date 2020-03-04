@@ -2,8 +2,9 @@ const Handler = require('../../../../infrastructure/Handler');
 const Bikecheck = require('../../../../entities/Bikecheck');
 const BikecheckVote = require('../../../../entities/BikecheckVote');
 const User = require('../../../../entities/User');
-const BikecheckService = require('../../../../services/BikecheckService');
-
+const { getBikecheckKeyboard } = require('../../../../text/keyboards');
+const { getBikecheckCaption } = require('../../../../text/captions');
+const messages = require('../../../../text/messages');
 
 class LikeHandler extends Handler {
   async handle(callbackQuery) {
@@ -13,7 +14,7 @@ class LikeHandler extends Handler {
     if (user.id === bikecheck.userId) {
       await this.bot.answerCallbackQuery(
         callbackQuery.id,
-        { text: 'Вы не можете голосовать за свой байк' },
+        { text: messages.like.cantVoteForOwnBike() },
       );
       return;
     }
@@ -30,27 +31,24 @@ class LikeHandler extends Handler {
       await currentUserVote.toggleUp();
     }
 
-    const service = new BikecheckService();
-
-    const caption = await service.getCaption(bikecheck);
+    const { likes, dislikes } = await bikecheck.getScore();
 
     if (needToUpdateCaption) {
       await this.bot.editMessageCaption(
-        caption,
+        getBikecheckCaption(likes, dislikes, user.stravaLink),
         {
           chat_id: callbackQuery.message.chat.id,
           message_id: callbackQuery.message.messageId,
-          reply_markup: service.getKeyboard(bikecheck).export(),
+          reply_markup: getBikecheckKeyboard(bikecheck).export(),
         },
       );
     }
 
     await this.bot.answerCallbackQuery(
       callbackQuery.id,
-      { text: 'Ваш голос учтен' },
+      { text: messages.like.done() },
     );
   }
 }
-
 
 module.exports = LikeHandler;

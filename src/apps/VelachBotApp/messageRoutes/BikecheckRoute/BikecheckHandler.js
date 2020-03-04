@@ -2,13 +2,12 @@ const Handler = require('../../../../infrastructure/Handler');
 const User = require('../../../../entities/User');
 const Bikecheck = require('../../../../entities/Bikecheck');
 const Chat = require('../../../../entities/Chat');
-const BikecheckService = require('../../../../services/BikecheckService');
-
+const { getBikecheckCaption } = require('../../../../text/captions');
+const { getBikecheckKeyboard } = require('../../../../text/keyboards');
+const messages = require('../../../../text/messages');
 
 class BikecheckHandler extends Handler {
   async handle(message) {
-    const service = new BikecheckService();
-
     const user = message.replyToMessage
       ? await User.findById(message.replyToMessage.from.id)
       : await User.findById(message.from.id);
@@ -18,7 +17,7 @@ class BikecheckHandler extends Handler {
     if (!bikecheck) {
       await this.bot.sendMessage(
         message.chat.id,
-        'Этот беспруфный кукарек не показывал свою повозку!',
+        messages.bikecheck.doesntHaveBike(),
         {
           reply_to_message_id: message.messageId,
         },
@@ -33,7 +32,7 @@ class BikecheckHandler extends Handler {
     if (isBanned) {
       await this.bot.sendMessage(
         message.chat.id,
-        'Повозка этого велана была признана неподходящей и забанена с позором!',
+        messages.bikecheck.bikeWasBanned(),
         {
           reply_to_message_id: message.messageId,
         },
@@ -42,20 +41,19 @@ class BikecheckHandler extends Handler {
       return;
     }
 
-    const keyboard = service.getKeyboard(bikecheck);
-    const caption = await service.getCaption(bikecheck);
+    const { likes, dislikes } = await bikecheck.getScore();
 
     await this.bot.sendPhoto(
       message.chat.id,
       bikecheck.telegramImageId,
       {
         reply_to_message_id: message.messageId,
-        caption,
-        reply_markup: keyboard.export(),
+        caption: getBikecheckCaption(likes, dislikes, user.stravaLink),
+        reply_markup: getBikecheckKeyboard(bikecheck).export(),
+        parse_mode: 'markdown',
       },
     );
   }
 }
-
 
 module.exports = BikecheckHandler;
