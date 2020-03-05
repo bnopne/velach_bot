@@ -1,6 +1,5 @@
 const DTO = require('../DTO');
 
-
 class TelegramPhotoSize extends DTO {
   get fileId() {
     return this.getField('file_id');
@@ -14,6 +13,5 @@ class TelegramPhotoSize extends DTO {
     return this.getField('height');
   }
 }
-
 
 module.exports = TelegramPhotoSize;

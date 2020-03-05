@@ -5,6 +5,9 @@
   "main": "./src/index.js",
   "author": "bnopne",
   "license": "GPL-3.0",
+  "repository": {
+    "url": "https://github.com/bnopne/velach_bot"
+  },
   "dependencies": {
     "convict": "^4.3.2",
     "dotenv": "^8.2.0",
@@ -23,6 +26,8 @@
     "eslint": "^5.2.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jest": "^23.8.2",
+    "jest": "^25.1.0",
     "sequelize-cli": "^4.0.0"
   },
   "scripts": {
@@ -31,6 +36,7 @@
     "drop-tables": "node ./cli.js drop-tables",
     "seed-db": "node ./cli.js seed-db",
     "create-migration": "node ./cli.js create-migration",
-    "apply-migrations": "node ./cli.js apply-migrations"
+    "apply-migrations": "node ./cli.js apply-migrations",
+    "test": "jest --verbose"
   }
 }

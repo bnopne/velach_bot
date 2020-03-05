@@ -1,6 +1,5 @@
 const DTO = require('../DTO');
 
-
 class InlineKeyboardButton extends DTO {
   static createWithCallbackData(text, callbackData) {
     const button = new this();
@@ -33,6 +32,5 @@ class InlineKeyboardButton extends DTO {
     return this.setField('callback_data', data.serialize());
   }
 }
-
 
 module.exports = InlineKeyboardButton;

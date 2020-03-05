@@ -4,7 +4,6 @@ const TelegramChat = require('./TelegramChat');
 const TelegramMessageEntity = require('./TelegramMessageEntity');
 const TelegramPhotoSize = require('./TelegramPhotoSize');
 
-
 class TelegramMessage extends DTO {
   get messageId() {
     return this.getField('message_id');
@@ -68,6 +67,5 @@ class TelegramMessage extends DTO {
     return this.getNestedDTOArray('new_chat_members', TelegramUser);
   }
 }
-
 
 module.exports = TelegramMessage;
