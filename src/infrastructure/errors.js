@@ -4,7 +4,6 @@ class NotImplementedError extends Error {
   }
 }
 
-
 class DoesntExistError extends Error {
   constructor() {
     super('Entity doesnt exist');

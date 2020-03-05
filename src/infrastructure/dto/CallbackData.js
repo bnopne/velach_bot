@@ -1,6 +1,5 @@
 const DTO = require('../DTO');
 
-
 class CallbackData extends DTO {
   static createLikeForBikecheck(bikecheck) {
     const data = new this();
@@ -29,6 +28,5 @@ class CallbackData extends DTO {
     return this.getField('command');
   }
 }
-
 
 module.exports = CallbackData;

@@ -3,7 +3,6 @@ const TelegramUser = require('./TelegramUser');
 const TelegramMessage = require('./TelegramMessage');
 const CallbackQueryData = require('./CallbackData');
 
-
 class CallbackQuery extends DTO {
   get id() {
     return this.getField('id');
@@ -33,6 +32,5 @@ class CallbackQuery extends DTO {
     return this.getField('game_short_name');
   }
 }
-
 
 module.exports = CallbackQuery;

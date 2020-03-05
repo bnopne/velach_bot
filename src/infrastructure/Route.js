@@ -1,6 +1,5 @@
 const { NotImplementedError } = require('./errors');
 
-
 class Route {
   static get middlewareClsList() {
     return [];
@@ -10,10 +9,12 @@ class Route {
     return null;
   }
 
-  constructor(bot) {
+  constructor(bot, eventBus) {
     this.bot = bot;
-    this.middlewares = this.constructor.middlewareClsList.map(Cls => new Cls(bot));
-    this.handler = new this.constructor.HandlerCls(bot);
+    this.eventBus = eventBus;
+
+    this.middlewares = this.constructor.middlewareClsList.map(Cls => new Cls(bot, eventBus));
+    this.handler = new this.constructor.HandlerCls(bot, eventBus);
   }
 
   isMatching() { // eslint-disable-line
@@ -34,6 +35,5 @@ class Route {
     await this.handler.handle(processedEntity);
   }
 }
-
 
 module.exports = Route;

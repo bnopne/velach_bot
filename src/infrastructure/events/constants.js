@@ -1,0 +1,7 @@
+const EVENT_TYPES = {
+  USER_FAILS_TO_EXECUTE_COMMAND: 'USER_FAILS_TO_EXECUTE_COMMAND',
+};
+
+module.exports = {
+  EVENT_TYPES,
+};

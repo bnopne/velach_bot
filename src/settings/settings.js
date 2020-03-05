@@ -73,6 +73,20 @@ const settings = convict({
       env: 'DROPBOX_ACCESS_TOKEN',
     },
   },
+  usage: {
+    userCommandExecutionFailTreshold: {
+      doc: 'How many times user must wrongly execute command, before help suggestion appears',
+      format: Number,
+      default: 4,
+      env: 'USAGE_USER_COMMAND_EXECUTION_FAIL_TRESHOLD',
+    },
+    userCommandExecutionFailTrackingTimeWindow: {
+      doc: 'How long to track user command execution attempts (in seconds)',
+      format: Number,
+      default: 60,
+      env: 'USAGE_USER_COMMAND_EXECUTION_FAIL_TRACKING_TIME_WINDOW',
+    },
+  },
 });
 
 settings.validate();

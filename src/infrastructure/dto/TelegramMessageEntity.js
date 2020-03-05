@@ -1,7 +1,6 @@
 const DTO = require('../DTO');
 const TelegramUser = require('./TelegramUser');
 
-
 class TelegramMessageEntity extends DTO {
   get type() {
     return this.getField('type');
@@ -23,6 +22,5 @@ class TelegramMessageEntity extends DTO {
     return this.getNestedDTO('user', TelegramUser);
   }
 }
-
 
 module.exports = TelegramMessageEntity;

@@ -1,4 +1,4 @@
-const VelachBotApp = require('./apps/VelachBotApp/VelachBotApp');
+const VelachBotApp = require('./app/VelachBotApp');
 
 const app = new VelachBotApp();
 

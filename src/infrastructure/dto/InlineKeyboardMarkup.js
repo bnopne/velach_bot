@@ -1,7 +1,6 @@
 const DTO = require('../DTO');
 const InlineKeyboardButton = require('./InlineKeyboardButton');
 
-
 class InlineKeyboardMarkup extends DTO {
   static createFromButtons(buttons) {
     const markup = new this();
@@ -17,6 +16,5 @@ class InlineKeyboardMarkup extends DTO {
     this.setNestedDTOArray('inline_keyboard', value);
   }
 }
-
 
 module.exports = InlineKeyboardMarkup;

@@ -4,7 +4,7 @@ const settings = require('../settings');
 const TelegramMessage = require('./dto/TelegramMessage');
 const CallbackQuery = require('./dto/CallbackQuery');
 const Router = require('./Router');
-
+const EventBus = require('./EventBus');
 
 class Application {
   static get messageRoutes() {
@@ -12,6 +12,10 @@ class Application {
   }
 
   static get callbackQueryRoutes() {
+    return [];
+  }
+
+  static get services() {
     return [];
   }
 
@@ -25,12 +29,16 @@ class Application {
       : {};
 
     this.bot = new TelegramBot(settings.get('telegram.token'), botOptions);
+    this.eventBus = new EventBus();
 
-    const messageRoutes = this.constructor.messageRoutes.map(RouteCls => new RouteCls(this.bot));
+    const messageRoutes = this.constructor.messageRoutes.map(RouteCls => new RouteCls(this.bot, this.eventBus)); // eslint-disable-line
     this.messageRouter = new Router(messageRoutes);
 
-    const callbackQueryRoutes = this.constructor.callbackQueryRoutes.map(RouteCls => new RouteCls(this.bot)); // eslint-disable-line
+    const callbackQueryRoutes = this.constructor.callbackQueryRoutes.map(RouteCls => new RouteCls(this.bot, this.eventBus)); // eslint-disable-line
     this.callbackQueryRouter = new Router(callbackQueryRoutes);
+
+    this.services = this.constructor.services
+      .map(ServiceCls => new ServiceCls(this.bot, this.eventBus));
   }
 
   async start() {
@@ -69,6 +77,5 @@ class Application {
     }
   }
 }
-
 
 module.exports = Application;

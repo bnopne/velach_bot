@@ -1,6 +1,5 @@
 const DTO = require('../DTO');
 
-
 class TelegramUser extends DTO {
   get id() {
     return this.getField('id');
@@ -22,6 +21,5 @@ class TelegramUser extends DTO {
     return this.getField('username');
   }
 }
-
 
 module.exports = TelegramUser;
