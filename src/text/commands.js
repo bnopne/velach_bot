@@ -4,4 +4,5 @@ module.exports = {
   setstrava: '/setstrava',
   banBikecheck: '/ban_bikecheck',
   unbanBikecheck: '/unban_bikecheck',
+  help: '/help',
 };

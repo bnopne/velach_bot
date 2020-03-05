@@ -7,6 +7,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "convict": "^4.3.2",
+    "dotenv": "^8.2.0",
     "dropbox": "^4.0.13",
     "express": "^4.16.4",
     "lodash": "^4.17.15",
