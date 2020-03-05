@@ -10,6 +10,7 @@ class DislikeHandler extends Handler {
   async handle(callbackQuery) {
     const user = await User.findById(callbackQuery.from.id);
     const bikecheck = await Bikecheck.findById(callbackQuery.data.getField('bikecheckId'));
+    const bikecheckOwnerId = await User.findById(bikecheck.userId);
 
     if (user.id === bikecheck.userId) {
       await this.bot.answerCallbackQuery(
@@ -35,7 +36,7 @@ class DislikeHandler extends Handler {
 
     if (needToUpdateCaption) {
       await this.bot.editMessageCaption(
-        getBikecheckCaption(likes, dislikes, user.stravaLink),
+        getBikecheckCaption(likes, dislikes, bikecheckOwnerId.stravaLink),
         {
           chat_id: callbackQuery.message.chat.id,
           message_id: callbackQuery.message.messageId,
