@@ -1,3 +1,2 @@
-const settings = require('./settings');
-
-module.exports = settings;
+require('dotenv').config();
+module.exports = require('./settings');
