@@ -20,7 +20,7 @@
     "node-telegram-bot-api": "^0.30.0",
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.38.0"
+    "sequelize": "^5.15.1"
   },
   "devDependencies": {
     "eslint": "^5.2.0",
