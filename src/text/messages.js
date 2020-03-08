@@ -49,4 +49,7 @@ module.exports = {
   userAssistance: {
     tryHelp: () => 'Не получается? Возможно /help поможет тебе',
   },
+  donations: {
+    considerDonations: donationLink => `Кстати, [тут](${donationLink}) можно подкинуть автору бота немного деняк`,
+  },
 };

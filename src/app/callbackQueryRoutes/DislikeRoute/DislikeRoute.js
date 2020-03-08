@@ -1,5 +1,5 @@
 const Route = require('../../../infrastructure/Route');
-const CallbackQueryDataSaverMiddleware = require('../../../common/middlewares/CallbackQueryDataSaverMiddleware');
+const CallbackQueryDataSaverMiddleware = require('../../middlewares/CallbackQueryDataSaverMiddleware');
 const VoteDownHandler = require('./DislikeHandler');
 
 class VoteDownRoute extends Route {

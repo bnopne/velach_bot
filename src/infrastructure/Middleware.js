@@ -1,8 +1,9 @@
 const { NotImplementedError } = require('./errors');
 
 class Middleware {
-  constructor(bot) {
+  constructor(bot, eventBus) {
     this.bot = bot;
+    this.eventBus = eventBus;
   }
 
   async process() { // eslint-disable-line
