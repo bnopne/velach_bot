@@ -1,7 +1,7 @@
 const Route = require('../../../infrastructure/Route');
-const DataSaverMiddleware = require('../../../common/middlewares/MessageDataSaverMiddleware');
-const AdminAuthMiddleware = require('../../../common/middlewares/AdminAuthMiddleware');
-const MessageAgeCheckMiddleware = require('../../../common/middlewares/MessageAgeCheckMiddleware');
+const DataSaverMiddleware = require('../../middlewares/MessageDataSaverMiddleware');
+const AdminAuthMiddleware = require('../../middlewares/AdminAuthMiddleware');
+const MessageAgeCheckMiddleware = require('../../middlewares/MessageAgeCheckMiddleware');
 const BanHandler = require('./BanBikecheckHandler');
 const { banBikecheck } = require('../../../text/commands');
 

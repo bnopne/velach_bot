@@ -74,6 +74,24 @@ const settings = convict({
     },
   },
   usage: {
+    donationsLink: {
+      doc: 'Where to send all your money',
+      format: String,
+      default: '',
+      env: 'USAGE_DONATIONS_LINK',
+    },
+    interactionsFrequencyTreshold: {
+      doc: 'How frequently should users interact with bot in chat for donation message to appear (times per minute)',
+      format: Number,
+      default: 5,
+      env: 'USAGE_INTERACTIONS_FREQUENCY_TRESHOLD',
+    },
+    interactionsTrackingTimeWindow: {
+      doc: 'How long to track user interactions for calculating interactions frequency (in minutes)',
+      format: Number,
+      default: 1,
+      env: 'USAGE_INTERACTIONS_TRACKING_TIME_WINDOW',
+    },
     userCommandExecutionFailTreshold: {
       doc: 'How many times user must wrongly execute command, before help suggestion appears',
       format: Number,

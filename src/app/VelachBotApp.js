@@ -13,7 +13,8 @@ const LikeRoute = require('./callbackQueryRoutes/LikeRoute/LikeRoute');
 const DislikeRoute = require('./callbackQueryRoutes/DislikeRoute/DislikeRoute');
 
 // services
-const UserAssistanceService = require('../common/services/UserAssistanceService');
+const UserAssistanceService = require('./services/UserAssistanceService');
+const DonationReminderService = require('./services/DonationReminderService');
 
 class VelachBotApp extends Application {
   static get messageRoutes() {
@@ -37,6 +38,7 @@ class VelachBotApp extends Application {
   static get services() {
     return [
       UserAssistanceService,
+      DonationReminderService,
     ];
   }
 }

@@ -8,7 +8,6 @@ class UserFailsToExecuteCommand extends Event {
 
   constructor(command, userId, chatId) {
     super(EVENT_TYPES.USER_FAILS_TO_EXECUTE_COMMAND);
-
     this.command = command;
     this.userId = userId;
     this.chatId = chatId;

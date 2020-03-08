@@ -20,6 +20,20 @@ class EventBus {
       event,
     );
   }
+
+  onUserInteracts(listener) {
+    this.emitter.on(
+      EVENT_TYPES.USER_INTERACTS,
+      listener,
+    );
+  }
+
+  emitUserInteracts(event) {
+    this.emitter.emit(
+      EVENT_TYPES.USER_INTERACTS,
+      event,
+    );
+  }
 }
 
 module.exports = EventBus;
