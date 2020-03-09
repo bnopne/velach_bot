@@ -6,6 +6,8 @@ const settings = require('../settings');
 const TelegramMessage = require('./dto/TelegramMessage');
 const CallbackQuery = require('./dto/CallbackQuery');
 const Router = require('./Router');
+const { EVENT_TYPES } = require('./events/constants');
+const IncomingMessage = require('./events/IncomingMessage');
 
 class Application {
   static get messageRoutes() {
@@ -60,6 +62,11 @@ class Application {
 
   async onMessage(rawMessageObject) {
     const message = new TelegramMessage(rawMessageObject);
+
+    this.eventBus.emit(
+      EVENT_TYPES.INCOMING_MESSAGE,
+      new IncomingMessage(),
+    );
 
     try {
       await this.messageRouter.route(message);
