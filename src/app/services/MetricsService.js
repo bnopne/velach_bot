@@ -18,19 +18,24 @@ class MetricsService extends Service {
       this.onUserSendsCallbackQuery.bind(this),
     );
 
+    this.eventBus.on(
+      EVENT_TYPES.INCOMING_MESSAGE,
+      this.onIncomingMessage.bind(this),
+    );
+
     this.metrics = {
       commandRate: io.meter({
-        name: 'commands/min',
+        name: 'Command Rate (commands/min)',
         samples: config.get('metrics.commandRateUnit'),
         timeframe: config.get('metrics.commandRateTimeWindow'),
       }),
       callbackQueryRate: io.meter({
-        name: 'callback queries/min',
+        name: 'Callback Query Rate (callback queries/min)',
         samples: config.get('metrics.callbackQueryRateUnit'),
         timeframe: config.get('metrics.callbackQueryRateTimeWindow'),
       }),
       incomingMessages: io.counter({
-        name: 'total messages received',
+        name: 'Total Messages Received',
       }),
     };
   }
