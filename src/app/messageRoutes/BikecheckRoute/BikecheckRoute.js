@@ -2,7 +2,6 @@ const Route = require('../../../infrastructure/Route');
 const BikecheckHandler = require('./BikecheckHandler');
 const DataSaverMiddleware = require('../../middlewares/MessageDataSaverMiddleware');
 const MessageAgeCheckMiddleware = require('../../middlewares/MessageAgeCheckMiddleware');
-const UserInteractionMiddleware = require('../../middlewares/UserInteractionMiddleware');
 const { bikecheck } = require('../../../text/commands');
 
 class BikecheckRoute extends Route {
@@ -10,7 +9,6 @@ class BikecheckRoute extends Route {
     return [
       DataSaverMiddleware,
       MessageAgeCheckMiddleware,
-      UserInteractionMiddleware,
     ];
   }
 

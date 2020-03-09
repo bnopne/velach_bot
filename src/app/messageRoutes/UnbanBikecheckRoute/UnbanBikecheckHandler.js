@@ -3,9 +3,17 @@ const User = require('../../../entities/User');
 const Chat = require('../../../entities/Chat');
 const Bikecheck = require('../../../entities/Bikecheck');
 const messages = require('../../../text/messages');
+const UserExecutesCommand = require('../../../infrastructure/events/UserExecutesCommand');
+const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
+const commands = require('../../../text/commands');
 
-class BanBikecheckHandler extends Handler {
+class UnbanBikecheckHandler extends Handler {
   async handle(message) {
+    this.eventBus.emit(
+      EVENT_TYPES.USER_EXECUTES_COMMAND,
+      new UserExecutesCommand(commands.unbanBikecheck, message.from.id, message.chat.id),
+    );
+
     const repliedMessage = message.replyToMessage;
 
     if (!repliedMessage) {
@@ -48,4 +56,4 @@ class BanBikecheckHandler extends Handler {
   }
 }
 
-module.exports = BanBikecheckHandler;
+module.exports = UnbanBikecheckHandler;

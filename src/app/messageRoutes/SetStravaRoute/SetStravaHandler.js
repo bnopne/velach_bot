@@ -3,11 +3,18 @@ const User = require('../../../entities/User');
 const messages = require('../../../text/messages');
 const commands = require('../../../text/commands');
 const UserFailsToExecuteCommand = require('../../../infrastructure/events/UserFailsToExecuteCommand');
+const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
+const UserExecutesCommand = require('../../../infrastructure/events/UserExecutesCommand');
 
 const STRAVA_LINK_REGEXP = /^(https:\/\/)?(www.)?strava.com\/athletes\/\d+$/;
 
-class CheckBikeHandler extends Handler {
+class SetStravaHandler extends Handler {
   async handle(message) {
+    this.eventBus.emit(
+      EVENT_TYPES.USER_EXECUTES_COMMAND,
+      new UserExecutesCommand(commands.setstrava, message.from.id, message.chat.id),
+    );
+
     const user = await User.findById(message.from.id);
 
     if (!message.replyToMessage) {
@@ -17,11 +24,14 @@ class CheckBikeHandler extends Handler {
         { reply_to_message_id: message.messageId },
       );
 
-      this.eventBus.emitUserFailsToExecuteCommand(new UserFailsToExecuteCommand(
-        commands.checkbike,
-        message.from.id,
-        message.chat.id,
-      ));
+      this.eventBus.emit(
+        EVENT_TYPES.USER_FAILS_TO_EXECUTE_COMMAND,
+        new UserFailsToExecuteCommand(
+          commands.setstrava,
+          message.from.id,
+          message.chat.id,
+        ),
+      );
 
       return;
     }
@@ -33,11 +43,14 @@ class CheckBikeHandler extends Handler {
         { reply_to_message_id: message.messageId },
       );
 
-      this.eventBus.emitUserFailsToExecuteCommand(new UserFailsToExecuteCommand(
-        commands.checkbike,
-        message.from.id,
-        message.chat.id,
-      ));
+      this.eventBus.emit(
+        EVENT_TYPES.USER_FAILS_TO_EXECUTE_COMMAND,
+        new UserFailsToExecuteCommand(
+          commands.setstrava,
+          message.from.id,
+          message.chat.id,
+        ),
+      );
 
       return;
     }
@@ -49,11 +62,14 @@ class CheckBikeHandler extends Handler {
         { reply_to_message_id: message.messageId },
       );
 
-      this.eventBus.emitUserFailsToExecuteCommand(new UserFailsToExecuteCommand(
-        commands.checkbike,
-        message.from.id,
-        message.chat.id,
-      ));
+      this.eventBus.emit(
+        EVENT_TYPES.USER_FAILS_TO_EXECUTE_COMMAND,
+        new UserFailsToExecuteCommand(
+          commands.setstrava,
+          message.from.id,
+          message.chat.id,
+        ),
+      );
 
       return;
     }
@@ -74,4 +90,4 @@ class CheckBikeHandler extends Handler {
   }
 }
 
-module.exports = CheckBikeHandler;
+module.exports = SetStravaHandler;

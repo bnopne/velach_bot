@@ -74,24 +74,6 @@ const settings = convict({
     },
   },
   usage: {
-    donationsLink: {
-      doc: 'Where to send all your money',
-      format: String,
-      default: '',
-      env: 'USAGE_DONATIONS_LINK',
-    },
-    interactionsFrequencyTreshold: {
-      doc: 'How frequently should users interact with bot in chat for donation message to appear (times per minute)',
-      format: Number,
-      default: 5,
-      env: 'USAGE_INTERACTIONS_FREQUENCY_TRESHOLD',
-    },
-    interactionsTrackingTimeWindow: {
-      doc: 'How long to track user interactions for calculating interactions frequency (in minutes)',
-      format: Number,
-      default: 1,
-      env: 'USAGE_INTERACTIONS_TRACKING_TIME_WINDOW',
-    },
     userCommandExecutionFailTreshold: {
       doc: 'How many times user must wrongly execute command, before help suggestion appears',
       format: Number,
@@ -103,6 +85,32 @@ const settings = convict({
       format: Number,
       default: 60,
       env: 'USAGE_USER_COMMAND_EXECUTION_FAIL_TRACKING_TIME_WINDOW',
+    },
+  },
+  metrics: {
+    commandRateTimeWindow: {
+      doc: 'How long to count user commands (in seconds)',
+      format: Number,
+      default: 60 * 60,
+      env: 'METRICS_COMMAND_RATE_TIME_WINDOW',
+    },
+    commandRateUnit: {
+      doc: 'Time duration which is used to count mean commands count on (in seconds)',
+      format: Number,
+      default: 60,
+      env: 'METRICS_COMMAND_RATE_UNIT',
+    },
+    callbackQueryRateTimeWindow: {
+      doc: 'How long to count user callback queries (in seconds)',
+      format: Number,
+      default: 60 * 60,
+      env: 'METRICS_CALLBACK_QUERY_RATE_TIME_WINDOW',
+    },
+    callbackQueryRateUnit: {
+      doc: 'Time duration which is used to count mean callback queries count on (in seconds)',
+      format: Number,
+      default: 60,
+      env: 'METRICS_CALLBACK_QUERY_RATE_UNIT',
     },
   },
 });

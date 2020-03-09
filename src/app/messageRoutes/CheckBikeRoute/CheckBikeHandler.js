@@ -4,9 +4,16 @@ const User = require('../../../entities/User');
 const messages = require('../../../text/messages');
 const commands = require('../../../text/commands');
 const UserFailsToExecuteCommand = require('../../../infrastructure/events/UserFailsToExecuteCommand');
+const UserExecutesCommand = require('../../../infrastructure/events/UserExecutesCommand');
+const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
 
 class CheckBikeHandler extends Handler {
   async handle(message) {
+    this.eventBus.emit(
+      EVENT_TYPES.USER_EXECUTES_COMMAND,
+      new UserExecutesCommand(commands.checkbike, message.from.id, message.chat.id),
+    );
+
     const repliedMessage = message.replyToMessage;
 
     if (!repliedMessage) {
@@ -15,11 +22,10 @@ class CheckBikeHandler extends Handler {
         messages.checkBike.replyOnYourMessage(),
       );
 
-      this.eventBus.emitUserFailsToExecuteCommand(new UserFailsToExecuteCommand(
-        commands.checkbike,
-        message.from.id,
-        message.chat.id,
-      ));
+      this.eventBus.emit(
+        EVENT_TYPES.USER_FAILS_TO_EXECUTE_COMMAND,
+        new UserFailsToExecuteCommand(commands.checkbike, message.from.id, message.chat.id),
+      );
 
       return;
     }
@@ -30,11 +36,10 @@ class CheckBikeHandler extends Handler {
         messages.checkBike.notYourMessage(),
       );
 
-      this.eventBus.emitUserFailsToExecuteCommand(new UserFailsToExecuteCommand(
-        commands.checkbike,
-        message.from.id,
-        message.chat.id,
-      ));
+      this.eventBus.emit(
+        EVENT_TYPES.USER_FAILS_TO_EXECUTE_COMMAND,
+        new UserFailsToExecuteCommand(commands.checkbike, message.from.id, message.chat.id),
+      );
 
       return;
     }
@@ -45,11 +50,10 @@ class CheckBikeHandler extends Handler {
         messages.checkBike.cantSeePhoto(),
       );
 
-      this.eventBus.emitUserFailsToExecuteCommand(new UserFailsToExecuteCommand(
-        commands.checkbike,
-        message.from.id,
-        message.chat.id,
-      ));
+      this.eventBus.emit(
+        EVENT_TYPES.USER_FAILS_TO_EXECUTE_COMMAND,
+        new UserFailsToExecuteCommand(commands.checkbike, message.from.id, message.chat.id),
+      );
 
       return;
     }
