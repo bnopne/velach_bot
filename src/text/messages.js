@@ -20,7 +20,7 @@ module.exports = {
     done: () => 'Чекнул, кекнул!',
   },
   setStrava: {
-    replyOnMessageWithLink: () => 'Ответь на сообщение со ссылкой на твоЙ профиль в страве',
+    replyOnMessageWithLink: () => 'Ответь на сообщение со ссылкой на твой профиль в страве',
     noLinks: () => 'Тут нет ссылок',
     cantFindLink: () => 'Не могу понять где тут ссылка на страву, отправь ее ОТДЕЛЬНЫМ сообщением и попробуй еще раз',
     done: () => 'Готово!',
@@ -48,8 +48,5 @@ module.exports = {
   },
   userAssistance: {
     tryHelp: () => 'Не получается? Возможно /help поможет тебе',
-  },
-  donations: {
-    considerDonations: donationLink => `Кстати, [тут](${donationLink}) можно подкинуть автору бота немного деняк`,
   },
 };

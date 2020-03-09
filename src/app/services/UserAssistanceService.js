@@ -2,6 +2,7 @@ const Service = require('../../infrastructure/Service');
 const EventSeries = require('../../infrastructure/EventSeries');
 const messages = require('../../text/messages');
 const config = require('../../settings');
+const { EVENT_TYPES } = require('../../infrastructure/events/constants');
 
 const TIME_WINDOW = config.get('usage.userCommandExecutionFailTrackingTimeWindow');
 const TRESHOLD = config.get('usage.userCommandExecutionFailTreshold');
@@ -10,7 +11,11 @@ class UserAssistanceService extends Service {
   constructor(bot, eventBus) {
     super(bot, eventBus);
 
-    this.eventBus.onUserFailsToExecuteCommand(this.onUserFailsToExecuteCommand.bind(this));
+    this.eventBus.on(
+      EVENT_TYPES.USER_FAILS_TO_EXECUTE_COMMAND,
+      this.onUserFailsToExecuteCommand.bind(this),
+    );
+
     this.commandFailsSeries = new EventSeries(TIME_WINDOW * 1000);
   }
 

@@ -5,9 +5,17 @@ const Chat = require('../../../entities/Chat');
 const { getBikecheckCaption } = require('../../../text/captions');
 const { getBikecheckKeyboard } = require('../../../text/keyboards');
 const messages = require('../../../text/messages');
+const UserExecutesCommand = require('../../../infrastructure/events/UserExecutesCommand');
+const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
+const commands = require('../../../text/commands');
 
 class BikecheckHandler extends Handler {
   async handle(message) {
+    this.eventBus.emit(
+      EVENT_TYPES.USER_EXECUTES_COMMAND,
+      new UserExecutesCommand(commands.bikecheck, message.from.id, message.chat.id),
+    );
+
     const user = message.replyToMessage
       ? await User.findById(message.replyToMessage.from.id)
       : await User.findById(message.from.id);

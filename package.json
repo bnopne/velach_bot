@@ -9,6 +9,7 @@
     "url": "https://github.com/bnopne/velach_bot"
   },
   "dependencies": {
+    "@pm2/io": "^4.3.3",
     "convict": "^4.3.2",
     "dotenv": "^8.2.0",
     "dropbox": "^4.0.13",

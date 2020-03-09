@@ -1,10 +1,11 @@
+const { EventEmitter } = require('events');
+
 const TelegramBot = require('node-telegram-bot-api');
 
 const settings = require('../settings');
 const TelegramMessage = require('./dto/TelegramMessage');
 const CallbackQuery = require('./dto/CallbackQuery');
 const Router = require('./Router');
-const EventBus = require('./EventBus');
 
 class Application {
   static get messageRoutes() {
@@ -29,7 +30,7 @@ class Application {
       : {};
 
     this.bot = new TelegramBot(settings.get('telegram.token'), botOptions);
-    this.eventBus = new EventBus();
+    this.eventBus = new EventEmitter();
 
     const messageRoutes = this.constructor.messageRoutes.map(RouteCls => new RouteCls(this.bot, this.eventBus)); // eslint-disable-line
     this.messageRouter = new Router(messageRoutes);
