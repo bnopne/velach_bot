@@ -25,17 +25,17 @@ class MetricsService extends Service {
 
     this.metrics = {
       commandRate: io.meter({
-        name: 'Command Rate (commands/min)',
+        name: 'Command Rate',
         samples: config.get('metrics.commandRateUnit'),
         timeframe: config.get('metrics.commandRateTimeWindow'),
       }),
       callbackQueryRate: io.meter({
-        name: 'Callback Query Rate (callback queries/min)',
+        name: 'Callback Query Rate',
         samples: config.get('metrics.callbackQueryRateUnit'),
         timeframe: config.get('metrics.callbackQueryRateTimeWindow'),
       }),
       incomingMessages: io.counter({
-        name: 'Total Messages Received',
+        name: 'Messages Processed',
       }),
     };
   }
