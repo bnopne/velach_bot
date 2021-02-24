@@ -20,9 +20,11 @@ class BikecheckHandler extends Handler {
       ? await User.findById(message.replyToMessage.from.id)
       : await User.findById(message.from.id);
 
-    const bikecheck = await Bikecheck.findActiveForUser(user);
+    const chat = await Chat.findById(message.chat.id);
 
-    if (!bikecheck) {
+    const bikechecks = await Bikecheck.findActiveForChat(user, chat);
+
+    if (!bikechecks.length) {
       await this.bot.sendMessage(
         message.chat.id,
         messages.bikecheck.doesntHaveBike(),
@@ -33,31 +35,16 @@ class BikecheckHandler extends Handler {
 
       return;
     }
-
-    const chat = await Chat.findById(message.chat.id);
-    const isBanned = await bikecheck.isBannedInChat(chat);
-
-    if (isBanned) {
-      await this.bot.sendMessage(
-        message.chat.id,
-        messages.bikecheck.bikeWasBanned(),
-        {
-          reply_to_message_id: message.messageId,
-        },
-      );
-
-      return;
-    }
-
-    const { likes, dislikes } = await bikecheck.getScore();
+    const firstBikecheck = bikechecks[0];
+    const { likes, dislikes } = await firstBikecheck.getScore();
 
     await this.bot.sendPhoto(
       message.chat.id,
-      bikecheck.telegramImageId,
+      firstBikecheck.telegramImageId,
       {
         reply_to_message_id: message.messageId,
-        caption: getBikecheckCaption(likes, dislikes, user.stravaLink),
-        reply_markup: getBikecheckKeyboard(bikecheck).export(),
+        caption: getBikecheckCaption(likes, dislikes, user.stravaLink, 0, bikechecks.length),
+        reply_markup: getBikecheckKeyboard(firstBikecheck).export(),
         parse_mode: 'markdown',
       },
     );

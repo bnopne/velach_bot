@@ -1,7 +1,6 @@
 const Middleware = require('../../infrastructure/Middleware');
 const User = require('../../entities/User');
 
-
 class CallbackQueryDataSaverMiddleware extends Middleware {
   async process(callbackQuery) { // eslint-disable-line
     await User.createOrUpdate({
@@ -15,6 +14,5 @@ class CallbackQueryDataSaverMiddleware extends Middleware {
     return callbackQuery;
   }
 }
-
 
 module.exports = CallbackQueryDataSaverMiddleware;

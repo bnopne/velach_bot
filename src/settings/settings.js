@@ -113,6 +113,20 @@ const settings = convict({
       env: 'METRICS_CALLBACK_QUERY_RATE_UNIT',
     },
   },
+  bikechecks: {
+    maxBikechecksPerUser: {
+      doc: 'Maximum bikechecks for one user',
+      format: Number,
+      default: 10,
+      env: 'BIKECHECKS_MAX_BIKECHECKS_PER_USER',
+    },
+    emptyBikecheckPictureUrl: {
+      doc: 'Picture URL to post when user has no more bikechecks',
+      format: String,
+      default: '',
+      env: 'BIKECHECKS_EMPTY_BIKECHECK_PICTURE_URL',
+    },
+  },
 });
 
 settings.validate();

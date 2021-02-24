@@ -3,7 +3,6 @@ const Chat = require('../../entities/Chat');
 const User = require('../../entities/User');
 const UserChatMtm = require('../../entities/UserChatMtm');
 
-
 class MessageDataSaverMiddleware extends Middleware {
   async process(message) { // eslint-disable-line
     await Chat.createOrUpdate({
@@ -44,6 +43,5 @@ class MessageDataSaverMiddleware extends Middleware {
     return message;
   }
 }
-
 
 module.exports = MessageDataSaverMiddleware;

@@ -26,9 +26,9 @@ class Models {
     );
 
     const models = fs.readdirSync(__dirname)
-      .filter(p => p.endsWith('.js'))
-      .filter(p => p !== 'index.js')
-      .filter(p => p !== 'Models.js')
+      .filter((p) => p.endsWith('.js'))
+      .filter((p) => p !== 'index.js')
+      .filter((p) => p !== 'Models.js')
       .reduce((acc, p) => {
         const model = this.sequelize.import(path.resolve(__dirname, p));
         acc[model.name] = model;

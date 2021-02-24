@@ -19,7 +19,7 @@ class EventSeries {
 
     if (now - this.events[0].timestamp > this.timespan) {
       this.events = this.events.filter(
-        eventData => (now - eventData.timestamp < this.timespan),
+        (eventData) => (now - eventData.timestamp < this.timespan),
       );
     }
   }
@@ -27,15 +27,15 @@ class EventSeries {
   getFilteredEvents(filter) {
     return this.events
       .filter(
-        e => keys(filter).reduce((acc, key) => acc && (get(e.event, key) === filter[key]), true),
+        (e) => keys(filter).reduce((acc, key) => acc && (get(e.event, key) === filter[key]), true),
       )
-      .map(eventData => eventData.event);
+      .map((eventData) => eventData.event);
   }
 
   removeFilteredEvents(filter) {
     this.events = this.events
       .filter(
-        e => !keys(filter).reduce((acc, key) => acc && (get(e.event, key) === filter[key]), true),
+        (e) => !keys(filter).reduce((acc, key) => acc && (get(e.event, key) === filter[key]), true),
       );
   }
 }

@@ -17,18 +17,29 @@ class Bikecheck extends Entity {
   }
 
   static async findActiveForUser(user) {
-    const model = await this.modelClass.findOne({
+    const bikechecks = await this.modelClass.findAll({
       where: {
         userId: user.id,
         isActive: true,
       },
     });
 
-    if (!model) {
-      return null;
-    }
+    return bikechecks.map((b) => new this(b));
+  }
 
-    return new this(model);
+  static async findActiveForChat(user, chat) {
+    const bikechecks = (await this.modelClass.findAll({
+      where: {
+        userId: user.id,
+        isActive: true,
+      },
+    })).map((b) => new this(b));
+
+    const notBannedBikechecks = (await Promise.all(bikechecks.map((b) => b.isBannedInChat(chat))))
+      .map((isBanned, i) => !isBanned && bikechecks[i])
+      .filter((bikecheck) => Boolean(bikecheck));
+
+    return notBannedBikechecks;
   }
 
   static async createActiveForUser(user, telegramImageId) {
@@ -67,11 +78,11 @@ class Bikecheck extends Entity {
     const votes = await BikecheckVote.getAllForBikecheck(this);
 
     const likes = votes
-      .filter(vote => vote.isLike)
+      .filter((vote) => vote.isLike)
       .length;
 
     const dislikes = votes
-      .filter(vote => vote.isDislike)
+      .filter((vote) => vote.isDislike)
       .length;
 
     return { likes, dislikes };

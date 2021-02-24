@@ -4,8 +4,8 @@ class Router {
   }
 
   route(telegramEntity) {
-    const matchingRoutes = this.routes.filter(route => route.isMatching(telegramEntity));
-    return Promise.all(matchingRoutes.map(route => route.process(telegramEntity)));
+    const matchingRoutes = this.routes.filter((route) => route.isMatching(telegramEntity));
+    return Promise.all(matchingRoutes.map((route) => route.process(telegramEntity)));
   }
 }
 

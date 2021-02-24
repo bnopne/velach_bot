@@ -2,9 +2,9 @@ const DTO = require('../DTO');
 const InlineKeyboardButton = require('./InlineKeyboardButton');
 
 class InlineKeyboardMarkup extends DTO {
-  static createFromButtons(buttons) {
+  static createFromButtonRows(buttonRows) {
     const markup = new this();
-    markup.inlineKeyboard = [buttons];
+    markup.inlineKeyboard = [...buttonRows];
     return markup;
   }
 

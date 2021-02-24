@@ -1,3 +1,5 @@
+/* eslint-disable max-classes-per-file */
+
 class NotImplementedError extends Error {
   constructor() {
     super('This is not yet implemented');
