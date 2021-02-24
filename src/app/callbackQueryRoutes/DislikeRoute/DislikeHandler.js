@@ -2,6 +2,7 @@ const Handler = require('../../../infrastructure/Handler');
 const Bikecheck = require('../../../entities/Bikecheck');
 const BikecheckVote = require('../../../entities/BikecheckVote');
 const User = require('../../../entities/User');
+const Chat = require('../../../entities/Chat');
 const { getBikecheckKeyboard } = require('../../../text/keyboards');
 const { getBikecheckCaption } = require('../../../text/captions');
 const messages = require('../../../text/messages');
@@ -17,7 +18,6 @@ class DislikeHandler extends Handler {
 
     const user = await User.findById(callbackQuery.from.id);
     const bikecheck = await Bikecheck.findById(callbackQuery.data.getField('bikecheckId'));
-    const bikecheckOwnerId = await User.findById(bikecheck.userId);
 
     if (user.id === bikecheck.userId) {
       await this.bot.answerCallbackQuery(
@@ -39,11 +39,21 @@ class DislikeHandler extends Handler {
       await BikecheckVote.createDownVote(bikecheck, callbackQuery.from);
     }
 
-    const { likes, dislikes } = await bikecheck.getScore();
-
     if (needToUpdateCaption) {
+      const chat = await Chat.findById(callbackQuery.message.chat.id);
+      const bikecheckOwner = await User.findById(bikecheck.userId);
+      const { likes, dislikes } = await bikecheck.getScore();
+      const bikechecks = await Bikecheck.findActiveForChat(bikecheckOwner, chat);
+      const bikecheckIndex = bikechecks.findIndex((b) => b.id === bikecheck.id);
+
       await this.bot.editMessageCaption(
-        getBikecheckCaption(likes, dislikes, bikecheckOwnerId.stravaLink),
+        getBikecheckCaption(
+          likes,
+          dislikes,
+          bikecheckOwner.stravaLink,
+          bikecheckIndex,
+          bikechecks.length,
+        ),
         {
           chat_id: callbackQuery.message.chat.id,
           message_id: callbackQuery.message.messageId,

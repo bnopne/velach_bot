@@ -41,7 +41,7 @@ class Application {
     this.callbackQueryRouter = new Router(callbackQueryRoutes);
 
     this.services = this.constructor.services
-      .map(ServiceCls => new ServiceCls(this.bot, this.eventBus));
+      .map((ServiceCls) => new ServiceCls(this.bot, this.eventBus));
   }
 
   async start() {

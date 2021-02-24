@@ -13,7 +13,7 @@ class Route {
     this.bot = bot;
     this.eventBus = eventBus;
 
-    this.middlewares = this.constructor.middlewareClsList.map(Cls => new Cls(bot, eventBus));
+    this.middlewares = this.constructor.middlewareClsList.map((Cls) => new Cls(bot, eventBus));
     this.handler = new this.constructor.HandlerCls(bot, eventBus);
   }
 

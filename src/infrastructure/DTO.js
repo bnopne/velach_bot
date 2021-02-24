@@ -29,7 +29,7 @@ class DTO {
   getNestedDTOArray(key, DTOClass) {
     const rawDataArray = _.get(this.rawObject, [key], null);
 
-    const recursivelyGetDTO = arr => _.map(
+    const recursivelyGetDTO = (arr) => _.map(
       arr,
       element => _.isArray(element) ? recursivelyGetDTO(element, DTOClass) : new DTOClass(element), // eslint-disable-line
     );
@@ -40,7 +40,7 @@ class DTO {
   }
 
   setNestedDTOArray(key, dtos) {
-    const recursivelyGetRawObjects = arr => _.map(
+    const recursivelyGetRawObjects = (arr) => _.map(
       arr,
       el => _.isArray(el) ? recursivelyGetRawObjects(el) : el.rawObject, // eslint-disable-line
     );

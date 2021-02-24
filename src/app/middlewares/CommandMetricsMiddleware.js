@@ -6,7 +6,7 @@ class CommandMetricsMiddleware extends Middleware {
   async process(message) { // eslint-disable-line
     this.emit(
       EVENT_TYPES.USER_EXECUTES_COMMAND,
-      new UserExecutesCommand()
+      new UserExecutesCommand(),
     );
 
     return message;

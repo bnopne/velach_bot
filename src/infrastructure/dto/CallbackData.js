@@ -15,6 +15,34 @@ class CallbackData extends DTO {
     return data;
   }
 
+  static createShowPreviousBikecheck(bikecheck) {
+    const data = new this();
+    data.setField('command', 'show-previous-bikecheck');
+    data.setField('bikecheckId', bikecheck.id);
+    return data;
+  }
+
+  static createShowNextBikecheck(bikecheck) {
+    const data = new this();
+    data.setField('command', 'show-next-bikecheck');
+    data.setField('bikecheckId', bikecheck.id);
+    return data;
+  }
+
+  static createDeleteBikecheck(bikecheck) {
+    const data = new this();
+    data.setField('command', 'delete-bikecheck');
+    data.setField('bikecheckId', bikecheck.id);
+    return data;
+  }
+
+  static createBanBikecheck(bikecheck) {
+    const data = new this();
+    data.setField('command', 'ban-bikecheck');
+    data.setField('bikecheckId', bikecheck.id);
+    return data;
+  }
+
   static deserialize(dataString) {
     const rawObject = JSON.parse(dataString);
     return new this(rawObject);

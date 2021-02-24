@@ -6,6 +6,7 @@ const commands = require('../../../text/commands');
 const UserFailsToExecuteCommand = require('../../../infrastructure/events/UserFailsToExecuteCommand');
 const UserExecutesCommand = require('../../../infrastructure/events/UserExecutesCommand');
 const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
+const settings = require('../../../settings');
 
 class CheckBikeHandler extends Handler {
   async handle(message) {
@@ -59,10 +60,17 @@ class CheckBikeHandler extends Handler {
     }
 
     const user = await User.findById(repliedMessage.from.id);
-    const currentActiveBikecheck = await Bikecheck.findActiveForUser(user);
 
-    if (currentActiveBikecheck) {
-      await currentActiveBikecheck.setInactive();
+    const currentBikechecks = await Bikecheck.findActiveForUser(user);
+
+    if (currentBikechecks.length >= settings.get('bikechecks.maxBikechecksPerUser')) {
+      await this.bot.sendMessage(
+        message.chat.id,
+        messages.bikecheck.tooManyBikechecks(),
+        { reply_to_message_id: message.messageId },
+      );
+
+      return;
     }
 
     await Bikecheck.createActiveForUser(
