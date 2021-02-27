@@ -28,6 +28,11 @@ class NextBikecheckHandler extends Handler {
       return;
     }
 
+    if (bikechecks.length === 1) {
+      await this.bot.answerCallbackQuery(callbackQuery.id, {});
+      return;
+    }
+
     let currentBikecheckIndex = bikechecks.findIndex((b) => b.id === bikecheck.id);
 
     if (currentBikecheckIndex === -1) {
