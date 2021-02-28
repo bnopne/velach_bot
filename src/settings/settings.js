@@ -127,6 +127,14 @@ const settings = convict({
       env: 'BIKECHECKS_EMPTY_BIKECHECK_PICTURE_URL',
     },
   },
+  auth: {
+    ownerUsername: {
+      doc: 'Bot owner username',
+      format: String,
+      default: '',
+      env: 'AUTH_OWNER_USERNAME',
+    },
+  },
 });
 
 settings.validate();
