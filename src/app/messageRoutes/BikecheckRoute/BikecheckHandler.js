@@ -37,13 +37,14 @@ class BikecheckHandler extends Handler {
     }
     const firstBikecheck = bikechecks[0];
     const { likes, dislikes } = await firstBikecheck.getScore();
+    const rank = await firstBikecheck.getRank();
 
     await this.bot.sendPhoto(
       message.chat.id,
       firstBikecheck.telegramImageId,
       {
         reply_to_message_id: message.messageId,
-        caption: getBikecheckCaption(likes, dislikes, user.stravaLink, 0, bikechecks.length),
+        caption: getBikecheckCaption(likes, dislikes, user.stravaLink, 0, bikechecks.length, rank),
         reply_markup: getBikecheckKeyboard(firstBikecheck, chat).export(),
         parse_mode: 'markdown',
       },

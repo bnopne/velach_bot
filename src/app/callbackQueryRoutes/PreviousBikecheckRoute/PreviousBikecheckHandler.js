@@ -50,6 +50,7 @@ class PreviousBikecheckHandler extends Handler {
     const previousBikecheck = bikechecks[currentBikecheckIndex - 1];
 
     const { likes, dislikes } = await previousBikecheck.getScore();
+    const rank = await previousBikecheck.getRank();
 
     await this.bot.editMessageMedia(
       {
@@ -61,6 +62,7 @@ class PreviousBikecheckHandler extends Handler {
           bikecheckOwner.stravaLink,
           currentBikecheckIndex - 1,
           bikechecks.length,
+          rank,
         ),
         parse_mode: 'markdown',
       },
