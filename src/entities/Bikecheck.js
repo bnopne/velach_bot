@@ -6,6 +6,13 @@ const BikecheckVote = require('./BikecheckVote');
 const BikecheckChatMtm = require('./BikecheckChatMtm');
 
 class Bikecheck extends Entity {
+  constructor(model) {
+    super(model);
+
+    this.lastRankQueryTime = null;
+    this.cachedRank = null;
+  }
+
   static get modelClass() {
     return models.Bikecheck;
   }
@@ -141,6 +148,39 @@ class Bikecheck extends Entity {
     }
 
     await bikecheckChatMtm.unban();
+  }
+
+  async getRank() {
+    if (this.lastRankQueryTime && new Date() - this.lastRankQueryTime < 10000) {
+      return this.cachedRank;
+    }
+
+    const [rows] = await models.sequelize.query(`
+      select "rank"
+      from (
+        select id, "likes", row_number () over (order by "likes") as "rank"
+        from (
+          select id, count("likes") as "likes"
+          from
+          (
+            select id from "Bikecheck" b where b."isActive" = true
+          ) as T1
+          inner join
+          (
+            select "bikecheckId" as "likes" from "BikecheckVote" bv where bv.points  > 0
+          ) as T2
+          on T1.id = T2."likes"
+          group by T1.id
+          order by "likes" desc
+        ) T
+      ) T
+      where T.id = ${this.id}
+    `);
+
+    this.lastRankQueryTime = new Date();
+    this.cachedRank = rows.length ? rows[0].rank : -1;
+
+    return this.cachedRank;
   }
 }
 

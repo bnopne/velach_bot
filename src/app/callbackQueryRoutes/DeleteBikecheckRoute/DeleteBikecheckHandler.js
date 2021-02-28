@@ -53,16 +53,7 @@ class DeleteBikecheckHandler extends Handler {
     const nextBikecheck = bikechecks[0];
 
     const { likes, dislikes } = await nextBikecheck.getScore();
-
-    await this.bot.editMessageCaption(
-      getBikecheckCaption(likes, dislikes, bikecheckOwner.stravaLink),
-      {
-        chat_id: callbackQuery.message.chat.id,
-        message_id: callbackQuery.message.messageId,
-        reply_markup: getBikecheckKeyboard(nextBikecheck, chat).export(),
-        parse_mode: 'markdown',
-      },
-    );
+    const rank = await nextBikecheck.getRank();
 
     await this.bot.editMessageMedia(
       {
@@ -74,6 +65,7 @@ class DeleteBikecheckHandler extends Handler {
           bikecheckOwner.stravaLink,
           0,
           bikechecks.length,
+          rank,
         ),
         parse_mode: 'markdown',
       },

@@ -43,6 +43,7 @@ class LikeHandler extends Handler {
       const chat = await Chat.findById(callbackQuery.message.chat.id);
       const bikecheckOwner = await User.findById(bikecheck.userId);
       const { likes, dislikes } = await bikecheck.getScore();
+      const rank = await bikecheck.getRank();
       const bikechecks = await Bikecheck.findActiveForChat(bikecheckOwner, chat);
       const bikecheckIndex = bikechecks.findIndex((b) => b.id === bikecheck.id);
 
@@ -53,6 +54,7 @@ class LikeHandler extends Handler {
           bikecheckOwner.stravaLink,
           bikecheckIndex,
           bikechecks.length,
+          rank,
         ),
         {
           chat_id: callbackQuery.message.chat.id,

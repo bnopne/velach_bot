@@ -1,7 +1,8 @@
-const getBikecheckCaption = (likes, dislikes, stravaLink, index = 0, totalBikechecks = 1) => {
-  const stravaText = stravaLink ? `[Страва](${stravaLink})` : '_Страву не показывал_';
+const getBikecheckCaption = (likes, dislikes, stravaLink, index = 0, totalBikechecks = 1, rank) => {
+  const rankText = rank === -1 ? '' : `Место _#${rank}_ в общем рейтинге\n`;
   const postitionText = totalBikechecks > 1 ? `_Байкчек ${index + 1} из ${totalBikechecks}_` : '';
-  return `${postitionText}\nНравится: ${likes}\nНе нравится: ${dislikes}\n${stravaText}`;
+  const stravaText = stravaLink ? `[Страва](${stravaLink})` : '_Страву не показывал_';
+  return `${rankText}${postitionText}\nНравится: ${likes}\nНе нравится: ${dislikes}\n${stravaText}`;
 };
 
 const getTopCaption = (likes, dislikes, stravaLink, user) => ([
