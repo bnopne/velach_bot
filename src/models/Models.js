@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 
-require('pg').defaults.parseInt8 = true; // потому что по умолчанию pg возвращает поля типа BIGINT как строки
 const Sequelize = require('sequelize');
 
 const settings = require('../settings');

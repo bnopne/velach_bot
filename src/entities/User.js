@@ -24,6 +24,10 @@ class User extends Entity {
     return this.model.stravaLink;
   }
 
+  get username() {
+    return this.model.username;
+  }
+
   setStravaLink(value) {
     this.model.stravaLink = value;
     return this.model.save();

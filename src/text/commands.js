@@ -4,4 +4,5 @@ module.exports = {
   setstrava: '/setstrava',
   help: '/help',
   announce: '/announce',
+  top: '/top',
 };
