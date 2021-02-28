@@ -158,7 +158,7 @@ class Bikecheck extends Entity {
     const [rows] = await models.sequelize.query(`
       select "rank"
       from (
-        select id, "likes", row_number () over (order by "likes") as "rank"
+        select id, "likes", row_number () over (order by "likes" desc) as "rank"
         from (
           select id, count("likes") as "likes"
           from
@@ -171,7 +171,6 @@ class Bikecheck extends Entity {
           ) as T2
           on T1.id = T2."likes"
           group by T1.id
-          order by "likes" desc
         ) T
       ) T
       where T.id = ${this.id}
