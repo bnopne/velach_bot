@@ -67,7 +67,7 @@ class NextBikecheckHandler extends Handler {
       {
         chat_id: callbackQuery.message.chat.id,
         message_id: callbackQuery.message.messageId,
-        reply_markup: getBikecheckKeyboard(nextBikecheck).export(),
+        reply_markup: getBikecheckKeyboard(nextBikecheck, chat).export(),
       },
     );
 

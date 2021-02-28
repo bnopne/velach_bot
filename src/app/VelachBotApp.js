@@ -5,6 +5,7 @@ const BikecheckRoute = require('./messageRoutes/BikecheckRoute/BikecheckRoute');
 const CheckBikeRoute = require('./messageRoutes/CheckBikeRoute/CheckBikeRoute');
 const SetStravaRoute = require('./messageRoutes/SetStravaRoute/SetStravaRoute');
 const HelpRoute = require('./messageRoutes/HelpRoute/HelpRoute');
+const AnnounceRoute = require('./messageRoutes/AnnounceRoute/AnnouneRoute');
 
 // callback query routes
 const LikeRoute = require('./callbackQueryRoutes/LikeRoute/LikeRoute');
@@ -25,6 +26,7 @@ class VelachBotApp extends Application {
       CheckBikeRoute,
       SetStravaRoute,
       HelpRoute,
+      AnnounceRoute,
     ];
   }
 

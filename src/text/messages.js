@@ -56,6 +56,7 @@ module.exports = {
   auth: {
     onlyAdminsCanDoThat: () => 'Только администраторы могут это сделать',
     cantDoInPrivateChatsAndChannels: () => 'Нельзя выполнить в приватных чатах и каналах',
+    restricted: () => 'Вам нельзя!',
   },
   deleteBikecheck: {
     onlyOwnerCanDoThat: () => 'Только владелец байкчека может его удалить',

@@ -14,8 +14,22 @@ class Chat extends Entity {
     return model ? new this(model) : null;
   }
 
+  static async findAllPublic() {
+    const chatModels = await this.modelClass.findAll({
+      where: {
+        type: 'supergroup',
+      },
+    });
+
+    return chatModels.map((m) => new this(m));
+  }
+
   get id() {
     return this.model.id;
+  }
+
+  get type() {
+    return this.model.type;
   }
 }
 

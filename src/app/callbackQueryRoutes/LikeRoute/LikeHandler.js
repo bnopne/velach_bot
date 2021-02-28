@@ -57,7 +57,7 @@ class LikeHandler extends Handler {
         {
           chat_id: callbackQuery.message.chat.id,
           message_id: callbackQuery.message.messageId,
-          reply_markup: getBikecheckKeyboard(bikecheck).export(),
+          reply_markup: getBikecheckKeyboard(bikecheck, chat).export(),
           parse_mode: 'markdown',
         },
       );

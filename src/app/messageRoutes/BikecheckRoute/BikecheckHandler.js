@@ -44,7 +44,7 @@ class BikecheckHandler extends Handler {
       {
         reply_to_message_id: message.messageId,
         caption: getBikecheckCaption(likes, dislikes, user.stravaLink, 0, bikechecks.length),
-        reply_markup: getBikecheckKeyboard(firstBikecheck).export(),
+        reply_markup: getBikecheckKeyboard(firstBikecheck, chat).export(),
         parse_mode: 'markdown',
       },
     );

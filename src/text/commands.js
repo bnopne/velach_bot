@@ -3,4 +3,5 @@ module.exports = {
   checkbike: '/checkbike',
   setstrava: '/setstrava',
   help: '/help',
+  announce: '/announce',
 };
