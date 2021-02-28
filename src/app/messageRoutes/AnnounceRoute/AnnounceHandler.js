@@ -4,6 +4,10 @@ const Chat = require('../../../entities/Chat');
 const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
 const commands = require('../../../text/commands');
 
+const wait = (ms) => new Promise((resolve) => {
+  setTimeout(resolve, ms);
+});
+
 class AnnounceHandler extends Handler {
   async handle(message) {
     this.eventBus.emit(
@@ -23,10 +27,12 @@ class AnnounceHandler extends Handler {
 
     const chats = await Chat.findAllPublic();
 
-    chats.forEach(async (chat) => {
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < chats.length; i++) {
       try {
+        // eslint-disable-next-line no-await-in-loop
         await this.bot.sendMessage(
-          chat.id,
+          chats[i].id,
           message.replyToMessage.text,
           {
             parse_mode: 'markdown',
@@ -35,7 +41,10 @@ class AnnounceHandler extends Handler {
       } catch (err) {
         console.error(err);
       }
-    });
+
+      // eslint-disable-next-line no-await-in-loop
+      await wait(10 * 1000);
+    }
   }
 }
 
