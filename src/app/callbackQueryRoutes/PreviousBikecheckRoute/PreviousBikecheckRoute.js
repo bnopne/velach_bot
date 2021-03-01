@@ -1,6 +1,7 @@
 const Route = require('../../../infrastructure/Route');
 const CallbackQueryDataSaverMiddleware = require('../../middlewares/CallbackQueryDataSaverMiddleware');
 const PreviousBikecheckHandler = require('./PreviousBikecheckHandler');
+const commands = require('../../../text/callbackQueryCommands');
 
 class PreviousBikecheckRoute extends Route {
   static get middlewareClsList() {
@@ -18,7 +19,7 @@ class PreviousBikecheckRoute extends Route {
       return false;
     }
 
-    return callbackQuery.data.command === 'show-previous-bikecheck';
+    return callbackQuery.data.command === commands.showPreviousBikecheck;
   }
 }
 

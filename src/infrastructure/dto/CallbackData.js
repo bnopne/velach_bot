@@ -1,65 +1,66 @@
 const DTO = require('../DTO');
+const commands = require('../../text/callbackQueryCommands');
 
 class CallbackData extends DTO {
   static createLikeForBikecheck(bikecheck) {
     const data = new this();
-    data.setField('command', 'like');
+    data.setField('command', commands.like);
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }
 
   static createDislikeForBikecheck(bikecheck) {
     const data = new this();
-    data.setField('command', 'dislike');
+    data.setField('command', commands.dislike);
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }
 
   static createShowPreviousBikecheck(bikecheck) {
     const data = new this();
-    data.setField('command', 'show-previous-bikecheck');
+    data.setField('command', commands.showPreviousBikecheck);
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }
 
   static createShowNextBikecheck(bikecheck) {
     const data = new this();
-    data.setField('command', 'show-next-bikecheck');
+    data.setField('command', commands.showNextBikecheck);
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }
 
   static createShowPreviousDeletedBikecheck(bikecheck) {
     const data = new this();
-    data.setField('command', 'show-previous-deleted-bikecheck');
+    data.setField('command', commands.showPreviousDeletedBikecheck);
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }
 
   static createShowNextDeletedBikecheck(bikecheck) {
     const data = new this();
-    data.setField('command', 'show-next-deleted-bikecheck');
+    data.setField('command', commands.showNextDeletedBikecheck);
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }
 
   static createDeleteBikecheck(bikecheck) {
     const data = new this();
-    data.setField('command', 'delete-bikecheck');
+    data.setField('command', commands.deleteBikecheck);
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }
 
   static createRestoreBikecheck(bikecheck) {
     const data = new this();
-    data.setField('command', 'restore-bikecheck');
+    data.setField('command', commands.restoreBikecheck);
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }
 
   static createBanBikecheck(bikecheck) {
     const data = new this();
-    data.setField('command', 'ban-bikecheck');
+    data.setField('command', commands.banBikecheck);
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }

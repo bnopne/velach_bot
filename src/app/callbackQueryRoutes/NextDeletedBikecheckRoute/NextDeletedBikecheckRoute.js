@@ -2,6 +2,7 @@ const Route = require('../../../infrastructure/Route');
 const CallbackQueryDataSaverMiddleware = require('../../middlewares/CallbackQueryDataSaverMiddleware');
 const CallbackQueryPrivateChatOnlyMiddleware = require('../../middlewares/CallbackQueryPrivateChatOnlyMiddleware');
 const NextBikecheckHandler = require('./NextDeletedBikecheckHandler');
+const commands = require('../../../text/callbackQueryCommands');
 
 class NextBikecheckRoute extends Route {
   static get middlewareClsList() {
@@ -20,7 +21,7 @@ class NextBikecheckRoute extends Route {
       return false;
     }
 
-    return callbackQuery.data.command === 'show-next-deleted-bikecheck';
+    return callbackQuery.data.command === commands.showNextDeletedBikecheck;
   }
 }
 
