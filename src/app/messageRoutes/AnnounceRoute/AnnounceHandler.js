@@ -39,11 +39,11 @@ class AnnounceHandler extends Handler {
           },
         );
       } catch (err) {
-        console.error(err);
+        console.error(`Ошибка отправки анонса в чат ${chats[i].id}`);
       }
 
       // eslint-disable-next-line no-await-in-loop
-      await wait(10 * 1000);
+      await wait(2 * 1000);
     }
   }
 }

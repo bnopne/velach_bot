@@ -29,9 +29,30 @@ class CallbackData extends DTO {
     return data;
   }
 
+  static createShowPreviousDeletedBikecheck(bikecheck) {
+    const data = new this();
+    data.setField('command', 'show-previous-deleted-bikecheck');
+    data.setField('bikecheckId', bikecheck.id);
+    return data;
+  }
+
+  static createShowNextDeletedBikecheck(bikecheck) {
+    const data = new this();
+    data.setField('command', 'show-next-deleted-bikecheck');
+    data.setField('bikecheckId', bikecheck.id);
+    return data;
+  }
+
   static createDeleteBikecheck(bikecheck) {
     const data = new this();
     data.setField('command', 'delete-bikecheck');
+    data.setField('bikecheckId', bikecheck.id);
+    return data;
+  }
+
+  static createRestoreBikecheck(bikecheck) {
+    const data = new this();
+    data.setField('command', 'restore-bikecheck');
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }
