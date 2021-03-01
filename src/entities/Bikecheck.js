@@ -51,6 +51,17 @@ class Bikecheck extends Entity {
     return notBannedBikechecks;
   }
 
+  static async findDeletedForUser(user) {
+    const bikechecks = (await this.modelClass.findAll({
+      where: {
+        userId: user.id,
+        isActive: false,
+      },
+    })).map((b) => new this(b));
+
+    return bikechecks;
+  }
+
   static async createActiveForUser(user, telegramImageId) {
     const model = await this.create({
       userId: user.id,

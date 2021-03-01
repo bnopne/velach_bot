@@ -7,6 +7,7 @@ const SetStravaRoute = require('./messageRoutes/SetStravaRoute/SetStravaRoute');
 const HelpRoute = require('./messageRoutes/HelpRoute/HelpRoute');
 const AnnounceRoute = require('./messageRoutes/AnnounceRoute/AnnouneRoute');
 const TopRoute = require('./messageRoutes/TopRoute/TopRoute');
+const DeletedRoute = require('./messageRoutes/DeletedRoute/DeletedRoute');
 
 // callback query routes
 const LikeRoute = require('./callbackQueryRoutes/LikeRoute/LikeRoute');
@@ -15,6 +16,9 @@ const NextBikecheckRoute = require('./callbackQueryRoutes/NextBikecheckRoute/Nex
 const PreviousBikecheckRoute = require('./callbackQueryRoutes/PreviousBikecheckRoute/PreviousBikecheckRoute');
 const DeleteBikecheckRoute = require('./callbackQueryRoutes/DeleteBikecheckRoute/DeleteBikecheckRoute');
 const BanBikecheckCallbackQueryRoute = require('./callbackQueryRoutes/BanBikecheckRoute/BanBikecheckRoute');
+const NextDeletedBikechecRoute = require('./callbackQueryRoutes/NextDeletedBikecheckRoute/NextDeletedBikecheckRoute');
+const PreviousDeletedBikechecRoute = require('./callbackQueryRoutes/PreviousDeletedBikecheckRoute/PreviousDeletedBikecheckRoute');
+const RestoreBikechecRoute = require('./callbackQueryRoutes/RestoreBikecheckRoute/RestoreBikecheckRoute');
 
 // services
 const UserAssistanceService = require('./services/UserAssistanceService');
@@ -29,6 +33,7 @@ class VelachBotApp extends Application {
       HelpRoute,
       AnnounceRoute,
       TopRoute,
+      DeletedRoute,
     ];
   }
 
@@ -40,6 +45,9 @@ class VelachBotApp extends Application {
       NextBikecheckRoute,
       DeleteBikecheckRoute,
       BanBikecheckCallbackQueryRoute,
+      NextDeletedBikechecRoute,
+      PreviousDeletedBikechecRoute,
+      RestoreBikechecRoute,
     ];
   }
 

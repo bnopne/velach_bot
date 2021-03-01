@@ -5,4 +5,5 @@ module.exports = {
   help: '/help',
   announce: '/announce',
   top: '/top',
+  deleted: '/deleted',
 };

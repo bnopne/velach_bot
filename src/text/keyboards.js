@@ -26,6 +26,17 @@ const getBikecheckKeyboard = (bikecheck, chat) => {
   ]);
 };
 
+const getDeletedBikecheckKeyboard = (bikecheck) => InlineKeyboardMarkup.createFromButtonRows([
+  [
+    InlineKeyboardButton.createWithCallbackData('⬅', CallbackData.createShowPreviousDeletedBikecheck(bikecheck)),
+    InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextDeletedBikecheck(bikecheck)),
+  ],
+  [
+    InlineKeyboardButton.createWithCallbackData('Восстановить', CallbackData.createRestoreBikecheck(bikecheck)),
+  ],
+]);
+
 module.exports = {
   getBikecheckKeyboard,
+  getDeletedBikecheckKeyboard,
 };
