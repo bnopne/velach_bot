@@ -37,7 +37,7 @@ class TopBikecheckHandler extends Handler {
       return;
     }
 
-    const nextBikecheckOwner = User.findById(nextBikecheck.userId);
+    const nextBikecheckOwner = await User.findById(nextBikecheck.userId);
 
     const { likes, dislikes } = await nextBikecheck.getScore();
 
