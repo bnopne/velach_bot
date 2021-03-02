@@ -126,6 +126,12 @@ const settings = convict({
       default: '',
       env: 'BIKECHECKS_EMPTY_BIKECHECK_PICTURE_URL',
     },
+    topLength: {
+      doc: 'How much bikechecks to include when displaying top',
+      format: Number,
+      default: 5,
+      env: 'BIKECHECKS_TOP_LENGTH',
+    },
   },
   auth: {
     ownerUsername: {

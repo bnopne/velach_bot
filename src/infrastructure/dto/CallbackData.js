@@ -65,6 +65,13 @@ class CallbackData extends DTO {
     return data;
   }
 
+  static createShowTopBikecheck(position) {
+    const data = new this();
+    data.setField('command', commands.showTopBikecheck);
+    data.setField('position', position);
+    return data;
+  }
+
   static deserialize(dataString) {
     const rawObject = JSON.parse(dataString);
     return new this(rawObject);
