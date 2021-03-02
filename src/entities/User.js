@@ -20,6 +20,10 @@ class User extends Entity {
     return this.model.id;
   }
 
+  get firstName() {
+    return this.model.firstName;
+  }
+
   get stravaLink() {
     return this.model.stravaLink;
   }

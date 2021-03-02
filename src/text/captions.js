@@ -5,10 +5,10 @@ const getBikecheckCaption = (likes, dislikes, stravaLink, index = 0, totalBikech
   return `${rankText}${postitionText}\nНравится: ${likes}\nНе нравится: ${dislikes}\n${stravaText}`;
 };
 
-const getTopCaption = (likes, dislikes, stravaLink, user) => ([
-  user.username ? `_Топовый байкчек, владелец_ @${user.username}` : '_Топовый байкчек_',
-  `Нравится: ${likes}\nНе нравится: ${dislikes}`,
-  stravaLink ? `[Страва](${stravaLink})` : '_Страву не показывал_',
+const getTopCaption = (position, likes, dislikes, user) => ([
+  `*Байкчек #${position}, владелец* [${user.firstName}](tg://user?id=${user.id})`,
+  `👍: _${likes}_ ÷ 👎: _${dislikes}_`,
+  user.stravaLink ? `[Страва](${user.stravaLink})` : '_Страву не показывал_',
 ].join('\n'));
 
 module.exports = {

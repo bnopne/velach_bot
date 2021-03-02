@@ -2,6 +2,7 @@
 const InlineKeyboardMarkup = require('../infrastructure/dto/InlineKeyboardMarkup');
 const InlineKeyboardButton = require('../infrastructure/dto/InlineKeyboardButton');
 const CallbackData = require('../infrastructure/dto/CallbackData');
+const settings = require('../settings');
 
 const getBikecheckKeyboard = (bikecheck, chat) => {
   if (chat.type === 'private') {
@@ -36,7 +37,17 @@ const getDeletedBikecheckKeyboard = (bikecheck) => InlineKeyboardMarkup.createFr
   ],
 ]);
 
+const getTopBikecheckKeyboard = (position) => InlineKeyboardMarkup.createFromButtonRows([
+  (new Array(settings.get('bikechecks.topLength')))
+    .fill()
+    .map((_, i) => InlineKeyboardButton.createWithCallbackData(
+      `🏆 #${i + 1}`,
+      CallbackData.createShowTopBikecheck(i + 1 === position ? 0 : i + 1),
+    )),
+]);
+
 module.exports = {
   getBikecheckKeyboard,
   getDeletedBikecheckKeyboard,
+  getTopBikecheckKeyboard,
 };

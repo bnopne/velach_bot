@@ -19,6 +19,7 @@ const BanBikecheckCallbackQueryRoute = require('./callbackQueryRoutes/BanBikeche
 const NextDeletedBikechecRoute = require('./callbackQueryRoutes/NextDeletedBikecheckRoute/NextDeletedBikecheckRoute');
 const PreviousDeletedBikechecRoute = require('./callbackQueryRoutes/PreviousDeletedBikecheckRoute/PreviousDeletedBikecheckRoute');
 const RestoreBikechecRoute = require('./callbackQueryRoutes/RestoreBikecheckRoute/RestoreBikecheckRoute');
+const TopBikecheckRoute = require('./callbackQueryRoutes/TopBikecheckRoute/TopBikecheckRoute');
 
 // services
 const UserAssistanceService = require('./services/UserAssistanceService');
@@ -48,6 +49,7 @@ class VelachBotApp extends Application {
       NextDeletedBikechecRoute,
       PreviousDeletedBikechecRoute,
       RestoreBikechecRoute,
+      TopBikecheckRoute,
     ];
   }
 

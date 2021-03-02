@@ -8,4 +8,5 @@ module.exports = {
   deleteBikecheck: '7',
   restoreBikecheck: '8',
   banBikecheck: '9',
+  showTopBikecheck: '10',
 };
