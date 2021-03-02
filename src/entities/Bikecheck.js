@@ -97,7 +97,7 @@ class Bikecheck extends Entity {
       },
     });
 
-    return bikechecks.map((b) => new this(b));
+    return rows.map((row) => new this(bikechecks.find((b) => b.id === row.id)));
   }
 
   get id() {
