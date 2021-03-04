@@ -1,5 +1,5 @@
 const DTO = require('../DTO');
-const commands = require('../../text/callbackQueryCommands');
+const commands = require('../../text/callback-query-commands');
 
 class CallbackData extends DTO {
   static createLikeForBikecheck(bikecheck) {
