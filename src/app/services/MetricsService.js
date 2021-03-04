@@ -3,6 +3,7 @@ const io = require('@pm2/io');
 const Service = require('../../infrastructure/Service');
 const config = require('../../settings');
 const { EVENT_TYPES } = require('../../infrastructure/events/constants');
+const commands = require('../../text/commands');
 
 class MetricsService extends Service {
   constructor(bot, eventBus) {
@@ -37,6 +38,10 @@ class MetricsService extends Service {
       incomingMessages: io.counter({
         name: 'Messages Processed',
       }),
+      commands: Object.keys(commands).reduce((acc, key) => ({
+        ...acc,
+        [commands[key]]: io.counter({ name: `${commands[key]}` }),
+      }), {}),
     };
   }
 
@@ -44,8 +49,12 @@ class MetricsService extends Service {
     this.metrics.incomingMessages.inc();
   }
 
-  onUserExecutesCommand() {
+  onUserExecutesCommand(event) {
     this.metrics.commandRate.mark();
+
+    if (event && event.command) {
+      this.metrics.commands[event.command].inc();
+    }
   }
 
   onUserSendsCallbackQuery() {

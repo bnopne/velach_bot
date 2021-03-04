@@ -12,7 +12,7 @@ class TopHandler extends Handler {
   async handle(message) {
     this.eventBus.emit(
       EVENT_TYPES.USER_EXECUTES_COMMAND,
-      new UserExecutesCommand(commands.setstrava, message.from.id, message.chat.id),
+      new UserExecutesCommand(commands.top, message.from.id, message.chat.id),
     );
 
     const topLength = settings.get('bikechecks.topLength');

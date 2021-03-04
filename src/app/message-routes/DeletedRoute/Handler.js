@@ -13,7 +13,7 @@ class DeletedHandler extends Handler {
   async handle(message) {
     this.eventBus.emit(
       EVENT_TYPES.USER_EXECUTES_COMMAND,
-      new UserExecutesCommand(commands.bikecheck, message.from.id, message.chat.id),
+      new UserExecutesCommand(commands.deleted, message.from.id, message.chat.id),
     );
 
     const user = message.replyToMessage
