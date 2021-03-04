@@ -34,7 +34,7 @@ async function execute(argv) {
   if (argv._.includes('seed-db')) {
     await new Promise((resolve, reject) => {
       exec(
-        `npx sequelize --config ${path.join('src', 'settings', 'settings_wrapper_for_sequelize_cli.js')} db:seed:all`,
+        `npx sequelize --config ${path.join('src', 'settings', 'settings-wrapper-for-sequelize-cli.js')} db:seed:all`,
         (err, stdout, stderr) => {
           if (err) {
             console.error(stderr);
@@ -51,7 +51,7 @@ async function execute(argv) {
   if (argv._.includes('create-migration')) {
     await new Promise((resolve, reject) => {
       exec(
-        `npx sequelize --config ${path.join('src', 'settings', 'settings_wrapper_for_sequelize_cli.js')} migration:generate --name ${argv.name}`,
+        `npx sequelize --config ${path.join('src', 'settings', 'settings-wrapper-for-sequelize-cli.js')} migration:generate --name ${argv.name}`,
         (err, stdout, stderr) => {
           if (err) {
             console.error(stderr);
@@ -68,7 +68,7 @@ async function execute(argv) {
   if (argv._.includes('apply-migrations')) {
     await new Promise((resolve, reject) => {
       exec(
-        `npx sequelize --config ${path.join('src', 'settings', 'settings_wrapper_for_sequelize_cli.js')} --migrations-path ${path.join('src', 'migrations')} db:migrate`,
+        `npx sequelize --config ${path.join('src', 'settings', 'settings-wrapper-for-sequelize-cli.js')} --migrations-path ${path.join('src', 'migrations')} db:migrate`,
         (err, stdout, stderr) => {
           if (err) {
             console.error(stderr);
