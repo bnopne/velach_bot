@@ -1,10 +1,10 @@
-const Route = require('../../../infrastructure/Route');
+const CommandRoute = require('../../common/MessageCommandRoute');
 const BikecheckHandler = require('./Handler');
-const DataSaverMiddleware = require('../../middlewares/MessageDataSaverMiddleware');
-const MessageAgeCheckMiddleware = require('../../middlewares/MessageAgeCheckMiddleware');
+const DataSaverMiddleware = require('../../middlewares/common/messages/DataSaverMiddleware');
+const MessageAgeCheckMiddleware = require('../../middlewares/common/messages/AgeCheckMiddleware');
 const { bikecheck } = require('../../../text/commands');
 
-class BikecheckRoute extends Route {
+class BikecheckRoute extends CommandRoute {
   static get middlewareClsList() {
     return [
       DataSaverMiddleware,
@@ -16,13 +16,9 @@ class BikecheckRoute extends Route {
     return BikecheckHandler;
   }
 
-  isMatching(message) {
-    if (!message.text) {
-      return false;
-    }
-
-    return (message.text === `${bikecheck}@${this.bot.info.username}`)
-      || (message.text === `${bikecheck}`);
+  // eslint-disable-next-line class-methods-use-this
+  getCommand() {
+    return bikecheck;
   }
 }
 

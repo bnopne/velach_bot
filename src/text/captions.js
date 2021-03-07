@@ -19,7 +19,7 @@ function getBikecheckCaption(
 
 function getTopCaption(position, likes, dislikes, user, onSale) {
   return [
-    `*${position} место, владелец* [${user.firstName}](tg://user?id=${user.id})`,
+    `*${position} место,* [владелец](tg://user?id=${user.id})`,
     `👍: _${likes}_ ÷ 👎: _${dislikes}_`,
     user.stravaLink ? `[Страва](${user.stravaLink})` : '_Страву не показывал_',
     onSale ? '*Кстати, этот байк продается!*' : null,
@@ -27,7 +27,10 @@ function getTopCaption(position, likes, dislikes, user, onSale) {
 }
 
 function getTopSellingCaption(position, user) {
-  return `*Байк ${position} на продажу,* [владелец](tg://user?id=${user.id})`;
+  return [
+    '*Топовые байки на продажу*',
+    `_${position} место,_ [владелец](tg://user?id=${user.id})`,
+  ].join('\n');
 }
 
 module.exports = {

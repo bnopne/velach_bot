@@ -1,8 +1,8 @@
-const Middleware = require('../../infrastructure/Middleware');
-const messages = require('../../text/messages');
-const settings = require('../../settings');
+const Middleware = require('../../../../infrastructure/Middleware');
+const messages = require('../../../../text/messages');
+const settings = require('../../../../settings');
 
-class AnnounceAuthMiddleware extends Middleware {
+class BotOwnerMiddleware extends Middleware {
   async process(message) {
     const isUserAuthorized = message.chat.isPrivate() && settings.get('auth.ownerUsername') === message.from.username;
 
@@ -19,4 +19,4 @@ class AnnounceAuthMiddleware extends Middleware {
   }
 }
 
-module.exports = AnnounceAuthMiddleware;
+module.exports = BotOwnerMiddleware;

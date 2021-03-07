@@ -55,7 +55,7 @@ module.exports = {
     tryHelp: () => 'Не получается? Возможно /help поможет тебе',
   },
   auth: {
-    onlyAdminsCanDoThat: () => 'Только администраторы могут это сделать',
+    onlyAdminsCanDoThat: () => 'Это только администраторы чата могут делать, хех!',
     cantDoInPrivateChatsAndChannels: () => 'Нельзя выполнить в приватных чатах и каналах',
     privateChatsOnly: () => 'Это можно только в приватном чате с ботом',
     restricted: () => 'Вам нельзя!',

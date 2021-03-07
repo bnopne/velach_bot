@@ -1,14 +1,14 @@
-const Route = require('../../../infrastructure/Route');
-const CallbackQueryDataSaverMiddleware = require('../../middlewares/CallbackQueryDataSaverMiddleware');
-const CallbackQueryPrivateChatOnlyMiddleware = require('../../middlewares/CallbackQueryPrivateChatOnlyMiddleware');
+const CommandRoute = require('../../common/CallbackQueryCommandRoute');
+const DataSaverMiddleware = require('../../middlewares/common/callback-queries/DataSaverMiddleware');
+const PrivateChatOnlyMiddleware = require('../../middlewares/auth/callback-queries/PrivateChatOnlyMiddleware');
 const RestoreBikecheckHandler = require('./Handler');
 const commands = require('../../../text/callback-query-commands');
 
-class RestoreBikecheckRoute extends Route {
+class RestoreBikecheckRoute extends CommandRoute {
   static get middlewareClsList() {
     return [
-      CallbackQueryDataSaverMiddleware,
-      CallbackQueryPrivateChatOnlyMiddleware,
+      DataSaverMiddleware,
+      PrivateChatOnlyMiddleware,
     ];
   }
 
@@ -16,12 +16,9 @@ class RestoreBikecheckRoute extends Route {
     return RestoreBikecheckHandler;
   }
 
-  isMatching(callbackQuery) { // eslint-disable-line
-    if (!callbackQuery.data) {
-      return false;
-    }
-
-    return callbackQuery.data.command === commands.restoreBikecheck;
+  // eslint-disable-next-line class-methods-use-this
+  getCommand() {
+    return commands.restoreBikecheck;
   }
 }
 

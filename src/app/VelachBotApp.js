@@ -16,7 +16,6 @@ const DislikeRoute = require('./callback-query-routes/Dislike');
 const NextBikecheckRoute = require('./callback-query-routes/NextBikecheck');
 const PreviousBikecheckRoute = require('./callback-query-routes/PreviousBikecheck');
 const DeleteBikecheckRoute = require('./callback-query-routes/DeleteBikecheck');
-const BanBikecheckCallbackQueryRoute = require('./callback-query-routes/BanBikecheck');
 const NextDeletedBikechecRoute = require('./callback-query-routes/NextDeletedBikecheck');
 const PreviousDeletedBikechecRoute = require('./callback-query-routes/PreviousDeletedBikecheck');
 const RestoreBikechecRoute = require('./callback-query-routes/RestoreBikecheck');
@@ -49,7 +48,6 @@ class VelachBotApp extends Application {
       PreviousBikecheckRoute,
       NextBikecheckRoute,
       DeleteBikecheckRoute,
-      BanBikecheckCallbackQueryRoute,
       NextDeletedBikechecRoute,
       PreviousDeletedBikechecRoute,
       RestoreBikechecRoute,

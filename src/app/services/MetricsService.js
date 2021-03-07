@@ -4,6 +4,7 @@ const Service = require('../../infrastructure/Service');
 const config = require('../../settings');
 const { EVENT_TYPES } = require('../../infrastructure/events/constants');
 const commands = require('../../text/commands');
+const callbackQueryCommands = require('../../text/callback-query-commands');
 
 class MetricsService extends Service {
   constructor(bot, eventBus) {
@@ -42,6 +43,10 @@ class MetricsService extends Service {
         ...acc,
         [commands[key]]: io.counter({ name: `${commands[key]}` }),
       }), {}),
+      callbackQueryCommands: Object.keys(callbackQueryCommands).reduce((acc, key) => ({
+        ...acc,
+        [callbackQueryCommands[key]]: io.counter({ name: key }),
+      }), {}),
     };
   }
 
@@ -57,8 +62,12 @@ class MetricsService extends Service {
     }
   }
 
-  onUserSendsCallbackQuery() {
+  onUserSendsCallbackQuery(event) {
     this.metrics.callbackQueryRate.mark();
+
+    if (event && event.command) {
+      this.metrics.callbackQueryCommands[event.command].inc();
+    }
   }
 }
 

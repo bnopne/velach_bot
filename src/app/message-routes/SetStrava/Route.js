@@ -1,10 +1,10 @@
-const Route = require('../../../infrastructure/Route');
+const CommandRoute = require('../../common/MessageCommandRoute');
 const SetStravaHandler = require('./Handler');
-const DataSaverMiddleware = require('../../middlewares/MessageDataSaverMiddleware');
-const MessageAgeCheckMiddleware = require('../../middlewares/MessageAgeCheckMiddleware');
+const DataSaverMiddleware = require('../../middlewares/common/messages/DataSaverMiddleware');
+const MessageAgeCheckMiddleware = require('../../middlewares/common/messages/AgeCheckMiddleware');
 const { setstrava } = require('../../../text/commands');
 
-class CheckBikeRoute extends Route {
+class CheckBikeRoute extends CommandRoute {
   static get middlewareClsList() {
     return [
       DataSaverMiddleware,
@@ -16,13 +16,9 @@ class CheckBikeRoute extends Route {
     return SetStravaHandler;
   }
 
-  isMatching(message) {
-    if (!message.text) {
-      return false;
-    }
-
-    return (message.text === `${setstrava}@${this.bot.info.username}`)
-      || (message.text === `${setstrava}`);
+  // eslint-disable-next-line class-methods-use-this
+  getCommand() {
+    return setstrava;
   }
 }
 

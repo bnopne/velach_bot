@@ -1,7 +1,4 @@
 const Handler = require('../../../infrastructure/Handler');
-const commands = require('../../../text/commands');
-const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
-const UserExecutesCommand = require('../../../infrastructure/events/UserExecutesCommand');
 const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
 const { getTopCaption } = require('../../../text/captions');
@@ -10,11 +7,6 @@ const { getTopBikecheckKeyboard } = require('../../../text/keyboards');
 
 class TopHandler extends Handler {
   async handle(message) {
-    this.eventBus.emit(
-      EVENT_TYPES.USER_EXECUTES_COMMAND,
-      new UserExecutesCommand(commands.top, message.from.id, message.chat.id),
-    );
-
     const topLength = settings.get('bikechecks.topLength');
     const bikechecks = await Bikecheck.getTop(topLength);
 
@@ -32,7 +24,7 @@ class TopHandler extends Handler {
       bikecheck.telegramImageId,
       {
         reply_to_message_id: message.messageId,
-        caption: getTopCaption(1, likes, dislikes, bikecheckOwner),
+        caption: getTopCaption(1, likes, dislikes, bikecheckOwner, bikecheck.onSale),
         reply_markup: getTopBikecheckKeyboard(1).export(),
         parse_mode: 'markdown',
       },

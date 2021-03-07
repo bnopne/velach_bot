@@ -1,14 +1,16 @@
-const Route = require('../../../infrastructure/Route');
+const CommandRoute = require('../../common/MessageCommandRoute');
 const AnnounceHandler = require('./Handler');
-const DataSaverMiddleware = require('../../middlewares/MessageDataSaverMiddleware');
-const MessageAgeCheckMiddleware = require('../../middlewares/MessageAgeCheckMiddleware');
+const DataSaverMiddleware = require('../../middlewares/common/messages/DataSaverMiddleware');
+const MessageAgeCheckMiddleware = require('../../middlewares/common/messages/AgeCheckMiddleware');
+const BotOwnerMiddleware = require('../../middlewares/auth/messages/BotOwner');
 const { announce } = require('../../../text/commands');
 
-class AnnounceRoute extends Route {
+class AnnounceRoute extends CommandRoute {
   static get middlewareClsList() {
     return [
       DataSaverMiddleware,
       MessageAgeCheckMiddleware,
+      BotOwnerMiddleware,
     ];
   }
 
@@ -16,13 +18,9 @@ class AnnounceRoute extends Route {
     return AnnounceHandler;
   }
 
-  isMatching(message) {
-    if (!message.text) {
-      return false;
-    }
-
-    return (message.text === `${announce}@${this.bot.info.username}`)
-      || (message.text === `${announce}`);
+  // eslint-disable-next-line class-methods-use-this
+  getCommand() {
+    return announce;
   }
 }
 
