@@ -6,7 +6,7 @@ const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
 const { getTopSellingCaption } = require('../../../text/captions');
 const settings = require('../../../settings');
-const { getTopBikecheckKeyboard } = require('../../../text/keyboards');
+const { getTopSellingBikecheckKeyboard } = require('../../../text/keyboards');
 const messages = require('../../../text/messages');
 
 class TopSellingHandler extends Handler {
@@ -40,7 +40,7 @@ class TopSellingHandler extends Handler {
       {
         reply_to_message_id: message.messageId,
         caption: getTopSellingCaption(1, bikecheckOwner),
-        reply_markup: getTopBikecheckKeyboard(1).export(),
+        reply_markup: getTopSellingBikecheckKeyboard(1).export(),
         parse_mode: 'markdown',
       },
     );
