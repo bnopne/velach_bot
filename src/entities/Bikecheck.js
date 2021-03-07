@@ -72,14 +72,14 @@ class Bikecheck extends Entity {
     return new this(model);
   }
 
-  static async getTop(topCount = 1) {
+  static async getTop(topCount = 1, onSale = false) {
     const [rows] = await models.sequelize.query(`
       select id, count("bikecheckId")
       from
         (
-          select * from "Bikecheck" b where b."isActive" = true
+          select * from "Bikecheck" b where b."isActive" = true${onSale ? ' and b."onSale" = true' : ''}
         ) as T1
-        inner join
+        left join
         (
           select "bikecheckId" from "BikecheckVote" bv where bv.points  > 0
         ) as T2
@@ -110,6 +110,10 @@ class Bikecheck extends Entity {
 
   get telegramImageId() {
     return this.model.telegramImageId;
+  }
+
+  get onSale() {
+    return this.model.onSale;
   }
 
   setActive() {
@@ -191,6 +195,11 @@ class Bikecheck extends Entity {
     this.cachedRank = rows.length ? rows[0].rank : -1;
 
     return this.cachedRank;
+  }
+
+  toggleOnSale() {
+    this.model.onSale = !this.model.onSale;
+    return this.model.save();
   }
 }
 

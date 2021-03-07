@@ -9,7 +9,7 @@ const messages = require('../../../text/messages');
 const UserSendsCallbackQuery = require('../../../infrastructure/events/UserSendsCallbackQuery');
 const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
 
-class LikeHandler extends Handler {
+class DislikeHandler extends Handler {
   async handle(callbackQuery) {
     this.eventBus.emit(
       EVENT_TYPES.USER_SENDS_CALLBACK_QUERY,
@@ -22,21 +22,21 @@ class LikeHandler extends Handler {
     if (user.id === bikecheck.userId) {
       await this.bot.answerCallbackQuery(
         callbackQuery.id,
-        { text: messages.like.cantVoteForOwnBike() },
+        { text: messages.dislike.cantVoteAgainstOwnBike() },
       );
       return;
     }
 
-    const currentUserVote = await BikecheckVote.getForBikecheckByUser(bikecheck, user);
+    const currentDonorVote = await BikecheckVote.getForBikecheckByUser(bikecheck, user);
 
-    const needToUpdateCaption = !currentUserVote || (currentUserVote.isDislike);
+    const needToUpdateCaption = !currentDonorVote || (currentDonorVote.isLike);
 
-    if (!currentUserVote) {
-      await BikecheckVote.createUpVote(bikecheck, callbackQuery.from);
+    if (currentDonorVote && currentDonorVote.isLike) {
+      await currentDonorVote.toggleDown();
     }
 
-    if (currentUserVote && currentUserVote.isDislike) {
-      await currentUserVote.toggleUp();
+    if (!currentDonorVote) {
+      await BikecheckVote.createDownVote(bikecheck, callbackQuery.from);
     }
 
     if (needToUpdateCaption) {
@@ -55,6 +55,7 @@ class LikeHandler extends Handler {
           bikecheckIndex,
           bikechecks.length,
           rank,
+          bikecheck.onSale,
         ),
         {
           chat_id: callbackQuery.message.chat.id,
@@ -67,9 +68,9 @@ class LikeHandler extends Handler {
 
     await this.bot.answerCallbackQuery(
       callbackQuery.id,
-      { text: messages.like.done() },
+      { text: messages.dislike.done() },
     );
   }
 }
 
-module.exports = LikeHandler;
+module.exports = DislikeHandler;

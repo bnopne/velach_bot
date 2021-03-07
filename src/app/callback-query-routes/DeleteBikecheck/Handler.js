@@ -66,6 +66,7 @@ class DeleteBikecheckHandler extends Handler {
           0,
           bikechecks.length,
           rank,
+          nextBikecheck.onSale,
         ),
         parse_mode: 'markdown',
       },

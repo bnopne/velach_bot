@@ -1,25 +1,28 @@
 const Application = require('../infrastructure/Application');
 
 // message routes
-const BikecheckRoute = require('./message-routes/BikecheckRoute');
-const CheckBikeRoute = require('./message-routes/CheckBikeRoute');
-const SetStravaRoute = require('./message-routes/SetStravaRoute');
-const HelpRoute = require('./message-routes/HelpRoute');
-const AnnounceRoute = require('./message-routes/AnnounceRoute');
-const TopRoute = require('./message-routes/TopRoute');
-const DeletedRoute = require('./message-routes/DeletedRoute');
+const BikecheckRoute = require('./message-routes/Bikecheck');
+const CheckBikeRoute = require('./message-routes/CheckBike');
+const SetStravaRoute = require('./message-routes/SetStrava');
+const HelpRoute = require('./message-routes/Help');
+const AnnounceRoute = require('./message-routes/Announce');
+const TopRoute = require('./message-routes/Top');
+const DeletedRoute = require('./message-routes/Deleted');
+const TopSellingRoute = require('./message-routes/TopSelling');
 
 // callback query routes
-const LikeRoute = require('./callback-query-routes/LikeRoute');
-const DislikeRoute = require('./callback-query-routes/DislikeRoute');
-const NextBikecheckRoute = require('./callback-query-routes/NextBikecheckRoute');
-const PreviousBikecheckRoute = require('./callback-query-routes/PreviousBikecheckRoute');
-const DeleteBikecheckRoute = require('./callback-query-routes/DeleteBikecheckRoute');
-const BanBikecheckCallbackQueryRoute = require('./callback-query-routes/BanBikecheckRoute');
-const NextDeletedBikechecRoute = require('./callback-query-routes/NextDeletedBikecheckRoute');
-const PreviousDeletedBikechecRoute = require('./callback-query-routes/PreviousDeletedBikecheckRoute');
-const RestoreBikechecRoute = require('./callback-query-routes/RestoreBikecheckRoute');
-const TopBikecheckRoute = require('./callback-query-routes/TopBikecheckRoute');
+const LikeRoute = require('./callback-query-routes/Like');
+const DislikeRoute = require('./callback-query-routes/Dislike');
+const NextBikecheckRoute = require('./callback-query-routes/NextBikecheck');
+const PreviousBikecheckRoute = require('./callback-query-routes/PreviousBikecheck');
+const DeleteBikecheckRoute = require('./callback-query-routes/DeleteBikecheck');
+const BanBikecheckCallbackQueryRoute = require('./callback-query-routes/BanBikecheck');
+const NextDeletedBikechecRoute = require('./callback-query-routes/NextDeletedBikecheck');
+const PreviousDeletedBikechecRoute = require('./callback-query-routes/PreviousDeletedBikecheck');
+const RestoreBikechecRoute = require('./callback-query-routes/RestoreBikecheck');
+const TopBikecheckRoute = require('./callback-query-routes/TopBikecheck');
+const TopSellingBikecheckRoute = require('./callback-query-routes/TopSellingBikecheck');
+const ToggleOnSaleBikecheckRoute = require('./callback-query-routes/ToggleOnSale');
 
 // services
 const UserAssistanceService = require('./services/UserAssistanceService');
@@ -35,6 +38,7 @@ class VelachBotApp extends Application {
       AnnounceRoute,
       TopRoute,
       DeletedRoute,
+      TopSellingRoute,
     ];
   }
 
@@ -50,6 +54,8 @@ class VelachBotApp extends Application {
       PreviousDeletedBikechecRoute,
       RestoreBikechecRoute,
       TopBikecheckRoute,
+      TopSellingBikecheckRoute,
+      ToggleOnSaleBikecheckRoute,
     ];
   }
 

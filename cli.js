@@ -31,23 +31,6 @@ async function execute(argv) {
     }
   }
 
-  if (argv._.includes('seed-db')) {
-    await new Promise((resolve, reject) => {
-      exec(
-        `npx sequelize --config ${path.join('src', 'settings', 'settings-wrapper-for-sequelize-cli.js')} db:seed:all`,
-        (err, stdout, stderr) => {
-          if (err) {
-            console.error(stderr);
-            reject(err);
-          } else {
-            console.log(stdout);
-            resolve();
-          }
-        },
-      );
-    });
-  }
-
   if (argv._.includes('create-migration')) {
     await new Promise((resolve, reject) => {
       exec(

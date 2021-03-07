@@ -60,6 +60,7 @@ class PreviousDeletedBikecheckHandler extends Handler {
           currentBikecheckIndex + 1,
           bikechecks.length,
           -1,
+          nextBikecheck.onSale,
         ),
         parse_mode: 'markdown',
       },

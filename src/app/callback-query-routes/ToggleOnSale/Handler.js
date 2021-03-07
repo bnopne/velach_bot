@@ -8,7 +8,7 @@ const UserSendsCallbackQuery = require('../../../infrastructure/events/UserSends
 const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
 const messages = require('../../../text/messages');
 
-class NextBikecheckHandler extends Handler {
+class ToggleOnSaleHandler extends Handler {
   async handle(callbackQuery) {
     this.eventBus.emit(
       EVENT_TYPES.USER_SENDS_CALLBACK_QUERY,
@@ -16,6 +16,13 @@ class NextBikecheckHandler extends Handler {
     );
 
     const bikecheck = await Bikecheck.findById(callbackQuery.data.getField('bikecheckId'));
+
+    if (!bikecheck) {
+      await await this.bot.answerCallbackQuery(callbackQuery.id, { text: messages.common.error() });
+      return;
+    }
+
+    await bikecheck.toggleOnSale();
     const bikecheckOwner = await User.findById(bikecheck.userId);
     const chat = await Chat.findById(callbackQuery.message.chat.id);
     const bikechecks = await Bikecheck.findActiveForChat(bikecheckOwner, chat);
@@ -28,48 +35,30 @@ class NextBikecheckHandler extends Handler {
       return;
     }
 
-    if (bikechecks.length === 1) {
-      await this.bot.answerCallbackQuery(callbackQuery.id, {});
-      return;
-    }
+    const currentBikecheckIndex = bikechecks.findIndex((b) => b.id === bikecheck.id);
 
-    let currentBikecheckIndex = bikechecks.findIndex((b) => b.id === bikecheck.id);
-
-    if (currentBikecheckIndex === -1) {
-      await this.bot.answerCallbackQuery(
-        callbackQuery.id,
-        { text: messages.common.error() },
-      );
-      return;
-    }
-
-    if (currentBikecheckIndex === bikechecks.length - 1) {
-      currentBikecheckIndex = -1;
-    }
-
-    const nextBikecheck = bikechecks[currentBikecheckIndex + 1];
-
-    const { likes, dislikes } = await nextBikecheck.getScore();
-    const rank = await nextBikecheck.getRank();
+    const { likes, dislikes } = await bikecheck.getScore();
+    const rank = await bikecheck.getRank();
 
     await this.bot.editMessageMedia(
       {
         type: 'photo',
-        media: nextBikecheck.telegramImageId,
+        media: bikecheck.telegramImageId,
         caption: getBikecheckCaption(
           likes,
           dislikes,
           bikecheckOwner.stravaLink,
-          currentBikecheckIndex + 1,
+          currentBikecheckIndex,
           bikechecks.length,
           rank,
+          bikecheck.onSale,
         ),
         parse_mode: 'markdown',
       },
       {
         chat_id: callbackQuery.message.chat.id,
         message_id: callbackQuery.message.messageId,
-        reply_markup: getBikecheckKeyboard(nextBikecheck, chat).export(),
+        reply_markup: getBikecheckKeyboard(bikecheck, chat).export(),
       },
     );
 
@@ -77,4 +66,4 @@ class NextBikecheckHandler extends Handler {
   }
 }
 
-module.exports = NextBikecheckHandler;
+module.exports = ToggleOnSaleHandler;

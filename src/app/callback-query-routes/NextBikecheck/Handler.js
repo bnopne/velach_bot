@@ -8,7 +8,7 @@ const UserSendsCallbackQuery = require('../../../infrastructure/events/UserSends
 const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
 const messages = require('../../../text/messages');
 
-class PreviousBikecheckHandler extends Handler {
+class NextBikecheckHandler extends Handler {
   async handle(callbackQuery) {
     this.eventBus.emit(
       EVENT_TYPES.USER_SENDS_CALLBACK_QUERY,
@@ -43,33 +43,34 @@ class PreviousBikecheckHandler extends Handler {
       return;
     }
 
-    if (currentBikecheckIndex === 0) {
-      currentBikecheckIndex = bikechecks.length;
+    if (currentBikecheckIndex === bikechecks.length - 1) {
+      currentBikecheckIndex = -1;
     }
 
-    const previousBikecheck = bikechecks[currentBikecheckIndex - 1];
+    const nextBikecheck = bikechecks[currentBikecheckIndex + 1];
 
-    const { likes, dislikes } = await previousBikecheck.getScore();
-    const rank = await previousBikecheck.getRank();
+    const { likes, dislikes } = await nextBikecheck.getScore();
+    const rank = await nextBikecheck.getRank();
 
     await this.bot.editMessageMedia(
       {
         type: 'photo',
-        media: previousBikecheck.telegramImageId,
+        media: nextBikecheck.telegramImageId,
         caption: getBikecheckCaption(
           likes,
           dislikes,
           bikecheckOwner.stravaLink,
-          currentBikecheckIndex - 1,
+          currentBikecheckIndex + 1,
           bikechecks.length,
           rank,
+          nextBikecheck.onSale,
         ),
         parse_mode: 'markdown',
       },
       {
         chat_id: callbackQuery.message.chat.id,
         message_id: callbackQuery.message.messageId,
-        reply_markup: getBikecheckKeyboard(previousBikecheck, chat).export(),
+        reply_markup: getBikecheckKeyboard(nextBikecheck, chat).export(),
       },
     );
 
@@ -77,4 +78,4 @@ class PreviousBikecheckHandler extends Handler {
   }
 }
 
-module.exports = PreviousBikecheckHandler;
+module.exports = NextBikecheckHandler;

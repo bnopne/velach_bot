@@ -6,4 +6,5 @@ module.exports = {
   announce: '/announce',
   top: '/top',
   deleted: '/deleted',
+  topSelling: '/topselling',
 };

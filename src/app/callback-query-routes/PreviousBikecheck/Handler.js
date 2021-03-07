@@ -1,13 +1,14 @@
 const Handler = require('../../../infrastructure/Handler');
 const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
-const { getDeletedBikecheckKeyboard } = require('../../../text/keyboards');
+const Chat = require('../../../entities/Chat');
+const { getBikecheckKeyboard } = require('../../../text/keyboards');
 const { getBikecheckCaption } = require('../../../text/captions');
 const UserSendsCallbackQuery = require('../../../infrastructure/events/UserSendsCallbackQuery');
 const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
 const messages = require('../../../text/messages');
 
-class NextDeletedBikecheckHandler extends Handler {
+class PreviousBikecheckHandler extends Handler {
   async handle(callbackQuery) {
     this.eventBus.emit(
       EVENT_TYPES.USER_SENDS_CALLBACK_QUERY,
@@ -16,7 +17,8 @@ class NextDeletedBikecheckHandler extends Handler {
 
     const bikecheck = await Bikecheck.findById(callbackQuery.data.getField('bikecheckId'));
     const bikecheckOwner = await User.findById(bikecheck.userId);
-    const bikechecks = await Bikecheck.findDeletedForUser(bikecheckOwner);
+    const chat = await Chat.findById(callbackQuery.message.chat.id);
+    const bikechecks = await Bikecheck.findActiveForChat(bikecheckOwner, chat);
 
     if (!bikechecks.length) {
       await this.bot.answerCallbackQuery(
@@ -41,32 +43,34 @@ class NextDeletedBikecheckHandler extends Handler {
       return;
     }
 
-    if (currentBikecheckIndex === bikechecks.length - 1) {
-      currentBikecheckIndex = -1;
+    if (currentBikecheckIndex === 0) {
+      currentBikecheckIndex = bikechecks.length;
     }
 
-    const nextBikecheck = bikechecks[currentBikecheckIndex + 1];
+    const previousBikecheck = bikechecks[currentBikecheckIndex - 1];
 
-    const { likes, dislikes } = await nextBikecheck.getScore();
+    const { likes, dislikes } = await previousBikecheck.getScore();
+    const rank = await previousBikecheck.getRank();
 
     await this.bot.editMessageMedia(
       {
         type: 'photo',
-        media: nextBikecheck.telegramImageId,
+        media: previousBikecheck.telegramImageId,
         caption: getBikecheckCaption(
           likes,
           dislikes,
           bikecheckOwner.stravaLink,
-          currentBikecheckIndex + 1,
+          currentBikecheckIndex - 1,
           bikechecks.length,
-          -1,
+          rank,
+          previousBikecheck.onSale,
         ),
         parse_mode: 'markdown',
       },
       {
         chat_id: callbackQuery.message.chat.id,
         message_id: callbackQuery.message.messageId,
-        reply_markup: getDeletedBikecheckKeyboard(nextBikecheck).export(),
+        reply_markup: getBikecheckKeyboard(previousBikecheck, chat).export(),
       },
     );
 
@@ -74,4 +78,4 @@ class NextDeletedBikecheckHandler extends Handler {
   }
 }
 
-module.exports = NextDeletedBikecheckHandler;
+module.exports = PreviousBikecheckHandler;

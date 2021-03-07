@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
+    onSale: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     timestamps: true,
