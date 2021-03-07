@@ -9,4 +9,6 @@ module.exports = {
   restoreBikecheck: '8',
   banBikecheck: '9',
   showTopBikecheck: '10',
+  showTopSellingBikecheck: '11',
+  toggleOnSale: '12',
 };

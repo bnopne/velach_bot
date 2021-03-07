@@ -13,6 +13,10 @@ const getBikecheckKeyboard = (bikecheck, chat) => {
       ],
       [
         InlineKeyboardButton.createWithCallbackData('Удалить', CallbackData.createDeleteBikecheck(bikecheck)),
+        InlineKeyboardButton.createWithCallbackData(
+          bikecheck.onSale ? 'Снять с продажи' : 'Выставить на продажу',
+          CallbackData.createToggleOnSale(bikecheck),
+        ),
       ],
     ]);
   }
@@ -41,8 +45,17 @@ const getTopBikecheckKeyboard = (position) => InlineKeyboardMarkup.createFromBut
   (new Array(settings.get('bikechecks.topLength')))
     .fill()
     .map((_, i) => InlineKeyboardButton.createWithCallbackData(
-      `🏆 #${i + 1}`,
+      `${i + 1}`,
       CallbackData.createShowTopBikecheck(i + 1 === position ? 0 : i + 1),
+    )),
+]);
+
+const getTopSellingBikecheckKeyboard = (position) => InlineKeyboardMarkup.createFromButtonRows([
+  (new Array(settings.get('bikechecks.topLength')))
+    .fill()
+    .map((_, i) => InlineKeyboardButton.createWithCallbackData(
+      `${i + 1}`,
+      CallbackData.createShowTopSellingBikecheck(i + 1 === position ? 0 : i + 1),
     )),
 ]);
 
@@ -50,4 +63,5 @@ module.exports = {
   getBikecheckKeyboard,
   getDeletedBikecheckKeyboard,
   getTopBikecheckKeyboard,
+  getTopSellingBikecheckKeyboard,
 };

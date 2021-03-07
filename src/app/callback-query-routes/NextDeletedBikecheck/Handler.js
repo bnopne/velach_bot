@@ -3,53 +3,51 @@ const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
 const { getDeletedBikecheckKeyboard } = require('../../../text/keyboards');
 const { getBikecheckCaption } = require('../../../text/captions');
-const messages = require('../../../text/messages');
 const UserSendsCallbackQuery = require('../../../infrastructure/events/UserSendsCallbackQuery');
 const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
+const messages = require('../../../text/messages');
 
-class RestoreBikecheckHandler extends Handler {
+class NextDeletedBikecheckHandler extends Handler {
   async handle(callbackQuery) {
     this.eventBus.emit(
       EVENT_TYPES.USER_SENDS_CALLBACK_QUERY,
       new UserSendsCallbackQuery(callbackQuery.from.id),
     );
 
-    const user = await User.findById(callbackQuery.from.id);
     const bikecheck = await Bikecheck.findById(callbackQuery.data.getField('bikecheckId'));
+    const bikecheckOwner = await User.findById(bikecheck.userId);
+    const bikechecks = await Bikecheck.findDeletedForUser(bikecheckOwner);
 
-    if (user.id !== bikecheck.userId) {
+    if (!bikechecks.length) {
       await this.bot.answerCallbackQuery(
         callbackQuery.id,
-        { text: messages.restoreBikecheck.onlyOwnerCanDoThat() },
+        { text: messages.bikecheck.nothingToShow() },
       );
       return;
     }
 
-    await bikecheck.setActive();
-
-    const bikechecks = await Bikecheck.findDeletedForUser(user);
-
-    if (!bikechecks.length) {
-      await this.bot.editMessageMedia(
-        {
-          type: 'photo',
-          media: 'https://cdn.pixabay.com/photo/2013/04/01/11/00/no-biking-98885__340.png',
-          caption: messages.restoreBikecheck.noBikechecks(),
-          parse_mode: 'markdown',
-        },
-        {
-          chat_id: callbackQuery.message.chat.id,
-          message_id: callbackQuery.message.messageId,
-        },
-      );
-
+    if (bikechecks.length === 1) {
       await this.bot.answerCallbackQuery(callbackQuery.id, {});
       return;
     }
 
-    const nextBikecheck = bikechecks[0];
+    let currentBikecheckIndex = bikechecks.findIndex((b) => b.id === bikecheck.id);
+
+    if (currentBikecheckIndex === -1) {
+      await this.bot.answerCallbackQuery(
+        callbackQuery.id,
+        { text: messages.common.error() },
+      );
+      return;
+    }
+
+    if (currentBikecheckIndex === bikechecks.length - 1) {
+      currentBikecheckIndex = -1;
+    }
+
+    const nextBikecheck = bikechecks[currentBikecheckIndex + 1];
+
     const { likes, dislikes } = await nextBikecheck.getScore();
-    const bikecheckOwner = await User.findById(bikecheck.userId);
 
     await this.bot.editMessageMedia(
       {
@@ -59,9 +57,10 @@ class RestoreBikecheckHandler extends Handler {
           likes,
           dislikes,
           bikecheckOwner.stravaLink,
-          0,
+          currentBikecheckIndex + 1,
           bikechecks.length,
           -1,
+          nextBikecheck.onSale,
         ),
         parse_mode: 'markdown',
       },
@@ -72,11 +71,8 @@ class RestoreBikecheckHandler extends Handler {
       },
     );
 
-    await this.bot.answerCallbackQuery(
-      callbackQuery.id,
-      { text: messages.restoreBikecheck.done() },
-    );
+    await this.bot.answerCallbackQuery(callbackQuery.id, {});
   }
 }
 
-module.exports = RestoreBikecheckHandler;
+module.exports = NextDeletedBikecheckHandler;

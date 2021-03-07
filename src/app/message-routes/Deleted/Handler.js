@@ -3,17 +3,17 @@ const User = require('../../../entities/User');
 const Bikecheck = require('../../../entities/Bikecheck');
 const Chat = require('../../../entities/Chat');
 const { getBikecheckCaption } = require('../../../text/captions');
-const { getBikecheckKeyboard } = require('../../../text/keyboards');
+const { getDeletedBikecheckKeyboard } = require('../../../text/keyboards');
 const messages = require('../../../text/messages');
 const UserExecutesCommand = require('../../../infrastructure/events/UserExecutesCommand');
 const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
 const commands = require('../../../text/commands');
 
-class BikecheckHandler extends Handler {
+class DeletedHandler extends Handler {
   async handle(message) {
     this.eventBus.emit(
       EVENT_TYPES.USER_EXECUTES_COMMAND,
-      new UserExecutesCommand(commands.bikecheck, message.from.id, message.chat.id),
+      new UserExecutesCommand(commands.deleted, message.from.id, message.chat.id),
     );
 
     const user = message.replyToMessage
@@ -22,7 +22,7 @@ class BikecheckHandler extends Handler {
 
     const chat = await Chat.findById(message.chat.id);
 
-    const bikechecks = await Bikecheck.findActiveForChat(user, chat);
+    const bikechecks = await Bikecheck.findDeletedForUser(user);
 
     if (!bikechecks.length) {
       await this.bot.sendMessage(
@@ -37,19 +37,26 @@ class BikecheckHandler extends Handler {
     }
     const firstBikecheck = bikechecks[0];
     const { likes, dislikes } = await firstBikecheck.getScore();
-    const rank = await firstBikecheck.getRank();
 
     await this.bot.sendPhoto(
       message.chat.id,
       firstBikecheck.telegramImageId,
       {
         reply_to_message_id: message.messageId,
-        caption: getBikecheckCaption(likes, dislikes, user.stravaLink, 0, bikechecks.length, rank),
-        reply_markup: getBikecheckKeyboard(firstBikecheck, chat).export(),
+        caption: getBikecheckCaption(
+          likes,
+          dislikes,
+          user.stravaLink,
+          0,
+          bikechecks.length,
+          -1,
+          firstBikecheck.onSale,
+        ),
+        reply_markup: getDeletedBikecheckKeyboard(firstBikecheck, chat).export(),
         parse_mode: 'markdown',
       },
     );
   }
 }
 
-module.exports = BikecheckHandler;
+module.exports = DeletedHandler;

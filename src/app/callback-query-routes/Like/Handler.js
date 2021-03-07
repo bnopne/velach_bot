@@ -9,7 +9,7 @@ const messages = require('../../../text/messages');
 const UserSendsCallbackQuery = require('../../../infrastructure/events/UserSendsCallbackQuery');
 const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
 
-class DislikeHandler extends Handler {
+class LikeHandler extends Handler {
   async handle(callbackQuery) {
     this.eventBus.emit(
       EVENT_TYPES.USER_SENDS_CALLBACK_QUERY,
@@ -22,21 +22,21 @@ class DislikeHandler extends Handler {
     if (user.id === bikecheck.userId) {
       await this.bot.answerCallbackQuery(
         callbackQuery.id,
-        { text: messages.dislike.cantVoteAgainstOwnBike() },
+        { text: messages.like.cantVoteForOwnBike() },
       );
       return;
     }
 
-    const currentDonorVote = await BikecheckVote.getForBikecheckByUser(bikecheck, user);
+    const currentUserVote = await BikecheckVote.getForBikecheckByUser(bikecheck, user);
 
-    const needToUpdateCaption = !currentDonorVote || (currentDonorVote.isLike);
+    const needToUpdateCaption = !currentUserVote || (currentUserVote.isDislike);
 
-    if (currentDonorVote && currentDonorVote.isLike) {
-      await currentDonorVote.toggleDown();
+    if (!currentUserVote) {
+      await BikecheckVote.createUpVote(bikecheck, callbackQuery.from);
     }
 
-    if (!currentDonorVote) {
-      await BikecheckVote.createDownVote(bikecheck, callbackQuery.from);
+    if (currentUserVote && currentUserVote.isDislike) {
+      await currentUserVote.toggleUp();
     }
 
     if (needToUpdateCaption) {
@@ -55,6 +55,7 @@ class DislikeHandler extends Handler {
           bikecheckIndex,
           bikechecks.length,
           rank,
+          bikecheck.onSale,
         ),
         {
           chat_id: callbackQuery.message.chat.id,
@@ -67,9 +68,9 @@ class DislikeHandler extends Handler {
 
     await this.bot.answerCallbackQuery(
       callbackQuery.id,
-      { text: messages.dislike.done() },
+      { text: messages.like.done() },
     );
   }
 }
 
-module.exports = DislikeHandler;
+module.exports = LikeHandler;

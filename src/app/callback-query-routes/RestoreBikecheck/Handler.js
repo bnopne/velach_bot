@@ -1,15 +1,13 @@
 const Handler = require('../../../infrastructure/Handler');
 const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
-const Chat = require('../../../entities/Chat');
-const { getBikecheckKeyboard } = require('../../../text/keyboards');
+const { getDeletedBikecheckKeyboard } = require('../../../text/keyboards');
 const { getBikecheckCaption } = require('../../../text/captions');
 const messages = require('../../../text/messages');
 const UserSendsCallbackQuery = require('../../../infrastructure/events/UserSendsCallbackQuery');
 const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
-const settings = require('../../../settings');
 
-class BanBikecheckHandler extends Handler {
+class RestoreBikecheckHandler extends Handler {
   async handle(callbackQuery) {
     this.eventBus.emit(
       EVENT_TYPES.USER_SENDS_CALLBACK_QUERY,
@@ -17,28 +15,26 @@ class BanBikecheckHandler extends Handler {
     );
 
     const user = await User.findById(callbackQuery.from.id);
-    const chat = await Chat.findById(callbackQuery.message.chat.id);
     const bikecheck = await Bikecheck.findById(callbackQuery.data.getField('bikecheckId'));
-    const bikecheckOwner = await User.findById(bikecheck.userId);
 
-    if (user.id === bikecheck.userId) {
+    if (user.id !== bikecheck.userId) {
       await this.bot.answerCallbackQuery(
         callbackQuery.id,
-        { text: messages.banBikecheck.cantBanOwnBike() },
+        { text: messages.restoreBikecheck.onlyOwnerCanDoThat() },
       );
       return;
     }
 
-    await bikecheck.banInChat(chat);
+    await bikecheck.setActive();
 
-    const bikechecks = await Bikecheck.findActiveForChat(bikecheckOwner, chat);
+    const bikechecks = await Bikecheck.findDeletedForUser(user);
 
     if (!bikechecks.length) {
       await this.bot.editMessageMedia(
         {
           type: 'photo',
-          media: settings.get(bikecheck.emptyBikecheckPictureUrl),
-          caption: messages.common.noBikechecks(),
+          media: 'https://cdn.pixabay.com/photo/2013/04/01/11/00/no-biking-98885__340.png',
+          caption: messages.restoreBikecheck.noBikechecks(),
           parse_mode: 'markdown',
         },
         {
@@ -52,9 +48,8 @@ class BanBikecheckHandler extends Handler {
     }
 
     const nextBikecheck = bikechecks[0];
-
     const { likes, dislikes } = await nextBikecheck.getScore();
-    const rank = await nextBikecheck.getRank();
+    const bikecheckOwner = await User.findById(bikecheck.userId);
 
     await this.bot.editMessageMedia(
       {
@@ -66,19 +61,23 @@ class BanBikecheckHandler extends Handler {
           bikecheckOwner.stravaLink,
           0,
           bikechecks.length,
-          rank,
+          -1,
+          nextBikecheck.onSale,
         ),
         parse_mode: 'markdown',
       },
       {
         chat_id: callbackQuery.message.chat.id,
         message_id: callbackQuery.message.messageId,
-        reply_markup: getBikecheckKeyboard(nextBikecheck, chat).export(),
+        reply_markup: getDeletedBikecheckKeyboard(nextBikecheck).export(),
       },
     );
 
-    await this.bot.answerCallbackQuery(callbackQuery.id, { text: messages.banBikecheck.done() });
+    await this.bot.answerCallbackQuery(
+      callbackQuery.id,
+      { text: messages.restoreBikecheck.done() },
+    );
   }
 }
 
-module.exports = BanBikecheckHandler;
+module.exports = RestoreBikecheckHandler;
