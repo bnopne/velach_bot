@@ -1,9 +1,9 @@
 const moment = require('moment');
 
-const Middleware = require('../../infrastructure/Middleware');
-const settings = require('../../settings');
+const Middleware = require('../../../../infrastructure/Middleware');
+const settings = require('../../../../settings');
 
-class MessageAgeCheckMiddleware extends Middleware {
+class AgeCheckMiddleware extends Middleware {
   async process(message) { // eslint-disable-line
     const messageAge = moment().diff(moment.unix(message.date), 'seconds');
 
@@ -13,4 +13,4 @@ class MessageAgeCheckMiddleware extends Middleware {
   }
 }
 
-module.exports = MessageAgeCheckMiddleware;
+module.exports = AgeCheckMiddleware;

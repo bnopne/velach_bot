@@ -1,8 +1,5 @@
 const Handler = require('../../../infrastructure/Handler');
-const UserExecutesCommand = require('../../../infrastructure/events/UserExecutesCommand');
 const Chat = require('../../../entities/Chat');
-const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
-const commands = require('../../../text/commands');
 
 const wait = (ms) => new Promise((resolve) => {
   setTimeout(resolve, ms);
@@ -10,11 +7,6 @@ const wait = (ms) => new Promise((resolve) => {
 
 class AnnounceHandler extends Handler {
   async handle(message) {
-    this.eventBus.emit(
-      EVENT_TYPES.USER_EXECUTES_COMMAND,
-      new UserExecutesCommand(commands.announce, message.from.id, message.chat.id),
-    );
-
     if (!message.replyToMessage) {
       await this.bot.sendMessage(message.chat.id, 'Ответь на сообщение с анонсом');
       return;

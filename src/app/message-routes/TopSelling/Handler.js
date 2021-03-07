@@ -1,7 +1,4 @@
 const Handler = require('../../../infrastructure/Handler');
-const commands = require('../../../text/commands');
-const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
-const UserExecutesCommand = require('../../../infrastructure/events/UserExecutesCommand');
 const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
 const { getTopSellingCaption } = require('../../../text/captions');
@@ -11,11 +8,6 @@ const messages = require('../../../text/messages');
 
 class TopSellingHandler extends Handler {
   async handle(message) {
-    this.eventBus.emit(
-      EVENT_TYPES.USER_EXECUTES_COMMAND,
-      new UserExecutesCommand(commands.top, message.from.id, message.chat.id),
-    );
-
     const topLength = settings.get('bikechecks.topLength');
     const bikechecks = await Bikecheck.getTop(topLength, true);
 

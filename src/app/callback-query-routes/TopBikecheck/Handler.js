@@ -3,18 +3,11 @@ const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
 const { getTopBikecheckKeyboard } = require('../../../text/keyboards');
 const { getTopCaption } = require('../../../text/captions');
-const UserSendsCallbackQuery = require('../../../infrastructure/events/UserSendsCallbackQuery');
-const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
 const messages = require('../../../text/messages');
 const settings = require('../../../settings');
 
 class TopBikecheckHandler extends Handler {
   async handle(callbackQuery) {
-    this.eventBus.emit(
-      EVENT_TYPES.USER_SENDS_CALLBACK_QUERY,
-      new UserSendsCallbackQuery(callbackQuery.from.id),
-    );
-
     const topPosition = callbackQuery.data.getField('position');
 
     if (!topPosition) {
@@ -45,7 +38,13 @@ class TopBikecheckHandler extends Handler {
       {
         type: 'photo',
         media: nextBikecheck.telegramImageId,
-        caption: getTopCaption(topPosition, likes, dislikes, nextBikecheckOwner),
+        caption: getTopCaption(
+          topPosition,
+          likes,
+          dislikes,
+          nextBikecheckOwner,
+          nextBikecheck.onSale,
+        ),
         parse_mode: 'markdown',
       },
       {

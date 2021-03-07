@@ -1,10 +1,10 @@
-const Route = require('../../../infrastructure/Route');
+const CommandRoute = require('../../common/MessageCommandRoute');
 const HelpHandler = require('./Handler');
-const DataSaverMiddleware = require('../../middlewares/MessageDataSaverMiddleware');
-const MessageAgeCheckMiddleware = require('../../middlewares/MessageAgeCheckMiddleware');
+const DataSaverMiddleware = require('../../middlewares/common/messages/DataSaverMiddleware');
+const MessageAgeCheckMiddleware = require('../../middlewares/common/messages/AgeCheckMiddleware');
 const { help } = require('../../../text/commands');
 
-class CheckBikeRoute extends Route {
+class CheckBikeRoute extends CommandRoute {
   static get middlewareClsList() {
     return [
       DataSaverMiddleware,
@@ -16,13 +16,9 @@ class CheckBikeRoute extends Route {
     return HelpHandler;
   }
 
-  isMatching(message) {
-    if (!message.text) {
-      return false;
-    }
-
-    return (message.text === `${help}@${this.bot.info.username}`)
-      || (message.text === `${help}`);
+  // eslint-disable-next-line class-methods-use-this
+  getCommand() {
+    return help;
   }
 }
 

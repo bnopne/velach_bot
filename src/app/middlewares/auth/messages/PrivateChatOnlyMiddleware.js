@@ -1,5 +1,5 @@
-const Middleware = require('../../infrastructure/Middleware');
-const messages = require('../../text/messages');
+const Middleware = require('../../../../infrastructure/Middleware');
+const messages = require('../../../../text/messages');
 
 class PrivateChatOnlyMiddleware extends Middleware {
   async process(message) {

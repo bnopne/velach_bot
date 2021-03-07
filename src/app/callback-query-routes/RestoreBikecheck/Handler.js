@@ -4,16 +4,9 @@ const User = require('../../../entities/User');
 const { getDeletedBikecheckKeyboard } = require('../../../text/keyboards');
 const { getBikecheckCaption } = require('../../../text/captions');
 const messages = require('../../../text/messages');
-const UserSendsCallbackQuery = require('../../../infrastructure/events/UserSendsCallbackQuery');
-const { EVENT_TYPES } = require('../../../infrastructure/events/constants');
 
 class RestoreBikecheckHandler extends Handler {
   async handle(callbackQuery) {
-    this.eventBus.emit(
-      EVENT_TYPES.USER_SENDS_CALLBACK_QUERY,
-      new UserSendsCallbackQuery(callbackQuery.from.id),
-    );
-
     const user = await User.findById(callbackQuery.from.id);
     const bikecheck = await Bikecheck.findById(callbackQuery.data.getField('bikecheckId'));
 

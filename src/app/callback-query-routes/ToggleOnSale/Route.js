@@ -1,12 +1,14 @@
-const Route = require('../../../infrastructure/Route');
-const CallbackQueryDataSaverMiddleware = require('../../middlewares/CallbackQueryDataSaverMiddleware');
+const CommandRoute = require('../../common/CallbackQueryCommandRoute');
+const DataSaverMiddleware = require('../../middlewares/common/callback-queries/DataSaverMiddleware');
+const PrivateChatOnlyMiddleware = require('../../middlewares/auth/callback-queries/PrivateChatOnlyMiddleware');
 const ToggleOnSaleHandler = require('./Handler');
 const commands = require('../../../text/callback-query-commands');
 
-class ToggleOnSaleRoute extends Route {
+class ToggleOnSaleRoute extends CommandRoute {
   static get middlewareClsList() {
     return [
-      CallbackQueryDataSaverMiddleware,
+      DataSaverMiddleware,
+      PrivateChatOnlyMiddleware,
     ];
   }
 
@@ -14,12 +16,9 @@ class ToggleOnSaleRoute extends Route {
     return ToggleOnSaleHandler;
   }
 
-  isMatching(callbackQuery) { // eslint-disable-line
-    if (!callbackQuery.data) {
-      return false;
-    }
-
-    return callbackQuery.data.command === commands.toggleOnSale;
+  // eslint-disable-next-line class-methods-use-this
+  getCommand() {
+    return commands.toggleOnSale;
   }
 }
 

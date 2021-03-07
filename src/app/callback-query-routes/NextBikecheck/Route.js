@@ -1,12 +1,12 @@
-const Route = require('../../../infrastructure/Route');
-const CallbackQueryDataSaverMiddleware = require('../../middlewares/CallbackQueryDataSaverMiddleware');
+const CommandRoute = require('../../common/CallbackQueryCommandRoute');
+const DataSaverMiddleware = require('../../middlewares/common/callback-queries/DataSaverMiddleware');
 const NextBikecheckHandler = require('./Handler');
 const commands = require('../../../text/callback-query-commands');
 
-class NextBikecheckRoute extends Route {
+class NextBikecheckRoute extends CommandRoute {
   static get middlewareClsList() {
     return [
-      CallbackQueryDataSaverMiddleware,
+      DataSaverMiddleware,
     ];
   }
 
@@ -14,12 +14,9 @@ class NextBikecheckRoute extends Route {
     return NextBikecheckHandler;
   }
 
-  isMatching(callbackQuery) { // eslint-disable-line
-    if (!callbackQuery.data) {
-      return false;
-    }
-
-    return callbackQuery.data.command === commands.showNextBikecheck;
+  // eslint-disable-next-line class-methods-use-this
+  getCommand() {
+    return commands.showNextBikecheck;
   }
 }
 

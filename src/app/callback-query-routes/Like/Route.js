@@ -1,12 +1,12 @@
-const Route = require('../../../infrastructure/Route');
-const CallbackQueryDataSaverMiddleware = require('../../middlewares/CallbackQueryDataSaverMiddleware');
+const CommandRoute = require('../../common/CallbackQueryCommandRoute');
+const DataSaverMiddleware = require('../../middlewares/common/callback-queries/DataSaverMiddleware');
 const VoteUpHandler = require('./Handler');
 const commands = require('../../../text/callback-query-commands');
 
-class LikeRoute extends Route {
+class LikeRoute extends CommandRoute {
   static get middlewareClsList() {
     return [
-      CallbackQueryDataSaverMiddleware,
+      DataSaverMiddleware,
     ];
   }
 
@@ -14,12 +14,9 @@ class LikeRoute extends Route {
     return VoteUpHandler;
   }
 
-  isMatching(callbackQuery) { // eslint-disable-line
-    if (!callbackQuery.data) {
-      return false;
-    }
-
-    return callbackQuery.data.command === commands.like;
+  // eslint-disable-next-line class-methods-use-this
+  getCommand() {
+    return commands.like;
   }
 }
 

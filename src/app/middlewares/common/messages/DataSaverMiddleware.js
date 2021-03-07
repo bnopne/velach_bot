@@ -1,9 +1,9 @@
-const Middleware = require('../../infrastructure/Middleware');
-const Chat = require('../../entities/Chat');
-const User = require('../../entities/User');
-const UserChatMtm = require('../../entities/UserChatMtm');
+const Middleware = require('../../../../infrastructure/Middleware');
+const Chat = require('../../../../entities/Chat');
+const User = require('../../../../entities/User');
+const UserChatMtm = require('../../../../entities/UserChatMtm');
 
-class MessageDataSaverMiddleware extends Middleware {
+class DataSaverMiddleware extends Middleware {
   async process(message) { // eslint-disable-line
     await Chat.createOrUpdate({
       id: message.chat.id,
@@ -44,4 +44,4 @@ class MessageDataSaverMiddleware extends Middleware {
   }
 }
 
-module.exports = MessageDataSaverMiddleware;
+module.exports = DataSaverMiddleware;
