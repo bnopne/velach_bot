@@ -7,4 +7,5 @@ module.exports = {
   top: '/top',
   deleted: '/deleted',
   topSelling: '/topselling',
+  onSale: '/onsale',
 };

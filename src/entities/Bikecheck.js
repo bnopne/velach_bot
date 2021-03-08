@@ -72,12 +72,12 @@ class Bikecheck extends Entity {
     return new this(model);
   }
 
-  static async getTop(topCount = 1, onSale = false) {
+  static async getTop(topCount = 1) {
     const [rows] = await models.sequelize.query(`
       select id, count("bikecheckId")
       from
         (
-          select * from "Bikecheck" b where b."isActive" = true${onSale ? ' and b."onSale" = true' : ''}
+          select * from "Bikecheck" b where b."isActive" = true
         ) as T1
         left join
         (
@@ -98,6 +98,25 @@ class Bikecheck extends Entity {
     });
 
     return rows.map((row) => new this(bikechecks.find((b) => b.id === row.id)));
+  }
+
+  static async findOnSale(position) {
+    const bikecheckModels = await this.modelClass.findAll({
+      where: {
+        isActive: true,
+        onSale: true,
+      },
+      order: [
+        ['saleRank', 'DESC'],
+      ],
+      offset: position - 1,
+    });
+
+    if (!bikecheckModels.length) {
+      return null;
+    }
+
+    return new this(bikecheckModels[0]);
   }
 
   get id() {
@@ -200,6 +219,17 @@ class Bikecheck extends Entity {
   toggleOnSale() {
     this.model.onSale = !this.model.onSale;
     return this.model.save();
+  }
+
+  async bumpSaleRank() {
+    const [rows] = await this.model.sequelize.query('select max("saleRank") as "maxRank" from "Bikecheck"');
+
+    if (!rows.length) {
+      return;
+    }
+
+    this.model.saleRank = parseInt(rows[0].maxRank, 10) + 1;
+    await this.model.save();
   }
 }
 

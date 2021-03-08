@@ -59,9 +59,31 @@ const getTopSellingBikecheckKeyboard = (position) => InlineKeyboardMarkup.create
     )),
 ]);
 
+const getOnSaleBikecheckKeyboard = (currentPosition, bikecheck, chat) => {
+  if (chat.type === 'private') {
+    return InlineKeyboardMarkup.createFromButtonRows([
+      [
+        InlineKeyboardButton.createWithCallbackData('⬅', CallbackData.createShowPreviousOnSaleBikecheck(currentPosition)),
+        InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextOnSaleBikecheck(currentPosition)),
+      ],
+      [
+        InlineKeyboardButton.createWithCallbackData('Bump', CallbackData.createForBumpbikecheck(bikecheck)),
+      ],
+    ]);
+  }
+
+  return InlineKeyboardMarkup.createFromButtonRows([
+    [
+      InlineKeyboardButton.createWithCallbackData('⬅', CallbackData.createShowPreviousOnSaleBikecheck(currentPosition)),
+      InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextOnSaleBikecheck(currentPosition)),
+    ],
+  ]);
+};
+
 module.exports = {
   getBikecheckKeyboard,
   getDeletedBikecheckKeyboard,
   getTopBikecheckKeyboard,
   getTopSellingBikecheckKeyboard,
+  getOnSaleBikecheckKeyboard,
 };

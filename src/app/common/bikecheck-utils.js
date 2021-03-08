@@ -1,5 +1,5 @@
-const { getBikecheckCaption } = require('../../text/captions');
-const { getBikecheckKeyboard, getDeletedBikecheckKeyboard } = require('../../text/keyboards');
+const { getBikecheckCaption, getTopSellingCaption } = require('../../text/captions');
+const { getBikecheckKeyboard, getDeletedBikecheckKeyboard, getOnSaleBikecheckKeyboard } = require('../../text/keyboards');
 
 async function sendBikecheckMessage({
   bot,
@@ -130,9 +130,33 @@ async function editDeletedBikecheckMessage({
   );
 }
 
+function editOnSaleBikecheckMessage({
+  bot,
+  callbackQuery,
+  chat,
+  bikecheck,
+  bikecheckOwner,
+  position,
+}) {
+  return bot.editMessageMedia(
+    {
+      type: 'photo',
+      media: bikecheck.telegramImageId,
+      caption: getTopSellingCaption(position, bikecheckOwner),
+      parse_mode: 'markdown',
+    },
+    {
+      chat_id: callbackQuery.message.chat.id,
+      message_id: callbackQuery.message.messageId,
+      reply_markup: getOnSaleBikecheckKeyboard(position, bikecheck, chat).export(),
+    },
+  );
+}
+
 module.exports = {
   sendBikecheckMessage,
   editBikecheckMessage,
   sendDeletedBikecheckMessage,
   editDeletedBikecheckMessage,
+  editOnSaleBikecheckMessage,
 };

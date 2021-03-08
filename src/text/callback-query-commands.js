@@ -11,4 +11,6 @@ module.exports = {
   showTopBikecheck: '10',
   showTopSellingBikecheck: '11',
   toggleOnSale: '12',
+  showOnSaleBikecheck: '13',
+  bumpOnSaleBikecheck: '14',
 };
