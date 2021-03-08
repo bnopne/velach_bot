@@ -76,4 +76,7 @@ module.exports = {
   topSelling: {
     noBikesForSale: () => 'На данный момент нет байков на продажу',
   },
+  onSale: {
+    noBikesOnSale: () => 'На данный момент нет байков на продажу',
+  },
 };

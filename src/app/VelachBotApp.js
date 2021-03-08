@@ -8,7 +8,7 @@ const HelpRoute = require('./message-routes/Help');
 const AnnounceRoute = require('./message-routes/Announce');
 const TopRoute = require('./message-routes/Top');
 const DeletedRoute = require('./message-routes/Deleted');
-const TopSellingRoute = require('./message-routes/TopSelling');
+const OnSaleRoute = require('./message-routes/OnSale');
 
 // callback query routes
 const LikeRoute = require('./callback-query-routes/Like');
@@ -20,8 +20,9 @@ const NextDeletedBikechecRoute = require('./callback-query-routes/NextDeletedBik
 const PreviousDeletedBikechecRoute = require('./callback-query-routes/PreviousDeletedBikecheck');
 const RestoreBikechecRoute = require('./callback-query-routes/RestoreBikecheck');
 const TopBikecheckRoute = require('./callback-query-routes/TopBikecheck');
-const TopSellingBikecheckRoute = require('./callback-query-routes/TopSellingBikecheck');
 const ToggleOnSaleBikecheckRoute = require('./callback-query-routes/ToggleOnSale');
+const ShowOnSaleBikecheck = require('./callback-query-routes/ShowOnSaleBikecheck');
+const BumpOnSaleBikecheck = require('./callback-query-routes/BumpOnSaleBikecheck');
 
 // services
 const UserAssistanceService = require('./services/UserAssistanceService');
@@ -37,7 +38,7 @@ class VelachBotApp extends Application {
       AnnounceRoute,
       TopRoute,
       DeletedRoute,
-      TopSellingRoute,
+      OnSaleRoute,
     ];
   }
 
@@ -52,8 +53,9 @@ class VelachBotApp extends Application {
       PreviousDeletedBikechecRoute,
       RestoreBikechecRoute,
       TopBikecheckRoute,
-      TopSellingBikecheckRoute,
       ToggleOnSaleBikecheckRoute,
+      ShowOnSaleBikecheck,
+      BumpOnSaleBikecheck,
     ];
   }
 

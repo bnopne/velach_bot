@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
       allowNull: false,
       defaultValue: false,
     },
+    saleRank: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      defaultValue: 1,
+    },
   },
   {
     timestamps: true,

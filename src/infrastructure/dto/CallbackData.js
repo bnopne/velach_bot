@@ -86,6 +86,27 @@ class CallbackData extends DTO {
     return data;
   }
 
+  static createShowNextOnSaleBikecheck(position) {
+    const data = new this();
+    data.setField('command', commands.showOnSaleBikecheck);
+    data.setField('position', position + 1);
+    return data;
+  }
+
+  static createShowPreviousOnSaleBikecheck(position) {
+    const data = new this();
+    data.setField('command', commands.showOnSaleBikecheck);
+    data.setField('position', position - 1);
+    return data;
+  }
+
+  static createForBumpbikecheck(bikecheck) {
+    const data = new this();
+    data.setField('command', commands.bumpOnSaleBikecheck);
+    data.setField('bikecheckId', bikecheck.id);
+    return data;
+  }
+
   static deserialize(dataString) {
     const rawObject = JSON.parse(dataString);
     return new this(rawObject);

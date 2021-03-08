@@ -1,30 +1,27 @@
 const Handler = require('../../../infrastructure/Handler');
 const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
-const { getTopSellingCaption } = require('../../../text/captions');
-const settings = require('../../../settings');
-const { getTopSellingBikecheckKeyboard } = require('../../../text/keyboards');
+const Chat = require('../../../entities/Chat');
 const messages = require('../../../text/messages');
+const { getOnSaleBikecheckKeyboard } = require('../../../text/keyboards');
+const { getTopSellingCaption } = require('../../../text/captions');
 
-class TopSellingHandler extends Handler {
+class OnSaleHandler extends Handler {
   async handle(message) {
-    const topLength = settings.get('bikechecks.topLength');
-    const bikechecks = await Bikecheck.getTop(topLength, true);
+    const bikecheck = await Bikecheck.findOnSale(1);
 
-    if (!bikechecks.length) {
+    if (!bikecheck) {
       await this.bot.sendMessage(
         message.chat.id,
-        messages.topSelling.noBikesForSale(),
+        messages.onSale.noBikesOnSale(),
         {
           reply_to_message_id: message.messageId,
         },
       );
-
-      return;
     }
 
-    const bikecheck = bikechecks[0];
     const bikecheckOwner = await User.findById(bikecheck.userId);
+    const chat = await Chat.findById(message.chat.id);
 
     await this.bot.sendPhoto(
       message.chat.id,
@@ -32,11 +29,11 @@ class TopSellingHandler extends Handler {
       {
         reply_to_message_id: message.messageId,
         caption: getTopSellingCaption(1, bikecheckOwner),
-        reply_markup: getTopSellingBikecheckKeyboard(1).export(),
+        reply_markup: getOnSaleBikecheckKeyboard(1, bikecheck, chat).export(),
         parse_mode: 'markdown',
       },
     );
   }
 }
 
-module.exports = TopSellingHandler;
+module.exports = OnSaleHandler;

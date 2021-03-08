@@ -1,23 +1,25 @@
 const CommandRoute = require('../../common/CallbackQueryCommandRoute');
 const DataSaverMiddleware = require('../../middlewares/common/callback-queries/DataSaverMiddleware');
-const NextTopBikecheckHandler = require('./Handler');
+const BotOwnerMiddleware = require('../../middlewares/auth/callback-queries/BotOwner');
+const BumpOnSaleBikecheckHandler = require('./Handler');
 const commands = require('../../../text/callback-query-commands');
 
-class TopSellingBikecheckRoute extends CommandRoute {
+class BumpOnSaleBikecheckRoute extends CommandRoute {
   static get middlewareClsList() {
     return [
       DataSaverMiddleware,
+      BotOwnerMiddleware,
     ];
   }
 
   static get HandlerCls() {
-    return NextTopBikecheckHandler;
+    return BumpOnSaleBikecheckHandler;
   }
 
   // eslint-disable-next-line class-methods-use-this
   getCommand() {
-    return commands.showTopSellingBikecheck;
+    return commands.bumpOnSaleBikecheck;
   }
 }
 
-module.exports = TopSellingBikecheckRoute;
+module.exports = BumpOnSaleBikecheckRoute;
