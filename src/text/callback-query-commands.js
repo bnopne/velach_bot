@@ -13,4 +13,5 @@ module.exports = {
   toggleOnSale: '12',
   showOnSaleBikecheck: '13',
   bumpOnSaleBikecheck: '14',
+  sageOnSaleBikecheck: '15',
 };

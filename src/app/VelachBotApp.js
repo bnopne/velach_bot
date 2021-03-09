@@ -23,6 +23,7 @@ const TopBikecheckRoute = require('./callback-query-routes/TopBikecheck');
 const ToggleOnSaleBikecheckRoute = require('./callback-query-routes/ToggleOnSale');
 const ShowOnSaleBikecheck = require('./callback-query-routes/ShowOnSaleBikecheck');
 const BumpOnSaleBikecheck = require('./callback-query-routes/BumpOnSaleBikecheck');
+const SageOnSaleBikecheck = require('./callback-query-routes/SageOnSaleBikecheck');
 
 // services
 const UserAssistanceService = require('./services/UserAssistanceService');
@@ -56,6 +57,7 @@ class VelachBotApp extends Application {
       ToggleOnSaleBikecheckRoute,
       ShowOnSaleBikecheck,
       BumpOnSaleBikecheck,
+      SageOnSaleBikecheck,
     ];
   }
 

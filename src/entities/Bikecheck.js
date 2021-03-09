@@ -231,6 +231,17 @@ class Bikecheck extends Entity {
     this.model.saleRank = parseInt(rows[0].maxRank, 10) + 1;
     await this.model.save();
   }
+
+  async sageSaleRank() {
+    const [rows] = await this.model.sequelize.query('select min("saleRank") as "maxRank" from "Bikecheck"');
+
+    if (!rows.length) {
+      return;
+    }
+
+    this.model.saleRank = parseInt(rows[0].maxRank, 10) - 1;
+    await this.model.save();
+  }
 }
 
 module.exports = Bikecheck;
