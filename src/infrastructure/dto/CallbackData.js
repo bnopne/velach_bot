@@ -100,9 +100,16 @@ class CallbackData extends DTO {
     return data;
   }
 
-  static createForBumpbikecheck(bikecheck) {
+  static createForBumpBikecheck(bikecheck) {
     const data = new this();
     data.setField('command', commands.bumpOnSaleBikecheck);
+    data.setField('bikecheckId', bikecheck.id);
+    return data;
+  }
+
+  static createForSageBikecheck(bikecheck) {
+    const data = new this();
+    data.setField('command', commands.sageOnSaleBikecheck);
     data.setField('bikecheckId', bikecheck.id);
     return data;
   }

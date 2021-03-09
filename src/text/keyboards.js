@@ -67,7 +67,8 @@ const getOnSaleBikecheckKeyboard = (currentPosition, bikecheck, chat) => {
         InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextOnSaleBikecheck(currentPosition)),
       ],
       [
-        InlineKeyboardButton.createWithCallbackData('Bump', CallbackData.createForBumpbikecheck(bikecheck)),
+        InlineKeyboardButton.createWithCallbackData('Bump', CallbackData.createForBumpBikecheck(bikecheck)),
+        InlineKeyboardButton.createWithCallbackData('Sage', CallbackData.createForSageBikecheck(bikecheck)),
       ],
     ]);
   }

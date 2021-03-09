@@ -71,6 +71,7 @@ module.exports = {
   },
   common: {
     noBikechecks: () => 'У пользователя больше нет байкчеков',
+    done: () => 'Сделано',
     error: () => 'Произошла досадная ошибка',
   },
   topSelling: {
