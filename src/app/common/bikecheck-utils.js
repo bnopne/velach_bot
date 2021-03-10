@@ -1,5 +1,11 @@
+const settings = require('../../settings');
 const { getBikecheckCaption, getTopSellingCaption } = require('../../text/captions');
-const { getBikecheckKeyboard, getDeletedBikecheckKeyboard, getOnSaleBikecheckKeyboard } = require('../../text/keyboards');
+const {
+  getBikecheckKeyboard,
+  getDeletedBikecheckKeyboard,
+  getOnSaleBikecheckKeyboard,
+  getAdminOnSaleBikecheckKeyboard,
+} = require('../../text/keyboards');
 
 async function sendBikecheckMessage({
   bot,
@@ -138,6 +144,10 @@ function editOnSaleBikecheckMessage({
   bikecheckOwner,
   position,
 }) {
+  const keyboard = chat.type === 'private' && callbackQuery.from.username === settings.get('auth.ownerUsername')
+    ? getAdminOnSaleBikecheckKeyboard(position, bikecheck)
+    : getOnSaleBikecheckKeyboard(position);
+
   return bot.editMessageMedia(
     {
       type: 'photo',
@@ -148,7 +158,7 @@ function editOnSaleBikecheckMessage({
     {
       chat_id: callbackQuery.message.chat.id,
       message_id: callbackQuery.message.messageId,
-      reply_markup: getOnSaleBikecheckKeyboard(position, bikecheck, chat).export(),
+      reply_markup: keyboard.export(),
     },
   );
 }

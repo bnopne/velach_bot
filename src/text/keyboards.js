@@ -59,27 +59,24 @@ const getTopSellingBikecheckKeyboard = (position) => InlineKeyboardMarkup.create
     )),
 ]);
 
-const getOnSaleBikecheckKeyboard = (currentPosition, bikecheck, chat) => {
-  if (chat.type === 'private') {
-    return InlineKeyboardMarkup.createFromButtonRows([
-      [
-        InlineKeyboardButton.createWithCallbackData('⬅', CallbackData.createShowPreviousOnSaleBikecheck(currentPosition)),
-        InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextOnSaleBikecheck(currentPosition)),
-      ],
-      [
-        InlineKeyboardButton.createWithCallbackData('Bump', CallbackData.createForBumpBikecheck(bikecheck)),
-        InlineKeyboardButton.createWithCallbackData('Sage', CallbackData.createForSageBikecheck(bikecheck)),
-      ],
-    ]);
-  }
+const getOnSaleBikecheckKeyboard = (currentPosition) => InlineKeyboardMarkup.createFromButtonRows([
+  [
+    InlineKeyboardButton.createWithCallbackData('⬅', CallbackData.createShowPreviousOnSaleBikecheck(currentPosition)),
+    InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextOnSaleBikecheck(currentPosition)),
+  ],
+]);
 
-  return InlineKeyboardMarkup.createFromButtonRows([
+const getAdminOnSaleBikecheckKeyboard = (currentPosition, bikecheck) => InlineKeyboardMarkup
+  .createFromButtonRows([
     [
       InlineKeyboardButton.createWithCallbackData('⬅', CallbackData.createShowPreviousOnSaleBikecheck(currentPosition)),
       InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextOnSaleBikecheck(currentPosition)),
     ],
+    [
+      InlineKeyboardButton.createWithCallbackData('Bump', CallbackData.createForBumpBikecheck(bikecheck)),
+      InlineKeyboardButton.createWithCallbackData('Sage', CallbackData.createForSageBikecheck(bikecheck)),
+    ],
   ]);
-};
 
 module.exports = {
   getBikecheckKeyboard,
@@ -87,4 +84,5 @@ module.exports = {
   getTopBikecheckKeyboard,
   getTopSellingBikecheckKeyboard,
   getOnSaleBikecheckKeyboard,
+  getAdminOnSaleBikecheckKeyboard,
 };

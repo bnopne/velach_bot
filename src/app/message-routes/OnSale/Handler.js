@@ -3,8 +3,9 @@ const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
 const Chat = require('../../../entities/Chat');
 const messages = require('../../../text/messages');
-const { getOnSaleBikecheckKeyboard } = require('../../../text/keyboards');
+const { getOnSaleBikecheckKeyboard, getAdminOnSaleBikecheckKeyboard } = require('../../../text/keyboards');
 const { getTopSellingCaption } = require('../../../text/captions');
+const settings = require('../../../settings');
 
 class OnSaleHandler extends Handler {
   async handle(message) {
@@ -23,13 +24,17 @@ class OnSaleHandler extends Handler {
     const bikecheckOwner = await User.findById(bikecheck.userId);
     const chat = await Chat.findById(message.chat.id);
 
+    const keyboard = chat.type === 'private' && message.from.username === settings.get('auth.ownerUsername')
+      ? getAdminOnSaleBikecheckKeyboard(1, bikecheck)
+      : getOnSaleBikecheckKeyboard(1);
+
     await this.bot.sendPhoto(
       message.chat.id,
       bikecheck.telegramImageId,
       {
         reply_to_message_id: message.messageId,
         caption: getTopSellingCaption(1, bikecheckOwner),
-        reply_markup: getOnSaleBikecheckKeyboard(1, bikecheck, chat).export(),
+        reply_markup: keyboard.export(),
         parse_mode: 'markdown',
       },
     );
