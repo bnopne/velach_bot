@@ -2,10 +2,8 @@ const Handler = require('../../../infrastructure/Handler');
 const Bikecheck = require('../../../entities/Bikecheck');
 const BikecheckVote = require('../../../entities/BikecheckVote');
 const User = require('../../../entities/User');
-const Chat = require('../../../entities/Chat');
-const { getBikecheckKeyboard } = require('../../../text/keyboards');
-const { getBikecheckCaption } = require('../../../text/captions');
 const messages = require('../../../text/messages');
+const { editBikecheckMessage } = require('../../common/bikecheck-utils');
 
 class LikeHandler extends Handler {
   async handle(callbackQuery) {
@@ -33,30 +31,16 @@ class LikeHandler extends Handler {
     }
 
     if (needToUpdateCaption) {
-      const chat = await Chat.findById(callbackQuery.message.chat.id);
       const bikecheckOwner = await User.findById(bikecheck.userId);
-      const { likes, dislikes } = await bikecheck.getScore();
-      const rank = await bikecheck.getRank();
-      const bikechecks = await Bikecheck.findActiveForChat(bikecheckOwner, chat);
-      const bikecheckIndex = bikechecks.findIndex((b) => b.id === bikecheck.id);
+      const bikechecks = await Bikecheck.findActiveForUser(bikecheckOwner);
 
-      await this.bot.editMessageCaption(
-        getBikecheckCaption(
-          likes,
-          dislikes,
-          bikecheckOwner.stravaLink,
-          bikecheckIndex,
-          bikechecks.length,
-          rank,
-          bikecheck.onSale,
-        ),
-        {
-          chat_id: callbackQuery.message.chat.id,
-          message_id: callbackQuery.message.messageId,
-          reply_markup: getBikecheckKeyboard(bikecheck, chat).export(),
-          parse_mode: 'markdown',
-        },
-      );
+      await editBikecheckMessage({
+        bot: this.bot,
+        bikecheck,
+        bikecheckOwner,
+        callbackQuery,
+        userBikechecks: bikechecks,
+      });
     }
 
     await this.bot.answerCallbackQuery(

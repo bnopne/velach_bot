@@ -1,7 +1,6 @@
 const Handler = require('../../../infrastructure/Handler');
 const User = require('../../../entities/User');
 const Bikecheck = require('../../../entities/Bikecheck');
-const Chat = require('../../../entities/Chat');
 const messages = require('../../../text/messages');
 const { sendBikecheckMessage } = require('../../common/bikecheck-utils');
 
@@ -11,9 +10,7 @@ class BikecheckHandler extends Handler {
       ? await User.findById(message.replyToMessage.from.id)
       : await User.findById(message.from.id);
 
-    const chat = await Chat.findById(message.chat.id);
-
-    const userBikechecks = await Bikecheck.findActiveForChat(user, chat);
+    const userBikechecks = await Bikecheck.findActiveForUser(user);
 
     if (!userBikechecks.length) {
       await this.bot.sendMessage(
@@ -32,7 +29,6 @@ class BikecheckHandler extends Handler {
     await sendBikecheckMessage({
       bot: this.bot,
       message,
-      chat,
       bikecheck: firstBikecheck,
       bikecheckOwner: user,
       userBikechecks,

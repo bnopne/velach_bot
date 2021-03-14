@@ -1,10 +1,10 @@
 const CommandRoute = require('../../common/MessageCommandRoute');
-const HelpHandler = require('./Handler');
+const StartHandler = require('./Handler');
 const DataSaverMiddleware = require('../../middlewares/common/messages/DataSaverMiddleware');
 const MessageAgeCheckMiddleware = require('../../middlewares/common/messages/AgeCheckMiddleware');
-const { help } = require('../../../text/commands');
+const { start } = require('../../../text/commands');
 
-class CheckBikeRoute extends CommandRoute {
+class StartRoute extends CommandRoute {
   static get middlewareClsList() {
     return [
       DataSaverMiddleware,
@@ -13,13 +13,13 @@ class CheckBikeRoute extends CommandRoute {
   }
 
   static get HandlerCls() {
-    return HelpHandler;
+    return StartHandler;
   }
 
   // eslint-disable-next-line class-methods-use-this
   getCommand() {
-    return help;
+    return start;
   }
 }
 
-module.exports = CheckBikeRoute;
+module.exports = StartRoute;

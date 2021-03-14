@@ -4,31 +4,35 @@ const InlineKeyboardButton = require('../infrastructure/dto/InlineKeyboardButton
 const CallbackData = require('../infrastructure/dto/CallbackData');
 const settings = require('../settings');
 
+const getPublicBikecheckKeyboard = (bikecheck) => InlineKeyboardMarkup.createFromButtonRows([
+  [
+    InlineKeyboardButton.createWithCallbackData('⬅', CallbackData.createShowPreviousBikecheck(bikecheck)),
+    InlineKeyboardButton.createWithCallbackData('👍', CallbackData.createLikeForBikecheck(bikecheck)),
+    InlineKeyboardButton.createWithCallbackData('👎', CallbackData.createDislikeForBikecheck(bikecheck)),
+    InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextBikecheck(bikecheck)),
+  ],
+]);
+
+const getPrivateBikecheckKeyboard = (bikecheck) => InlineKeyboardMarkup.createFromButtonRows([
+  [
+    InlineKeyboardButton.createWithCallbackData('⬅', CallbackData.createShowPreviousBikecheck(bikecheck)),
+    InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextBikecheck(bikecheck)),
+  ],
+  [
+    InlineKeyboardButton.createWithCallbackData('Удалить', CallbackData.createDeleteBikecheck(bikecheck)),
+    InlineKeyboardButton.createWithCallbackData(
+      bikecheck.onSale ? 'Снять с продажи' : 'Выставить на продажу',
+      CallbackData.createToggleOnSale(bikecheck),
+    ),
+  ],
+]);
+
 const getBikecheckKeyboard = (bikecheck, chat) => {
   if (chat.type === 'private') {
-    return InlineKeyboardMarkup.createFromButtonRows([
-      [
-        InlineKeyboardButton.createWithCallbackData('⬅', CallbackData.createShowPreviousBikecheck(bikecheck)),
-        InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextBikecheck(bikecheck)),
-      ],
-      [
-        InlineKeyboardButton.createWithCallbackData('Удалить', CallbackData.createDeleteBikecheck(bikecheck)),
-        InlineKeyboardButton.createWithCallbackData(
-          bikecheck.onSale ? 'Снять с продажи' : 'Выставить на продажу',
-          CallbackData.createToggleOnSale(bikecheck),
-        ),
-      ],
-    ]);
+    return getPrivateBikecheckKeyboard(bikecheck);
   }
 
-  return InlineKeyboardMarkup.createFromButtonRows([
-    [
-      InlineKeyboardButton.createWithCallbackData('⬅', CallbackData.createShowPreviousBikecheck(bikecheck)),
-      InlineKeyboardButton.createWithCallbackData('👍', CallbackData.createLikeForBikecheck(bikecheck)),
-      InlineKeyboardButton.createWithCallbackData('👎', CallbackData.createDislikeForBikecheck(bikecheck)),
-      InlineKeyboardButton.createWithCallbackData('➡', CallbackData.createShowNextBikecheck(bikecheck)),
-    ],
-  ]);
+  return getPublicBikecheckKeyboard(bikecheck);
 };
 
 const getDeletedBikecheckKeyboard = (bikecheck) => InlineKeyboardMarkup.createFromButtonRows([
@@ -80,6 +84,8 @@ const getAdminOnSaleBikecheckKeyboard = (currentPosition, bikecheck) => InlineKe
 
 module.exports = {
   getBikecheckKeyboard,
+  getPrivateBikecheckKeyboard,
+  getPublicBikecheckKeyboard,
   getDeletedBikecheckKeyboard,
   getTopBikecheckKeyboard,
   getTopSellingBikecheckKeyboard,

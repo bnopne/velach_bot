@@ -1,9 +1,8 @@
 const Handler = require('../../../infrastructure/Handler');
 const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
-const { getDeletedBikecheckKeyboard } = require('../../../text/keyboards');
-const { getBikecheckCaption } = require('../../../text/captions');
 const messages = require('../../../text/messages');
+const { editDeletedBikecheckMessage } = require('../../common/bikecheck-utils');
 
 class RestoreBikecheckHandler extends Handler {
   async handle(callbackQuery) {
@@ -41,30 +40,15 @@ class RestoreBikecheckHandler extends Handler {
     }
 
     const nextBikecheck = bikechecks[0];
-    const { likes, dislikes } = await nextBikecheck.getScore();
     const bikecheckOwner = await User.findById(bikecheck.userId);
 
-    await this.bot.editMessageMedia(
-      {
-        type: 'photo',
-        media: nextBikecheck.telegramImageId,
-        caption: getBikecheckCaption(
-          likes,
-          dislikes,
-          bikecheckOwner.stravaLink,
-          0,
-          bikechecks.length,
-          -1,
-          nextBikecheck.onSale,
-        ),
-        parse_mode: 'markdown',
-      },
-      {
-        chat_id: callbackQuery.message.chat.id,
-        message_id: callbackQuery.message.messageId,
-        reply_markup: getDeletedBikecheckKeyboard(nextBikecheck).export(),
-      },
-    );
+    await editDeletedBikecheckMessage({
+      bot: this.bot,
+      bikecheck: nextBikecheck,
+      bikecheckOwner,
+      userBikechecks: bikechecks,
+      callbackQuery,
+    });
 
     await this.bot.answerCallbackQuery(
       callbackQuery.id,

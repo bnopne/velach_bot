@@ -9,7 +9,7 @@ class AdminAuthMiddleware extends Middleware {
       return null;
     }
 
-    const admins = (await this.bot.getChatAdministrators(callbackQuery.message.chat.id))
+    const admins = (await this.bot.getChatAdministrators(callbackQuery.chatInstance))
       .map((rawChatMember) => new TelegramChatMember(rawChatMember))
       .map((chatMember) => chatMember.user);
 

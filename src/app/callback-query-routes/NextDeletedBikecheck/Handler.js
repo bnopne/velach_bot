@@ -43,7 +43,6 @@ class NextDeletedBikecheckHandler extends Handler {
       bot: this.bot,
       callbackQuery,
       bikecheck: nextBikecheck,
-      bikecheckIndex: nextBikecheckIndex,
       userBikechecks,
       bikecheckOwner,
     });

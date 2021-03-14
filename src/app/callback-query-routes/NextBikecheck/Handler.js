@@ -1,7 +1,6 @@
 const Handler = require('../../../infrastructure/Handler');
 const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
-const Chat = require('../../../entities/Chat');
 const messages = require('../../../text/messages');
 const { editBikecheckMessage } = require('../../common/bikecheck-utils');
 
@@ -9,8 +8,7 @@ class NextBikecheckHandler extends Handler {
   async handle(callbackQuery) {
     const bikecheck = await Bikecheck.findById(callbackQuery.data.getField('bikecheckId'));
     const bikecheckOwner = await User.findById(bikecheck.userId);
-    const chat = await Chat.findById(callbackQuery.message.chat.id);
-    const userBikechecks = await Bikecheck.findActiveForChat(bikecheckOwner, chat);
+    const userBikechecks = await Bikecheck.findActiveForUser(bikecheckOwner);
 
     if (!userBikechecks.length) {
       await this.bot.answerCallbackQuery(
@@ -41,12 +39,10 @@ class NextBikecheckHandler extends Handler {
 
     const nextBikecheck = userBikechecks[nextBikecheckIndex];
 
-    editBikecheckMessage({
+    await editBikecheckMessage({
       bot: this.bot,
       callbackQuery,
-      chat,
       bikecheck: nextBikecheck,
-      bikecheckIndex: nextBikecheckIndex,
       bikecheckOwner,
       userBikechecks,
     });

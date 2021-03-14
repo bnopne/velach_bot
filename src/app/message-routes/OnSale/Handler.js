@@ -19,6 +19,8 @@ class OnSaleHandler extends Handler {
           reply_to_message_id: message.messageId,
         },
       );
+
+      return;
     }
 
     const bikecheckOwner = await User.findById(bikecheck.userId);

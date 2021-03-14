@@ -37,13 +37,12 @@ class PreviousDeletedBikecheckHandler extends Handler {
       ? userBikechecks.length - 1
       : currentBikecheckIndex - 1;
 
-    const nextBikecheck = userBikechecks[previousBikecheckIndex];
+    const previousBikecheck = userBikechecks[previousBikecheckIndex];
 
     await editDeletedBikecheckMessage({
       bot: this.bot,
       callbackQuery,
-      bikecheck: nextBikecheck,
-      bikecheckIndex: previousBikecheckIndex,
+      bikecheck: previousBikecheck,
       userBikechecks,
       bikecheckOwner,
     });

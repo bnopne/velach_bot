@@ -4,7 +4,7 @@ const Application = require('../infrastructure/Application');
 const BikecheckRoute = require('./message-routes/Bikecheck');
 const CheckBikeRoute = require('./message-routes/CheckBike');
 const SetStravaRoute = require('./message-routes/SetStrava');
-const HelpRoute = require('./message-routes/Help');
+const StartRoute = require('./message-routes/Start');
 const AnnounceRoute = require('./message-routes/Announce');
 const TopRoute = require('./message-routes/Top');
 const DeletedRoute = require('./message-routes/Deleted');
@@ -25,6 +25,9 @@ const ShowOnSaleBikecheck = require('./callback-query-routes/ShowOnSaleBikecheck
 const BumpOnSaleBikecheck = require('./callback-query-routes/BumpOnSaleBikecheck');
 const SageOnSaleBikecheck = require('./callback-query-routes/SageOnSaleBikecheck');
 
+// inline query routes
+const BikecheckInlineQuery = require('./inline-query-routes/Bikecheck');
+
 // services
 const UserAssistanceService = require('./services/UserAssistanceService');
 const MetricsService = require('./services/MetricsService');
@@ -35,7 +38,7 @@ class VelachBotApp extends Application {
       BikecheckRoute,
       CheckBikeRoute,
       SetStravaRoute,
-      HelpRoute,
+      StartRoute,
       AnnounceRoute,
       TopRoute,
       DeletedRoute,
@@ -59,6 +62,10 @@ class VelachBotApp extends Application {
       BumpOnSaleBikecheck,
       SageOnSaleBikecheck,
     ];
+  }
+
+  static get inlineQueryRoutes() {
+    return [BikecheckInlineQuery];
   }
 
   static get services() {
