@@ -1,7 +1,6 @@
 const Handler = require('../../../infrastructure/Handler');
 const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
-const Chat = require('../../../entities/Chat');
 const { editOnSaleBikecheckMessage } = require('../../common/bikecheck-utils');
 
 class ShowOnSaleBikecheckHandler extends Handler {
@@ -21,12 +20,10 @@ class ShowOnSaleBikecheckHandler extends Handler {
     }
 
     const bikecheckOwner = await User.findById(bikecheck.userId);
-    const chat = await Chat.findById(callbackQuery.message.chat.id);
 
     await editOnSaleBikecheckMessage({
       bot: this.bot,
       callbackQuery,
-      chat,
       bikecheck,
       bikecheckOwner,
       position,

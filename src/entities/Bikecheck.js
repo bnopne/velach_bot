@@ -36,21 +36,6 @@ class Bikecheck extends Entity {
     return bikechecks.map((b) => new this(b));
   }
 
-  static async findActiveForChat(user, chat) {
-    const bikechecks = (await this.modelClass.findAll({
-      where: {
-        userId: user.id,
-        isActive: true,
-      },
-    })).map((b) => new this(b));
-
-    const notBannedBikechecks = (await Promise.all(bikechecks.map((b) => b.isBannedInChat(chat))))
-      .map((isBanned, i) => !isBanned && bikechecks[i])
-      .filter((bikecheck) => Boolean(bikecheck));
-
-    return notBannedBikechecks;
-  }
-
   static async findDeletedForUser(user) {
     const bikechecks = (await this.modelClass.findAll({
       where: {

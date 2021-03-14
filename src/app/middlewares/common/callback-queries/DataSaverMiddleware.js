@@ -1,8 +1,15 @@
 const Middleware = require('../../../../infrastructure/Middleware');
 const User = require('../../../../entities/User');
+const Chat = require('../../../../entities/Chat');
 
 class DataSaverMiddleware extends Middleware {
   async process(callbackQuery) { // eslint-disable-line
+    let chat = await Chat.findById(callbackQuery.chatInstance);
+
+    if (!chat) {
+      chat = await Chat.createOrUpdate({ id: callbackQuery.chatInstance });
+    }
+
     await User.createOrUpdate({
       id: callbackQuery.from.id,
       isBot: callbackQuery.from.isBot,

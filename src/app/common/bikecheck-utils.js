@@ -2,19 +2,21 @@ const settings = require('../../settings');
 const { getBikecheckCaption, getTopSellingCaption } = require('../../text/captions');
 const {
   getBikecheckKeyboard,
+  getPublicBikecheckKeyboard,
   getDeletedBikecheckKeyboard,
   getOnSaleBikecheckKeyboard,
   getAdminOnSaleBikecheckKeyboard,
 } = require('../../text/keyboards');
+const Chat = require('../../entities/Chat');
 
 async function sendBikecheckMessage({
   bot,
   message,
-  chat,
   bikecheck,
   bikecheckOwner,
   userBikechecks,
 }) {
+  const chat = await Chat.findById(message.chat.id);
   const { likes, dislikes } = await bikecheck.getScore();
   const rank = await bikecheck.getRank();
 
@@ -41,14 +43,27 @@ async function sendBikecheckMessage({
 async function editBikecheckMessage({
   bot,
   callbackQuery,
-  chat,
   bikecheck,
-  bikecheckIndex,
   bikecheckOwner,
   userBikechecks,
 }) {
+  const isInlineMode = Boolean(callbackQuery.inlineMessageId);
+
+  const bikecheckIndex = userBikechecks.findIndex((b) => b.id === bikecheck.id);
+
+  const chat = callbackQuery.inlineMessageId
+    ? null
+    : await Chat.findById(callbackQuery.message.chat.id);
+
   const { likes, dislikes } = await bikecheck.getScore();
   const rank = await bikecheck.getRank();
+
+  const target = isInlineMode
+    ? { inline_message_id: callbackQuery.inlineMessageId }
+    : {
+      chat_id: callbackQuery.message.chat.id,
+      message_id: callbackQuery.message.messageId,
+    };
 
   return bot.editMessageMedia(
     {
@@ -66,9 +81,10 @@ async function editBikecheckMessage({
       parse_mode: 'markdown',
     },
     {
-      chat_id: callbackQuery.message.chat.id,
-      message_id: callbackQuery.message.messageId,
-      reply_markup: getBikecheckKeyboard(bikecheck, chat).export(),
+      ...target,
+      reply_markup: isInlineMode
+        ? getPublicBikecheckKeyboard(bikecheck).export()
+        : getBikecheckKeyboard(bikecheck, chat).export(),
     },
   );
 }
@@ -76,7 +92,6 @@ async function editBikecheckMessage({
 async function sendDeletedBikecheckMessage({
   bot,
   message,
-  chat,
   bikecheck,
   bikecheckOwner,
   userBikechecks,
@@ -97,7 +112,7 @@ async function sendDeletedBikecheckMessage({
         -1,
         bikecheck.onSale,
       ),
-      reply_markup: getDeletedBikecheckKeyboard(bikecheck, chat).export(),
+      reply_markup: getDeletedBikecheckKeyboard(bikecheck).export(),
       parse_mode: 'markdown',
     },
   );
@@ -108,10 +123,10 @@ async function editDeletedBikecheckMessage({
   callbackQuery,
   bikecheck,
   bikecheckOwner,
-  bikecheckIndex,
   userBikechecks,
 }) {
   const { likes, dislikes } = await bikecheck.getScore();
+  const bikecheckIndex = userBikechecks.findIndex((b) => b.id === bikecheck.id);
 
   return bot.editMessageMedia(
     {
@@ -136,19 +151,20 @@ async function editDeletedBikecheckMessage({
   );
 }
 
-function editOnSaleBikecheckMessage({
+async function editOnSaleBikecheckMessage({
   bot,
   callbackQuery,
-  chat,
   bikecheck,
   bikecheckOwner,
   position,
 }) {
+  const chat = await Chat.findById(callbackQuery.message.chat.id);
+
   const keyboard = chat.type === 'private' && callbackQuery.from.username === settings.get('auth.ownerUsername')
     ? getAdminOnSaleBikecheckKeyboard(position, bikecheck)
     : getOnSaleBikecheckKeyboard(position);
 
-  return bot.editMessageMedia(
+  await bot.editMessageMedia(
     {
       type: 'photo',
       media: bikecheck.telegramImageId,

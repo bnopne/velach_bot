@@ -8,6 +8,7 @@ const CallbackQuery = require('./dto/CallbackQuery');
 const Router = require('./Router');
 const { EVENT_TYPES } = require('./events/constants');
 const IncomingMessage = require('./events/IncomingMessage');
+const InlineQuery = require('./dto/InlineQuery');
 
 class Application {
   static get messageRoutes() {
@@ -15,6 +16,10 @@ class Application {
   }
 
   static get callbackQueryRoutes() {
+    return [];
+  }
+
+  static get inlineQueryRoutes() {
     return [];
   }
 
@@ -40,6 +45,11 @@ class Application {
     const callbackQueryRoutes = this.constructor.callbackQueryRoutes.map(RouteCls => new RouteCls(this.bot, this.eventBus)); // eslint-disable-line
     this.callbackQueryRouter = new Router(callbackQueryRoutes);
 
+    const inlineQueryRoutes = this.constructor.inlineQueryRoutes.map(
+      (RouteCls) => new RouteCls(this.bot, this.eventBus),
+    );
+    this.inlineQueryRouter = new Router(inlineQueryRoutes);
+
     this.services = this.constructor.services
       .map((ServiceCls) => new ServiceCls(this.bot, this.eventBus));
   }
@@ -55,6 +65,11 @@ class Application {
     this.bot.on(
       'callback_query',
       this.onCallbackQuery.bind(this),
+    );
+
+    this.bot.on(
+      'inline_query',
+      this.onInlineQuery.bind(this),
     );
 
     this.bot.startPolling();
@@ -82,6 +97,19 @@ class Application {
       await this.callbackQueryRouter.route(callbackQuery);
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async onInlineQuery(rawInlineQuery) {
+    if (this.inlineQueryRouter) {
+      const inlineQuery = new InlineQuery(rawInlineQuery);
+
+      try {
+        await this.inlineQueryRouter.route(inlineQuery);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 }

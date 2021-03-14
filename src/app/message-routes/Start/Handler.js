@@ -1,11 +1,11 @@
 const Handler = require('../../../infrastructure/Handler');
 const messages = require('../../../text/messages');
 
-class HelpHandler extends Handler {
+class StartHandler extends Handler {
   async handle(message) {
     await this.bot.sendMessage(
       message.chat.id,
-      messages.help.info(),
+      messages.start.start(),
       {
         reply_to_message_id: message.messageId,
         parse_mode: 'markdown',
@@ -14,4 +14,4 @@ class HelpHandler extends Handler {
   }
 }
 
-module.exports = HelpHandler;
+module.exports = StartHandler;

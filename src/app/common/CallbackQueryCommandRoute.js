@@ -23,7 +23,7 @@ class CallbackQueryCommandRoute extends Route {
       new UserSendsCallbackQuery(
         this.getCommand(),
         callbackQuery.from.id,
-        callbackQuery.message.chat.id,
+        callbackQuery.chatInstance,
       ),
     );
 

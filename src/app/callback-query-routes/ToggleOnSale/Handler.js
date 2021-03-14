@@ -1,10 +1,8 @@
 const Handler = require('../../../infrastructure/Handler');
 const Bikecheck = require('../../../entities/Bikecheck');
 const User = require('../../../entities/User');
-const Chat = require('../../../entities/Chat');
-const { getBikecheckKeyboard } = require('../../../text/keyboards');
-const { getBikecheckCaption } = require('../../../text/captions');
 const messages = require('../../../text/messages');
+const { editBikecheckMessage } = require('../../common/bikecheck-utils');
 
 class ToggleOnSaleHandler extends Handler {
   async handle(callbackQuery) {
@@ -17,8 +15,7 @@ class ToggleOnSaleHandler extends Handler {
 
     await bikecheck.toggleOnSale();
     const bikecheckOwner = await User.findById(bikecheck.userId);
-    const chat = await Chat.findById(callbackQuery.message.chat.id);
-    const bikechecks = await Bikecheck.findActiveForChat(bikecheckOwner, chat);
+    const bikechecks = await Bikecheck.findActiveForUser(bikecheckOwner);
 
     if (!bikechecks.length) {
       await this.bot.answerCallbackQuery(
@@ -28,32 +25,13 @@ class ToggleOnSaleHandler extends Handler {
       return;
     }
 
-    const currentBikecheckIndex = bikechecks.findIndex((b) => b.id === bikecheck.id);
-
-    const { likes, dislikes } = await bikecheck.getScore();
-    const rank = await bikecheck.getRank();
-
-    await this.bot.editMessageMedia(
-      {
-        type: 'photo',
-        media: bikecheck.telegramImageId,
-        caption: getBikecheckCaption(
-          likes,
-          dislikes,
-          bikecheckOwner.stravaLink,
-          currentBikecheckIndex,
-          bikechecks.length,
-          rank,
-          bikecheck.onSale,
-        ),
-        parse_mode: 'markdown',
-      },
-      {
-        chat_id: callbackQuery.message.chat.id,
-        message_id: callbackQuery.message.messageId,
-        reply_markup: getBikecheckKeyboard(bikecheck, chat).export(),
-      },
-    );
+    await editBikecheckMessage({
+      bot: this.bot,
+      bikecheck,
+      bikecheckOwner,
+      callbackQuery,
+      userBikechecks: bikechecks,
+    });
 
     await this.bot.answerCallbackQuery(callbackQuery.id, {});
   }
