@@ -29,6 +29,10 @@ class TelegramMessage extends DTO {
     return this.getField('text');
   }
 
+  get caption() {
+    return this.getField('caption');
+  }
+
   hasEntities() {
     return this.entities.length > 0;
   }
