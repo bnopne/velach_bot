@@ -1,10 +1,6 @@
 const Handler = require('../../../infrastructure/Handler');
 const Chat = require('../../../entities/Chat');
 
-const wait = (ms) => new Promise((resolve) => {
-  setTimeout(resolve, ms);
-});
-
 class AnnounceHandler extends Handler {
   async handle(message) {
     if (!message.replyToMessage) {
@@ -12,31 +8,36 @@ class AnnounceHandler extends Handler {
       return;
     }
 
-    if (message.replyToMessage.from.id !== message.from.id) {
+    const announceMessage = message.replyToMessage;
+
+    if (announceMessage.from.id !== message.from.id) {
       await this.bot.sendMessage(message.chat.id, 'Ответь на свое сообщение с анонсом');
       return;
     }
 
     const chats = await Chat.findAllPublic();
 
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < chats.length; i++) {
+    chats.forEach((chat, i) => setTimeout(async () => {
       try {
-        // eslint-disable-next-line no-await-in-loop
-        await this.bot.sendMessage(
-          chats[i].id,
-          message.replyToMessage.text,
-          {
-            parse_mode: 'markdown',
-          },
-        );
+        if (announceMessage.biggestPhoto) {
+          await this.bot.sendPhoto(
+            chat.id,
+            announceMessage.biggestPhoto.fileId,
+            {
+              caption: announceMessage.caption,
+            },
+          );
+        } else {
+          await this.bot.sendMessage(
+            chats[i].id,
+            announceMessage.text,
+          );
+        }
+        console.log(`Отправил анонс в чат ${chat.id}`);
       } catch (err) {
-        console.error(`Ошибка отправки анонса в чат ${chats[i].id}`);
+        console.error(`Ошибка отправки анонса в чат ${chat.id}`);
       }
-
-      // eslint-disable-next-line no-await-in-loop
-      await wait(2 * 1000);
-    }
+    }, i * 2 * 1000));
   }
 }
 
