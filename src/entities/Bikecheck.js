@@ -31,6 +31,9 @@ class Bikecheck extends Entity {
         userId: user.id,
         isActive: true,
       },
+      order: [
+        ['id', 'DESC'],
+      ],
     });
 
     return bikechecks.map((b) => new this(b));
@@ -42,6 +45,9 @@ class Bikecheck extends Entity {
         userId: user.id,
         isActive: false,
       },
+      order: [
+        ['id', 'DESC'],
+      ],
     })).map((b) => new this(b));
 
     return bikechecks;
