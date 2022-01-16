@@ -1,0 +1,10 @@
+*{{position}} место,* 👍 _{{likes}}_ [владелец](tg://user?id={{user.id}})
+{{#user.stravaLink}}
+[Страва]({{{user.stravaLink}}})
+{{/user.stravaLink}}
+{{^user.stravaLink}}
+_Страву не показывал_
+{{/user.stravaLink}}
+{{#onSale}}
+*Кстати, этот байк продается\!*
+{{/onSale}}
