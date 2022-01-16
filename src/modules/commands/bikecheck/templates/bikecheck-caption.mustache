@@ -1,0 +1,17 @@
+{{#rank}}
+Место _{{rank}}_ в общем рейтинге
+{{/rank}}
+{{#totalBikechecks}}
+_Байкчек {{bikecheckOrder}} из {{totalBikechecks}}_
+{{/totalBikechecks}}
+Нравится: _{{likes}}_
+Не нравится: _{{dislikes}}_
+{{#stravaLink}}
+[Страва]({{{stravaLink}}})
+{{/stravaLink}}
+{{^stravaLink}}
+_Страву не показывал_
+{{/stravaLink}}
+{{#onSale}}
+*Кстати, этот байк продается\!*
+{{/onSale}}
