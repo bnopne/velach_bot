@@ -13,6 +13,12 @@ jobs:
     strategy:
       matrix:
         node-version: [ 14.18.1 ]
+    env:
+      VELACH_BOT_DB_HOST: '127.0.0.1'
+      VELACH_BOT_DB_PORT: '5432'
+      VELACH_BOT_DB_DATABASE: 'velach_bot'
+      VELACH_BOT_DB_USER: 'velach_bot'
+      VELACH_BOT_DB_PASSWORD: 'pass'
     steps:
     - uses: actions/checkout@v2
     - name: Install Node.js ${{ matrix.node-version }}
