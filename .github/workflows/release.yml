@@ -49,15 +49,29 @@ jobs:
     steps:
     - name: Fetch Repository
       uses: actions/checkout@v2
+    
     - name: Install Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    
     - name: Install Dependencies
       run: npm ci
+    
     - name: Build
       run: npm run build
+    
+    - name: Copy Dependencies To Server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.PROD_SERVER_HOST }}
+        port: ${{ secrets.PROD_SERVER_PORT }}
+        username: ${{ secrets.PROD_SERVER_USER }}
+        source: "node_modules/"
+        target: ${{ secrets.PROD_SERVER_APP_ROOT }}/node_modules
+        rm: true
+    
     - name: Copy Distribution To Server
       uses: easingthemes/ssh-deploy@main
       env:
