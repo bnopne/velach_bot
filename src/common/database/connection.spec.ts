@@ -1,7 +1,10 @@
 import { ConfigService } from '@nestjs/config';
 import { PoolClient } from 'pg';
 
-import { getConfigService } from 'src/common/utils/config';
+import {
+  getTestConfigService,
+  getTestingModule,
+} from 'src/common/utils/test-utils';
 
 import { getConnection, runAndRollback, disconnect } from './connection';
 
@@ -10,7 +13,8 @@ describe('Test connection module', () => {
   let connection: PoolClient;
 
   beforeAll(async () => {
-    configService = await getConfigService();
+    const testingModule = await getTestingModule([]);
+    configService = await getTestConfigService(testingModule);
     connection = await getConnection(configService);
   });
 

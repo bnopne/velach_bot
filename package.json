@@ -21,7 +21,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "pg-typed": "pgtyped -w -c pg-typed-config.json",
     "execute-ts": "ts-node -r tsconfig-paths/register",
-    "create-tables": "npm run execute-ts ./src/cli.ts -- --create-tables"
+    "create-tables": "npm run execute-ts ./src/cli.ts -- --create-tables",
+    "seed-test-db": "npm run execute-ts ./src/cli.ts -- --seed-test-db"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",

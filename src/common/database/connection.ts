@@ -40,9 +40,7 @@ export async function runAndRollback<T>(
 
   try {
     await f(connection);
-  } catch (err) {
-    console.error(err);
-  }
+  } catch (err) {}
 
   await connection.query('ROLLBACK');
   connection.release();
