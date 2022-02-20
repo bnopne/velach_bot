@@ -22,7 +22,8 @@
     "pg-typed": "pgtyped -w -c pg-typed-config.json",
     "execute-ts": "ts-node -r tsconfig-paths/register",
     "create-tables": "npm run execute-ts ./src/cli.ts -- --create-tables",
-    "seed-test-db": "npm run execute-ts ./src/cli.ts -- --seed-test-db"
+    "seed-test-db": "npm run execute-ts ./src/cli.ts -- --seed-test-db",
+    "backup-db": "npm run execute-ts ./src/cli.ts -- --backup-db"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -30,6 +31,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "date-fns": "^2.28.0",
+    "dropbox": "^10.24.0",
     "lodash": "^4.17.21",
     "mustache": "^4.2.0",
     "pg": "^8.7.1",
