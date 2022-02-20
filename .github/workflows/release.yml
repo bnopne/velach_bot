@@ -61,9 +61,8 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.PROD_SERVER_PRIVATE_KEY }}
         ARGS: "-rltgoDzvO"
-        SOURCE: "dist/"
+        SOURCE: "velach_bot/dist/"
         REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
         REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
         REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
         TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
-        EXCLUDE: "/dist/, /node_modules/"
