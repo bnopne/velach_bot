@@ -1,14 +1,13 @@
-name: Velach Bot CI
+name: Common Velach Bot Workflow
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches-ignore: 
+    - master
 
 jobs:
-  test_application:
-    name: Test Application
+  run_tests:
+    name: Run Tests
     runs-on: ubuntu-20.04
     strategy:
       matrix:
@@ -40,26 +39,3 @@ jobs:
       run: npm run seed-test-db
     - name: Run Tests
       run: npm run test
-  update_application_distribution:
-    name: Update Application Distribution
-    runs-on: ubuntu-20.04
-    needs: test_application
-    strategy:
-      matrix:
-        node-version: [ 14.18.1 ]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Install Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: Install Dependencies
-      run: npm ci
-    - name: Build Distribution
-      run: npm run build
-    - name: Upload Build
-      uses: actions/upload-artifact@v2
-      with:
-        name: velach-bot-build
-        path: dist/*
