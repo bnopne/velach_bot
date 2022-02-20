@@ -56,6 +56,8 @@ jobs:
         cache: 'npm'
     - name: Install Dependencies
       run: npm ci
+    - name: Build
+      run: npm run build
     - name: Copy Distribution To Server
       uses: easingthemes/ssh-deploy@main
       env:
