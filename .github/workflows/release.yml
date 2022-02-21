@@ -68,22 +68,22 @@ jobs:
         cp package-lock.json dist/package-lock.json
         mv node_modules dist/node_modules
         
-    - name: Copy Distribution To Server
-      uses: easingthemes/ssh-deploy@main
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.FILE_TRANSFER_KEY }}
-        ARGS: "-rltgoDzvO"
-        SOURCE: "dist/"
-        REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
-        REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
-        REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
-        TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
+#     - name: Copy Distribution To Server
+#       uses: easingthemes/ssh-deploy@main
+#       env:
+#         SSH_PRIVATE_KEY: ${{ secrets.FILE_TRANSFER_KEY }}
+#         ARGS: "-rltgoDzvO"
+#         SOURCE: "dist/"
+#         REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
+#         REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
+#         REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
+#         TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
         
-#     - name: Install Dependencies On Server
-#       uses: appleboy/ssh-action@master
-#       with:
-#         host: ${{ secrets.PROD_SERVER_HOST }}
-#         port: ${{ secrets.PROD_SERVER_PORT }}
-#         username: ${{ secrets.USERNAME }}
-#         key: ${{ secrets.SSH_KEY }}
-#         script: npm ci
+    - name: Install Dependencies On Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.PROD_SERVER_HOST }}
+        port: ${{ secrets.PROD_SERVER_PORT }}
+        username: ${{ secrets.PROD_SERVER_USER }}
+        key: ${{ secrets.COMMAND_EXECUTION_KEY }}
+        script: whoami
