@@ -6,43 +6,44 @@ on:
   workflow_dispatch:
 
 jobs:
-#   run_tests:
-#     name: Run Tests
-#     runs-on: ubuntu-20.04
-#     strategy:
-#       matrix:
-#         node-version: [ 14.18.1 ]
-#     env:
-#       VELACH_BOT_DB_HOST: '127.0.0.1'
-#       VELACH_BOT_DB_PORT: '5432'
-#       VELACH_BOT_DB_DATABASE: 'velach_bot'
-#       VELACH_BOT_DB_USER: 'velach_bot'
-#       VELACH_BOT_DB_PASSWORD: 'pass'
-#     steps:
-#     - uses: actions/checkout@v2
-#     - name: Install Node.js ${{ matrix.node-version }}
-#       uses: actions/setup-node@v2
-#       with:
-#         node-version: ${{ matrix.node-version }}
-#         cache: 'npm'
-#     - uses: harmon758/postgresql-action@v1
-#       with:
-#         postgresql version: '12'
-#         postgresql db: 'velach_bot'
-#         postgresql user: 'velach_bot'
-#         postgresql password: 'pass'
-#     - name: Install Dependencies
-#       run: npm ci
-#     - name: Create DB Tables
-#       run: npm run create-tables
-#     - name: Seed Test DB
-#       run: npm run seed-test-db
-#     - name: Run Tests
-#       run: npm run test
+  run_tests:
+    name: Run Tests
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [ 14.18.1 ]
+    env:
+      VELACH_BOT_DB_HOST: '127.0.0.1'
+      VELACH_BOT_DB_PORT: '5432'
+      VELACH_BOT_DB_DATABASE: 'velach_bot'
+      VELACH_BOT_DB_USER: 'velach_bot'
+      VELACH_BOT_DB_PASSWORD: 'pass'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - uses: harmon758/postgresql-action@v1
+      with:
+        postgresql version: '12'
+        postgresql db: 'velach_bot'
+        postgresql user: 'velach_bot'
+        postgresql password: 'pass'
+    - name: Install Dependencies
+      run: npm ci
+    - name: Create DB Tables
+      run: npm run create-tables
+    - name: Seed Test DB
+      run: npm run seed-test-db
+    - name: Run Tests
+      run: npm run test
+  
   deploy:
     name: Deploy
     runs-on: ubuntu-20.04
-#     needs: run_tests
+    needs: run_tests
     strategy:
       matrix:
         node-version: [ 14.18.1 ]
@@ -62,28 +63,25 @@ jobs:
     - name: Build
       run: npm run build
       
-    - name: Gather Stuff
-      run: |
-        cp package.json dist/package.json
-        cp package-lock.json dist/package-lock.json
-        mv node_modules dist/node_modules
+    - name: Move Dependencies
+      run: mv node_modules dist/node_modules
         
-#     - name: Copy Distribution To Server
-#       uses: easingthemes/ssh-deploy@main
-#       env:
-#         SSH_PRIVATE_KEY: ${{ secrets.FILE_TRANSFER_KEY }}
-#         ARGS: "-rltgoDzvO"
-#         SOURCE: "dist/"
-#         REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
-#         REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
-#         REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
-#         TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
+    - name: Copy Distribution To Server
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.FILE_TRANSFER_KEY }}
+        ARGS: "-rltgoDzvO"
+        SOURCE: "dist/"
+        REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
+        REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
+        REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
+        TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
         
-    - name: Install Dependencies On Server
+    - name: Restart Bot
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.PROD_SERVER_HOST }}
         port: ${{ secrets.PROD_SERVER_PORT }}
         username: ${{ secrets.PROD_SERVER_USER }}
         key: ${{ secrets.COMMAND_EXECUTION_KEY }}
-        script: whoami
+        script: pm2 restart ecosystem.config.js
