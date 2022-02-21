@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { execSync } from 'child_process';
 
+import fetch from 'node-fetch';
 import { createCommand } from 'commander';
 import { noop } from 'lodash';
 import { format } from 'date-fns';
