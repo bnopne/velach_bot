@@ -71,7 +71,7 @@ jobs:
         REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
         REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
         REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
-        TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
+        TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}/package.json
         
     - name: Copy package-lock.json
       uses: easingthemes/ssh-deploy@main
@@ -82,7 +82,7 @@ jobs:
         REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
         REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
         REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
-        TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
+        TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}/package-lock.json
         
 #     - name: Install Dependencies On Server
 #       uses: appleboy/ssh-action@master
