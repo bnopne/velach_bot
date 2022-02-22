@@ -134,3 +134,16 @@ CREATE TABLE "FeatureAnalytics" (
   CONSTRAINT "FeatureAnalytics_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat"(id) ON UPDATE CASCADE,
   CONSTRAINT "FeatureAnalytics_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );
+
+-- public."Migration" definition
+
+-- Drop table
+
+-- DROP TABLE "Migration";
+DROP TABLE IF EXISTS "Migration" CASCADE;
+
+CREATE TABLE "Migration" (
+  id bigserial,
+  "name" varchar(255) NOT NULL,
+  "createdAt" timestamptz NOT NULL DEFAULT NOW()
+);

@@ -23,7 +23,9 @@
     "execute-ts": "ts-node -r tsconfig-paths/register",
     "create-tables": "npm run execute-ts ./src/cli.ts -- --create-tables",
     "seed-test-db": "npm run execute-ts ./src/cli.ts -- --seed-test-db",
-    "backup-db": "npm run execute-ts ./src/cli.ts -- --backup-db"
+    "backup-db": "npm run execute-ts ./src/cli.ts -- --backup-db",
+    "create-migration": "npm run execute-ts ./src/cli.ts -- --create-migration",
+    "apply-migrations": "npm run execute-ts ./src/cli.ts -- --apply-migrations"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -53,6 +55,7 @@
     "@types/lodash": "^4.14.178",
     "@types/mustache": "^4.1.2",
     "@types/node": "^16.0.0",
+    "@types/node-fetch": "^2.6.1",
     "@types/pg": "^8.6.4",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",

@@ -1,5 +1,5 @@
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
+import { join, parse } from 'path';
 import { execSync } from 'child_process';
 
 import fetch from 'node-fetch';
@@ -14,6 +14,7 @@ import {
   getTestingModule,
   getTestConfigService,
 } from 'src/common/utils/test-utils';
+import { MigrationService } from 'src/modules/entities/migration/migration.service';
 
 interface ICliCommand {
   (): Promise<void>;
@@ -61,13 +62,15 @@ async function seedDatabase(): Promise<void> {
   }
 }
 
-async function backupDatabase(): Promise<void> {
+async function backupDatabase(backupName?: string): Promise<void> {
   const configService = await getTestConfigService(await getTestingModule([]));
 
-  const dumpFilename = `velach_bot_database_dump_${format(
-    new Date(),
-    'dd.MM.yyyy_HH:mm:ss',
-  )}.sql`;
+  const dumpFilename = backupName
+    ? `${backupName}.sql`
+    : `velach_bot_database_dump_${format(
+        new Date(),
+        'dd.MM.yyyy_HH:mm:ss',
+      )}.sql`;
   const dumpFullname = join('/tmp', dumpFilename);
 
   execSync(
@@ -97,13 +100,95 @@ async function backupDatabase(): Promise<void> {
   });
 }
 
+async function createMigrationFile(name: string): Promise<void> {
+  const path = join(
+    __dirname,
+    'common',
+    'database',
+    'migrations',
+    `${new Date().getTime()}-${name}.sql`,
+  );
+
+  writeFileSync(path, `-- Migration: ${name}`);
+}
+
+async function applyMigrations(): Promise<void> {
+  const migrationsDir = join(__dirname, 'common', 'database', 'migrations');
+
+  const migrationFiles = existsSync(migrationsDir)
+    ? readdirSync(migrationsDir, { withFileTypes: true })
+        .filter((e) => e.isFile)
+        .filter((e) => e.name.endsWith('.sql'))
+        .map((e) => join(migrationsDir, e.name))
+    : [];
+
+  if (!migrationFiles.length) {
+    console.log('No migrations found, exit...');
+    return;
+  }
+
+  const module = await getTestingModule([MigrationService]);
+  const configService = await getTestConfigService(module);
+  const migrationService = module.get<MigrationService>(MigrationService);
+  const client = await getConnection(configService);
+
+  const appliedMigrations = (await migrationService.getAll(client)).map(
+    (m) => m.name,
+  );
+  const pendingMigrations = migrationFiles.filter(
+    (m) => !appliedMigrations.includes(parse(m).name),
+  );
+
+  if (pendingMigrations.length === 0) {
+    console.warn('No pending migrations found');
+  }
+
+  for (const file of pendingMigrations) {
+    const migrationName = parse(file).name;
+    console.log(`Appling migration ${migrationName}`);
+
+    try {
+      await backupDatabase(`before_${migrationName}`);
+    } catch (err) {
+      console.error(err);
+      continue;
+    }
+
+    try {
+      await client.query('START TRANSACTION');
+      const existingMigration = await migrationService.findByName(
+        client,
+        migrationName,
+      );
+      if (existingMigration) {
+        console.warn(`Migration ${migrationName} already applied, skip...`);
+        continue;
+      }
+      await client.query(readFileSync(file).toString());
+      await migrationService.create(client, migrationName);
+      await client.query('COMMIT');
+    } catch (err) {
+      console.error(
+        `Failed to apply migration ${migrationName}, rollback and skip`,
+      );
+      console.error(err);
+      await client.query('ROLLBACK');
+    }
+  }
+
+  client.release();
+  await disconnect();
+}
+
 const program = createCommand();
 
 program
   .version('1.0.0')
   .option('--create-tables', 'Creates tables and corresponding stuff in DB')
   .option('--seed-test-db', 'Fills DB with test data')
-  .option('--backup-db', 'Creates DB dump and uploads it to Dropbox');
+  .option('--backup-db', 'Creates DB dump and uploads it to Dropbox')
+  .option('--create-migration', 'Creates empty migration file')
+  .option('--apply-migrations', 'Applies all pending migrations');
 
 program.parse(process.argv);
 
@@ -118,6 +203,12 @@ if (program.opts().createTables) {
 } else if (program.opts().backupDb) {
   console.log('execute BACKUP DATABASE');
   command = backupDatabase;
+} else if (program.opts().createMigration) {
+  console.log('execute CREATE MIGRATION FILE');
+  command = () => createMigrationFile(program.args[0]);
+} else if (program.opts().applyMigrations) {
+  console.log('execute APPLY MIGRATIONS');
+  command = applyMigrations;
 } else {
   console.warn('execute NO-OP');
 }

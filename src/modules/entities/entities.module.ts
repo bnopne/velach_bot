@@ -7,6 +7,7 @@ import { UserChatMtmModule } from './user-chat-mtm/user-chat-mtm.module';
 import { BikecheckVoteModule } from './bikecheck-vote/bikecheck-vote.module';
 import { BikecheckChatMtmModule } from './bikecheck-chat-mtm/bikecheck-chat-mtm.module';
 import { FeatureAnalyticsModule } from './feature-analytics/feature-analytics.module';
+import { MigrationModule } from './migration/migration.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { FeatureAnalyticsModule } from './feature-analytics/feature-analytics.mo
     BikecheckChatMtmModule,
     UserModule,
     FeatureAnalyticsModule,
+    MigrationModule,
   ],
   exports: [
     BikecheckModule,
@@ -26,6 +28,7 @@ import { FeatureAnalyticsModule } from './feature-analytics/feature-analytics.mo
     BikecheckChatMtmModule,
     UserModule,
     FeatureAnalyticsModule,
+    MigrationModule,
   ],
 })
 export class EntitiesModule {}
