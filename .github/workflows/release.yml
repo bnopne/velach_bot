@@ -19,24 +19,31 @@ jobs:
       VELACH_BOT_DB_USER: 'velach_bot'
       VELACH_BOT_DB_PASSWORD: 'pass'
     steps:
-    - uses: actions/checkout@v2
+    - name: Fetch Repo
+      uses: actions/checkout@v2
+    
     - name: Install Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    
     - uses: harmon758/postgresql-action@v1
       with:
         postgresql version: '12'
         postgresql db: 'velach_bot'
         postgresql user: 'velach_bot'
         postgresql password: 'pass'
+    
     - name: Install Dependencies
       run: npm ci
+    
     - name: Create DB Tables
       run: npm run create-tables
+    
     - name: Seed Test DB
       run: npm run seed-test-db
+    
     - name: Run Tests
       run: npm run test
   
@@ -48,7 +55,7 @@ jobs:
       matrix:
         node-version: [ 14.18.1 ]
     steps:
-    - name: Fetch Repository
+    - name: Fetch Repo
       uses: actions/checkout@v2
     
     - name: Install Node.js ${{ matrix.node-version }}
@@ -64,7 +71,9 @@ jobs:
       run: npm run build
       
     - name: Move Dependencies
-      run: mv node_modules dist/node_modules
+      run: |
+        mv node_modules dist/node_modules
+        mv src/common/database/migrations dist/common/database/migrations
         
     - name: Copy Distribution To Server
       uses: easingthemes/ssh-deploy@main
