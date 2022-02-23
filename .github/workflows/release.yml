@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  run_tests:
-    name: Run Tests
+  release:
+    name: Release
     runs-on: ubuntu-20.04
     strategy:
       matrix:
@@ -18,16 +18,11 @@ jobs:
       VELACH_BOT_DB_DATABASE: 'velach_bot'
       VELACH_BOT_DB_USER: 'velach_bot'
       VELACH_BOT_DB_PASSWORD: 'pass'
+    
     steps:
     - name: Fetch Repo
       uses: actions/checkout@v2
-
-    - name: Install Node ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-
+    
     - name: Setup PostgreSQL
       uses: harmon758/postgresql-action@v1
       with:
@@ -35,6 +30,12 @@ jobs:
         postgresql db: 'velach_bot'
         postgresql user: 'velach_bot'
         postgresql password: 'pass'
+        
+    - name: Setup Node ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
 
     - name: Install Dependencies
       run: npm ci
@@ -55,44 +56,7 @@ jobs:
       run: |
         mv node_modules dist/node_modules
         mv src/common/database/migrations dist/common/database/migrations
-
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-20.04
-    needs: run_tests
-    strategy:
-      matrix:
-        node-version: [ 14.18.1 ]
-
-    steps:
-    - name: Fetch Repo
-      uses: actions/checkout@v2
-
-    - name: Install Node ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-
-    - name: Setup PostgreSQL
-      uses: harmon758/postgresql-action@v1
-      with:
-        postgresql version: '12'
-        postgresql db: 'velach_bot'
-        postgresql user: 'velach_bot'
-        postgresql password: 'pass'
-
-    - name: Install Dependencies
-      run: npm ci
-      
-    - name: Build
-      run: npm run build
     
-    - name: Prepare Distribution Folder
-      run: |
-        mv node_modules dist/node_modules
-        mv src/common/database/migrations dist/common/database/migrations
-
     - name: Stop Bot
       uses: appleboy/ssh-action@master
       with:
@@ -128,7 +92,7 @@ jobs:
           export VELACH_BOT_DB_USER="${{ secrets.DB_USER }}"
           export VELACH_BOT_DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
           export VELACH_BOT_DROPBOX_TOKEN="${{ secrets.DROPBOX_ACCESS_TOKEN }}"
-          node cli.js --backup-db pre-deploy-dump
+          node cli.js --backup-db pre-deploy-dump-${{ github.sha }}
 
     - name: Apply Migrations
       uses: appleboy/ssh-action@master
