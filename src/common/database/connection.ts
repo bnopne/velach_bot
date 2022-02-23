@@ -30,18 +30,3 @@ export async function getConnection(
 export async function disconnect(): Promise<void> {
   return pool.end();
 }
-
-export async function runAndRollback<T>(
-  configService: ConfigService,
-  f: IRunWithPGConnection<T>,
-): Promise<void> {
-  const connection = await getConnection(configService);
-  await connection.query('START TRANSACTION');
-
-  try {
-    await f(connection);
-  } catch (err) {}
-
-  await connection.query('ROLLBACK');
-  connection.release();
-}

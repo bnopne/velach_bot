@@ -32,7 +32,7 @@ SET
 WHERE "id" = :id
 RETURNING *;
 
-/* @name getBikechecksCount */
+/* @name getActiveBikechecksCount */
 SELECT COUNT("id")
 FROM "Bikecheck"
 WHERE "userId" = :userId AND "isActive" = TRUE;

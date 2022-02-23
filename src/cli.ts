@@ -10,10 +10,7 @@ import { Dropbox } from 'dropbox';
 
 import { getConnection, disconnect } from 'src/common/database/connection';
 import { seedTestDatabase } from 'src/common/database/test-database';
-import {
-  getTestingModule,
-  getTestConfigService,
-} from 'src/common/utils/test-utils';
+import { getConfigService } from 'src/common/utils/config';
 import { MigrationService } from 'src/modules/entities/migration/migration.service';
 
 interface ICliCommand {
@@ -33,7 +30,7 @@ async function noopCommand(): Promise<void> {
 }
 
 async function createTables(): Promise<void> {
-  const configService = await getTestConfigService(await getTestingModule([]));
+  const configService = await getConfigService();
   const connection = await getConnection(configService);
 
   const script = readFileSync('./src/common/database/create-tables.sql');
@@ -49,7 +46,7 @@ async function createTables(): Promise<void> {
 }
 
 async function seedDatabase(): Promise<void> {
-  const configService = await getTestConfigService(await getTestingModule([]));
+  const configService = await getConfigService();
   const connection = await getConnection(configService);
 
   try {
@@ -63,7 +60,7 @@ async function seedDatabase(): Promise<void> {
 }
 
 async function backupDatabase(backupName?: string): Promise<void> {
-  const configService = await getTestConfigService(await getTestingModule([]));
+  const configService = await getConfigService();
 
   const dumpFilename = backupName
     ? `${backupName}.sql`
@@ -127,9 +124,8 @@ async function applyMigrations(): Promise<void> {
     return;
   }
 
-  const module = await getTestingModule([MigrationService]);
-  const configService = await getTestConfigService(module);
-  const migrationService = module.get<MigrationService>(MigrationService);
+  const configService = await getConfigService();
+  const migrationService = new MigrationService();
   const client = await getConnection(configService);
 
   const appliedMigrations = (await migrationService.getAll(client)).map(
@@ -202,7 +198,7 @@ if (program.opts().createTables) {
   command = seedDatabase;
 } else if (program.opts().backupDb) {
   console.log('execute BACKUP DATABASE');
-  command = backupDatabase;
+  command = () => backupDatabase(program.args[0]);
 } else if (program.opts().createMigration) {
   console.log('execute CREATE MIGRATION FILE');
   command = () => createMigrationFile(program.args[0]);
