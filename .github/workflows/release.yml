@@ -28,7 +28,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - uses: harmon758/postgresql-action@v1
+    - name: Setup PostgreSQL
+      uses: harmon758/postgresql-action@v1
       with:
         postgresql version: '12'
         postgresql db: 'velach_bot'
@@ -54,16 +55,6 @@ jobs:
       run: |
         mv node_modules dist/node_modules
         mv src/common/database/migrations dist/common/database/migrations
-        
-    - uses: montudor/action-zip@v1
-      with:
-        args: zip -qq -r velach-bot-dist.zip dist
-
-    - name: Upload Distribution Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: velach-bot-dist
-        path: velach-bot-dist.zip
 
   deploy:
     name: Deploy
@@ -74,14 +65,33 @@ jobs:
         node-version: [ 14.18.1 ]
 
     steps:
-    - name: Download Distribution Artifact
-      uses: actions/download-artifact@v2
+    - name: Fetch Repo
+      uses: actions/checkout@v2
+
+    - name: Install Node ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
       with:
-        name: velach-bot-dist
-        
-    - uses: montudor/action-zip@v1
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Setup PostgreSQL
+      uses: harmon758/postgresql-action@v1
       with:
-        args: unzip -qq velach-bot-dist.zip -d dist
+        postgresql version: '12'
+        postgresql db: 'velach_bot'
+        postgresql user: 'velach_bot'
+        postgresql password: 'pass'
+
+    - name: Install Dependencies
+      run: npm ci
+      
+    - name: Build
+      run: npm run build
+    
+    - name: Prepare Distribution Folder
+      run: |
+        mv node_modules dist/node_modules
+        mv src/common/database/migrations dist/common/database/migrations
 
     - name: Stop Bot
       uses: appleboy/ssh-action@master
@@ -105,46 +115,44 @@ jobs:
 
     - name: Backup Database
       uses: appleboy/ssh-action@master
-      env:
-        VELACH_BOT_DB_DATABASE: ${{ secrets.DB_NAME }}
-        VELACH_BOT_DB_HOST: ${{ secrets.DB_HOST }}
-        VELACH_BOT_DB_PORT: ${{ secrets.DB_PORT }}
-        VELACH_BOT_DB_USER: ${{ secrets.DB_USER }}
-        VELACH_BOT_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        VELACH_BOT_DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
       with:
         host: ${{ secrets.PROD_SERVER_HOST }}
         port: ${{ secrets.PROD_SERVER_PORT }}
         username: ${{ secrets.PROD_SERVER_USER }}
         key: ${{ secrets.COMMAND_EXECUTION_KEY }}
-        envs: VELACH_BOT_DB_DATABASE,VELACH_BOT_DB_HOST,VELACH_BOT_DB_PORT,VELACH_BOT_DB_USER,VELACH_BOT_DB_PASSWORD,VELACH_BOT_DROPBOX_ACCESS_TOKEN
         script: |
           cd velach_bot
+          export VELACH_BOT_DB_DATABASE="${{ secrets.DB_NAME }}"
+          export VELACH_BOT_DB_HOST="${{ secrets.DB_HOST }}"
+          export VELACH_BOT_DB_PORT="${{ secrets.DB_PORT }}"
+          export VELACH_BOT_DB_USER="${{ secrets.DB_USER }}"
+          export VELACH_BOT_DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
+          export VELACH_BOT_DROPBOX_ACCESS_TOKEN="${{ secrets.DROPBOX_ACCESS_TOKEN }}"
           node cli.js --backup-db pre-deploy-dump
 
-    - name: Apply Migrations
-      uses: appleboy/ssh-action@master
-      env:
-        VELACH_BOT_DB_DATABASE: ${{ secrets.DB_NAME }}
-        VELACH_BOT_DB_HOST: ${{ secrets.DB_HOST }}
-        VELACH_BOT_DB_PORT: ${{ secrets.DB_PORT }}
-        VELACH_BOT_DB_USER: ${{ secrets.DB_USER }}
-        VELACH_BOT_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      with:
-        host: ${{ secrets.PROD_SERVER_HOST }}
-        port: ${{ secrets.PROD_SERVER_PORT }}
-        username: ${{ secrets.PROD_SERVER_USER }}
-        key: ${{ secrets.COMMAND_EXECUTION_KEY }}
-        envs: VELACH_BOT_DB_DATABASE,VELACH_BOT_DB_HOST,VELACH_BOT_DB_PORT,VELACH_BOT_DB_USER,VELACH_BOT_DB_PASSWORD
-        script: |
-          cd velach_bot
-          node cli.js --apply-migrations
+#     - name: Apply Migrations
+#       uses: appleboy/ssh-action@master
+#       env:
+#         VELACH_BOT_DB_DATABASE: ${{ secrets.DB_NAME }}
+#         VELACH_BOT_DB_HOST: ${{ secrets.DB_HOST }}
+#         VELACH_BOT_DB_PORT: ${{ secrets.DB_PORT }}
+#         VELACH_BOT_DB_USER: ${{ secrets.DB_USER }}
+#         VELACH_BOT_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+#       with:
+#         host: ${{ secrets.PROD_SERVER_HOST }}
+#         port: ${{ secrets.PROD_SERVER_PORT }}
+#         username: ${{ secrets.PROD_SERVER_USER }}
+#         key: ${{ secrets.COMMAND_EXECUTION_KEY }}
+#         envs: VELACH_BOT_DB_DATABASE,VELACH_BOT_DB_HOST,VELACH_BOT_DB_PORT,VELACH_BOT_DB_USER,VELACH_BOT_DB_PASSWORD
+#         script: |
+#           cd velach_bot
+#           node cli.js --apply-migrations
 
-    - name: Restart Bot
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.PROD_SERVER_HOST }}
-        port: ${{ secrets.PROD_SERVER_PORT }}
-        username: ${{ secrets.PROD_SERVER_USER }}
-        key: ${{ secrets.COMMAND_EXECUTION_KEY }}
-        script: pm2 restart ecosystem.config.js
+#     - name: Restart Bot
+#       uses: appleboy/ssh-action@master
+#       with:
+#         host: ${{ secrets.PROD_SERVER_HOST }}
+#         port: ${{ secrets.PROD_SERVER_PORT }}
+#         username: ${{ secrets.PROD_SERVER_USER }}
+#         key: ${{ secrets.COMMAND_EXECUTION_KEY }}
+#         script: pm2 restart ecosystem.config.js
