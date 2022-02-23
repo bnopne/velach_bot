@@ -46,6 +46,9 @@ jobs:
 
     - name: Run Tests
       run: npm run test
+    
+    - name: Build
+      run: npm run build
 
     - name: Prepare Distribution Folder
       run: |
