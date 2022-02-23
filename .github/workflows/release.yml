@@ -54,12 +54,16 @@ jobs:
       run: |
         mv node_modules dist/node_modules
         mv src/common/database/migrations dist/common/database/migrations
+        
+    - uses: montudor/action-zip@v1
+      with:
+        args: zip -qq -r velach-bot-dist.zip dist
 
     - name: Upload Distribution Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: velach-bot-distribution
-        path: dist/
+        name: velach-bot-dist
+        path: velach-bot-dist.zip
 
   deploy:
     name: Deploy
@@ -74,7 +78,10 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: velach-bot-distribution
-        path: dist/
+        
+    - uses: montudor/action-zip@v1
+      with:
+        args: unzip -qq velach-bot-dist.zip -d dist
 
     - name: Stop Bot
       uses: appleboy/ssh-action@master
