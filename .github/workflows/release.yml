@@ -127,7 +127,7 @@ jobs:
           export VELACH_BOT_DB_PORT="${{ secrets.DB_PORT }}"
           export VELACH_BOT_DB_USER="${{ secrets.DB_USER }}"
           export VELACH_BOT_DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
-          export VELACH_BOT_DROPBOX_ACCESS_TOKEN="${{ secrets.DROPBOX_ACCESS_TOKEN }}"
+          export VELACH_BOT_DROPBOX_TOKEN="${{ secrets.DROPBOX_ACCESS_TOKEN }}"
           node cli.js --backup-db pre-deploy-dump
 
 #     - name: Apply Migrations
