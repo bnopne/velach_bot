@@ -77,7 +77,7 @@ jobs:
     - name: Download Distribution Artifact
       uses: actions/download-artifact@v2
       with:
-        name: velach-bot-distribution
+        name: velach-bot-dist
         
     - uses: montudor/action-zip@v1
       with:
