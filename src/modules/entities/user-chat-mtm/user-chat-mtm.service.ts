@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
-import { User } from 'src/modules/entities/user/user.entity';
-import { Chat } from 'src/modules/entities/chat/chat.entity';
 import { UserChatMtm } from 'src/modules/entities/user-chat-mtm/user-chat-mtm.entity';
 import { find, insert } from 'src/modules/entities/user-chat-mtm/queries';
 
@@ -27,7 +25,7 @@ export class UserChatMtmService {
     userId: string,
     chatId: string,
   ): Promise<UserChatMtm> {
-    const chat = await this.find(client, chatId, userId);
+    const chat = await this.find(client, userId, chatId);
 
     if (!chat) {
       throw new Error(

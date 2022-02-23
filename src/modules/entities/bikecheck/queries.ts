@@ -196,23 +196,23 @@ const updateIR: any = {"name":"update","params":[{"name":"userId","required":fal
 export const update = new PreparedQuery<IUpdateParams,IUpdateResult>(updateIR);
 
 
-/** 'GetBikechecksCount' parameters type */
-export interface IGetBikechecksCountParams {
+/** 'GetActiveBikechecksCount' parameters type */
+export interface IGetActiveBikechecksCountParams {
   userId: string | null | void;
 }
 
-/** 'GetBikechecksCount' return type */
-export interface IGetBikechecksCountResult {
+/** 'GetActiveBikechecksCount' return type */
+export interface IGetActiveBikechecksCountResult {
   count: string | null;
 }
 
-/** 'GetBikechecksCount' query type */
-export interface IGetBikechecksCountQuery {
-  params: IGetBikechecksCountParams;
-  result: IGetBikechecksCountResult;
+/** 'GetActiveBikechecksCount' query type */
+export interface IGetActiveBikechecksCountQuery {
+  params: IGetActiveBikechecksCountParams;
+  result: IGetActiveBikechecksCountResult;
 }
 
-const getBikechecksCountIR: any = {"name":"getBikechecksCount","params":[{"name":"userId","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":836,"b":841,"line":38,"col":18}]}}],"usedParamSet":{"userId":true},"statement":{"body":"SELECT COUNT(\"id\")\nFROM \"Bikecheck\"\nWHERE \"userId\" = :userId AND \"isActive\" = TRUE","loc":{"a":782,"b":863,"line":36,"col":0}}};
+const getActiveBikechecksCountIR: any = {"name":"getActiveBikechecksCount","params":[{"name":"userId","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":842,"b":847,"line":38,"col":18}]}}],"usedParamSet":{"userId":true},"statement":{"body":"SELECT COUNT(\"id\")\nFROM \"Bikecheck\"\nWHERE \"userId\" = :userId AND \"isActive\" = TRUE","loc":{"a":788,"b":869,"line":36,"col":0}}};
 
 /**
  * Query generated from SQL:
@@ -222,7 +222,7 @@ const getBikechecksCountIR: any = {"name":"getBikechecksCount","params":[{"name"
  * WHERE "userId" = :userId AND "isActive" = TRUE
  * ```
  */
-export const getBikechecksCount = new PreparedQuery<IGetBikechecksCountParams,IGetBikechecksCountResult>(getBikechecksCountIR);
+export const getActiveBikechecksCount = new PreparedQuery<IGetActiveBikechecksCountParams,IGetActiveBikechecksCountResult>(getActiveBikechecksCountIR);
 
 
 /** 'GetRank' parameters type */
@@ -241,7 +241,7 @@ export interface IGetRankQuery {
   result: IGetRankResult;
 }
 
-const getRankIR: any = {"name":"getRank","params":[{"name":"bikecheckId","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":1305,"b":1315,"line":58,"col":14}]}}],"usedParamSet":{"bikecheckId":true},"statement":{"body":"SELECT \"rank\"\nFROM (\n  SELECT id, \"likes\", row_number () over (ORDER BY \"likes\" desc) AS \"rank\"\n  FROM (\n    SELECT id, count(\"likes\") AS \"likes\"\n    FROM\n    (\n      SELECT id FROM \"Bikecheck\" b WHERE b.\"isActive\" = TRUE\n    ) AS T1\n    INNER JOIN\n    (\n      SELECT \"bikecheckId\" AS \"likes\" FROM \"BikecheckVote\" bv WHERE bv.points > 0\n    ) AS T2\n    ON T1.id = T2.\"likes\"\n    GROUP BY T1.id\n  ) T\n) T\nWHERE T.id = :bikecheckId","loc":{"a":887,"b":1315,"line":41,"col":0}}};
+const getRankIR: any = {"name":"getRank","params":[{"name":"bikecheckId","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":1311,"b":1321,"line":58,"col":14}]}}],"usedParamSet":{"bikecheckId":true},"statement":{"body":"SELECT \"rank\"\nFROM (\n  SELECT id, \"likes\", row_number () over (ORDER BY \"likes\" desc) AS \"rank\"\n  FROM (\n    SELECT id, count(\"likes\") AS \"likes\"\n    FROM\n    (\n      SELECT id FROM \"Bikecheck\" b WHERE b.\"isActive\" = TRUE\n    ) AS T1\n    INNER JOIN\n    (\n      SELECT \"bikecheckId\" AS \"likes\" FROM \"BikecheckVote\" bv WHERE bv.points > 0\n    ) AS T2\n    ON T1.id = T2.\"likes\"\n    GROUP BY T1.id\n  ) T\n) T\nWHERE T.id = :bikecheckId","loc":{"a":893,"b":1321,"line":41,"col":0}}};
 
 /**
  * Query generated from SQL:
@@ -290,7 +290,7 @@ export interface IFindOnSaleQuery {
   result: IFindOnSaleResult;
 }
 
-const findOnSaleIR: any = {"name":"findOnSale","params":[],"usedParamSet":{},"statement":{"body":"SELECT *\nFROM \"Bikecheck\"\nWHERE \"onSale\" = TRUE and \"isActive\" = TRUE\nORDER BY \"saleRank\" DESC","loc":{"a":1342,"b":1435,"line":61,"col":0}}};
+const findOnSaleIR: any = {"name":"findOnSale","params":[],"usedParamSet":{},"statement":{"body":"SELECT *\nFROM \"Bikecheck\"\nWHERE \"onSale\" = TRUE and \"isActive\" = TRUE\nORDER BY \"saleRank\" DESC","loc":{"a":1348,"b":1441,"line":61,"col":0}}};
 
 /**
  * Query generated from SQL:
@@ -319,7 +319,7 @@ export interface IFindTopBikecheckQuery {
   result: IFindTopBikecheckResult;
 }
 
-const findTopBikecheckIR: any = {"name":"findTopBikecheck","params":[],"usedParamSet":{},"statement":{"body":"SELECT \"id\", COUNT(\"bikecheckId\")\nFROM\n  (\n    SELECT * FROM \"Bikecheck\" b WHERE b.\"isActive\" = TRUE\n  ) AS T1\n  LEFT JOIN\n  (\n    SELECT \"bikecheckId\" FROM \"BikecheckVote\" bv WHERE bv.\"points\"  > 0\n  ) AS T2\n  ON T1.id = T2.\"bikecheckId\"\nGROUP BY T1.\"id\"\nORDER BY \"count\" DESC\nLIMIT 10","loc":{"a":1468,"b":1753,"line":67,"col":0}}};
+const findTopBikecheckIR: any = {"name":"findTopBikecheck","params":[],"usedParamSet":{},"statement":{"body":"SELECT \"id\", COUNT(\"bikecheckId\")\nFROM\n  (\n    SELECT * FROM \"Bikecheck\" b WHERE b.\"isActive\" = TRUE\n  ) AS T1\n  LEFT JOIN\n  (\n    SELECT \"bikecheckId\" FROM \"BikecheckVote\" bv WHERE bv.\"points\"  > 0\n  ) AS T2\n  ON T1.id = T2.\"bikecheckId\"\nGROUP BY T1.\"id\"\nORDER BY \"count\" DESC\nLIMIT 10","loc":{"a":1474,"b":1759,"line":67,"col":0}}};
 
 /**
  * Query generated from SQL:

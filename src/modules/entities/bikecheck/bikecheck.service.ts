@@ -5,7 +5,7 @@ import { Bikecheck } from 'src/modules/entities/bikecheck/bikecheck.entity';
 import {
   findById,
   findActive,
-  getBikechecksCount,
+  getActiveBikechecksCount,
   getRank,
   update,
   insertActive,
@@ -67,10 +67,11 @@ export class BikecheckService {
     client: PoolClient,
     userId: string,
   ): Promise<number> {
-    const rows = await getBikechecksCount.run({ userId }, client);
+    const rows = await getActiveBikechecksCount.run({ userId }, client);
     return Number(rows[0].count);
   }
 
+  // TODO: Move to BikecheckVote service
   async getBikecheckRank(
     client: PoolClient,
     bikecheckId: string,
@@ -84,6 +85,7 @@ export class BikecheckService {
     return rows.map((r) => Bikecheck.fromTableRow(r));
   }
 
+  // TODO: Move to BikecheckVote service
   async getBikechecksTopData(
     client: PoolClient,
   ): Promise<{ bikecheckId: string; likes: number }[]> {

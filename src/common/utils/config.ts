@@ -19,7 +19,7 @@ export function getConfigModule(): DynamicModule {
 
 export async function getConfigService(): Promise<ConfigService> {
   if (!app) {
-    app = await NestFactory.create(getConfigModule());
+    app = await NestFactory.create(getConfigModule(), { logger: false });
   }
 
   return app.get(ConfigService);

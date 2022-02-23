@@ -7,9 +7,6 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Pool, PoolClient } from 'pg';
 
-import { Optional } from 'src/common/types/utils';
-import { IRunWithPGConnection } from 'src/common/database/connection';
-
 const logger = new Logger('PG Pool Service');
 
 @Injectable()
@@ -23,41 +20,6 @@ export class PgPoolService implements OnModuleInit, OnModuleDestroy {
 
   getConnection(): Promise<PoolClient> {
     return this.pool.connect();
-  }
-
-  async runInTransaction<T>(
-    f: IRunWithPGConnection<T>,
-    ...args: any[]
-  ): Promise<Optional<T>> {
-    const connection = await this.getConnection();
-
-    await connection.query('START TRANSACTION');
-
-    try {
-      const result = await f(connection, ...args);
-      await connection.query('COMMIT');
-      return result;
-    } catch (err) {
-      logger.error(err);
-      await connection.query('ROLLBACK');
-    } finally {
-      connection.release();
-    }
-  }
-
-  async runWithoutTransaction<T>(
-    f: IRunWithPGConnection<T>,
-    ...args: any[]
-  ): Promise<Optional<T>> {
-    const connection = await this.getConnection();
-
-    try {
-      const result = await f(connection, ...args);
-      return result;
-    } catch (err) {
-    } finally {
-      connection.release();
-    }
   }
 
   async onModuleInit(): Promise<void> {
