@@ -4,7 +4,6 @@ import { execSync } from 'child_process';
 
 import fetch from 'node-fetch';
 import { createCommand } from 'commander';
-import { noop } from 'lodash';
 import { format } from 'date-fns';
 import { Dropbox } from 'dropbox';
 
@@ -23,10 +22,6 @@ async function execute(command: ICliCommand): Promise<void> {
   } catch (err) {
     console.error(err);
   }
-}
-
-async function noopCommand(): Promise<void> {
-  noop();
 }
 
 async function createTables(): Promise<void> {
@@ -181,7 +176,7 @@ program
 
 program.parse(process.argv);
 
-let command: ICliCommand = noopCommand;
+let command: ICliCommand = () => Promise.resolve();
 
 if (program.opts().createTables) {
   console.log('execute CREATE TABLES');
