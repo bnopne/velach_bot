@@ -1,8 +1,6 @@
 name: Release Workflow
 
 on:
-  push:
-    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -66,17 +64,6 @@ jobs:
         key: ${{ secrets.COMMAND_EXECUTION_KEY }}
         script: pm2 stop ecosystem.config.js
 
-    - name: Copy Distribution To Server
-      uses: easingthemes/ssh-deploy@main
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.FILE_TRANSFER_KEY }}
-        ARGS: "-rltgoDzvO"
-        SOURCE: "dist/"
-        REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
-        REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
-        REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
-        TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
-
     - name: Backup Database
       uses: appleboy/ssh-action@master
       with:
@@ -93,6 +80,17 @@ jobs:
           export VELACH_BOT_DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
           export VELACH_BOT_DROPBOX_TOKEN="${{ secrets.DROPBOX_ACCESS_TOKEN }}"
           node cli.js --backup-db pre-deploy-dump-${{ github.sha }}
+
+    - name: Copy Distribution To Server
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.FILE_TRANSFER_KEY }}
+        ARGS: "-rltgoDzvO"
+        SOURCE: "dist/"
+        REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
+        REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
+        REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
+        TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
 
     - name: Apply Migrations
       uses: appleboy/ssh-action@master

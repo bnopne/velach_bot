@@ -22,6 +22,7 @@ async function execute(command: ICliCommand): Promise<void> {
     await command();
   } catch (err) {
     console.error(err);
+    process.exit(1);
   }
 }
 
@@ -38,7 +39,7 @@ async function createTables(): Promise<void> {
   try {
     await connection.query(script.toString());
   } catch (err) {
-    console.error(err);
+    throw err;
   } finally {
     connection.release();
     await disconnect();
@@ -52,7 +53,7 @@ async function seedDatabase(): Promise<void> {
   try {
     await seedTestDatabase(connection);
   } catch (err) {
-    console.error(err);
+    throw err;
   } finally {
     connection.release();
     await disconnect();
@@ -160,9 +161,9 @@ async function applyMigrations(): Promise<void> {
 
     await client.query('COMMIT');
   } catch (err) {
-    console.error(`Failed to apply migrations, rollback`);
-    console.error(err);
     await client.query('ROLLBACK');
+    console.error(`Failed to apply migrations, rollback`);
+    throw err;
   } finally {
     client.release();
     await disconnect();

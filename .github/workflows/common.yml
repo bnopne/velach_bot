@@ -2,8 +2,14 @@ name: Common Velach Bot Workflow
 
 on:
   push:
-    branches-ignore:
-    - master
+    branches:
+      - '*'
+  pull_request:
+    types:
+      - opened
+    branches:
+      - '*'
+
 
 jobs:
   run_tests:
