@@ -136,22 +136,16 @@ async function applyMigrations(): Promise<void> {
   );
 
   if (pendingMigrations.length === 0) {
-    console.warn('No pending migrations found');
+    console.warn('No pending migrations found, skip...');
   }
 
-  for (const file of pendingMigrations) {
-    const migrationName = parse(file).name;
-    console.log(`Appling migration ${migrationName}`);
+  await client.query('START TRANSACTION');
 
-    try {
-      await backupDatabase(`before_${migrationName}`);
-    } catch (err) {
-      console.error(err);
-      continue;
-    }
+  try {
+    for (const file of pendingMigrations) {
+      const migrationName = parse(file).name;
+      console.log(`Applying migration ${migrationName}`);
 
-    try {
-      await client.query('START TRANSACTION');
       const existingMigration = await migrationService.findByName(
         client,
         migrationName,
@@ -162,18 +156,17 @@ async function applyMigrations(): Promise<void> {
       }
       await client.query(readFileSync(file).toString());
       await migrationService.create(client, migrationName);
-      await client.query('COMMIT');
-    } catch (err) {
-      console.error(
-        `Failed to apply migration ${migrationName}, rollback and skip`,
-      );
-      console.error(err);
-      await client.query('ROLLBACK');
     }
-  }
 
-  client.release();
-  await disconnect();
+    await client.query('COMMIT');
+  } catch (err) {
+    console.error(`Failed to apply migrations, rollback`);
+    console.error(err);
+    await client.query('ROLLBACK');
+  } finally {
+    client.release();
+    await disconnect();
+  }
 }
 
 const program = createCommand();

@@ -18,11 +18,11 @@ jobs:
       VELACH_BOT_DB_DATABASE: 'velach_bot'
       VELACH_BOT_DB_USER: 'velach_bot'
       VELACH_BOT_DB_PASSWORD: 'pass'
-    
+
     steps:
     - name: Fetch Repo
       uses: actions/checkout@v2
-    
+
     - name: Setup PostgreSQL
       uses: harmon758/postgresql-action@v1
       with:
@@ -30,7 +30,7 @@ jobs:
         postgresql db: 'velach_bot'
         postgresql user: 'velach_bot'
         postgresql password: 'pass'
-        
+
     - name: Setup Node ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
@@ -48,7 +48,7 @@ jobs:
 
     - name: Run Tests
       run: npm run test
-    
+
     - name: Build
       run: npm run build
 
@@ -56,7 +56,7 @@ jobs:
       run: |
         mv node_modules dist/node_modules
         mv src/common/database/migrations dist/common/database/migrations
-    
+
     - name: Stop Bot
       uses: appleboy/ssh-action@master
       with:
@@ -96,20 +96,18 @@ jobs:
 
     - name: Apply Migrations
       uses: appleboy/ssh-action@master
-      env:
-        VELACH_BOT_DB_DATABASE: ${{ secrets.DB_NAME }}
-        VELACH_BOT_DB_HOST: ${{ secrets.DB_HOST }}
-        VELACH_BOT_DB_PORT: ${{ secrets.DB_PORT }}
-        VELACH_BOT_DB_USER: ${{ secrets.DB_USER }}
-        VELACH_BOT_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       with:
         host: ${{ secrets.PROD_SERVER_HOST }}
         port: ${{ secrets.PROD_SERVER_PORT }}
         username: ${{ secrets.PROD_SERVER_USER }}
         key: ${{ secrets.COMMAND_EXECUTION_KEY }}
-        envs: VELACH_BOT_DB_DATABASE,VELACH_BOT_DB_HOST,VELACH_BOT_DB_PORT,VELACH_BOT_DB_USER,VELACH_BOT_DB_PASSWORD
         script: |
           cd velach_bot
+          export VELACH_BOT_DB_DATABASE="${{ secrets.DB_NAME }}"
+          export VELACH_BOT_DB_HOST="${{ secrets.DB_HOST }}"
+          export VELACH_BOT_DB_PORT="${{ secrets.DB_PORT }}"
+          export VELACH_BOT_DB_USER="${{ secrets.DB_USER }}"
+          export VELACH_BOT_DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
           node cli.js --apply-migrations
 
     - name: Restart Bot
