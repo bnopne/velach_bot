@@ -101,7 +101,7 @@ jobs:
         key: ${{ secrets.COMMAND_EXECUTION_KEY }}
         script: |
           cd velach_bot
-          node ci
+          npm ci
 
     - name: Apply Migrations
       uses: appleboy/ssh-action@master
