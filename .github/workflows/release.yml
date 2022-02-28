@@ -2,7 +2,7 @@ name: Release Workflow
 
 on:
   push:
-    branches: 
+    branches:
     - master
 
 jobs:
@@ -56,12 +56,12 @@ jobs:
       run: |
         mv node_modules dist/node_modules
         mv src/common/database/migrations dist/common/database/migrations
-        
+
     - name: Copy Distribution To Server
       uses: easingthemes/ssh-deploy@main
       env:
         SSH_PRIVATE_KEY: ${{ secrets.FILE_TRANSFER_KEY }}
-        ARGS: "-rltgoDzvO"
+        ARGS: "-rltgoDzvO --delete"
         SOURCE: "dist/"
         REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
         REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
