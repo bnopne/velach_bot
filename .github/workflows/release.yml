@@ -1,7 +1,9 @@
 name: Release Workflow
 
 on:
-  workflow_dispatch:
+  push:
+    branches: 
+    - master
 
 jobs:
   release:
@@ -52,6 +54,7 @@ jobs:
 
     - name: Prepare Distribution Folder
       run: |
+        mv package.json dist/package.json
         mv package-lock.json dist/package-lock.json
         mv src/common/database/migrations dist/common/database/migrations
 
