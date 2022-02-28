@@ -3,13 +3,8 @@ name: Common Velach Bot Workflow
 on:
   push:
     branches:
-      - '*'
-  pull_request:
-    types:
-      - opened
-    branches:
-      - '*'
-
+      - 'feature/*'
+      - 'fix/*'
 
 jobs:
   run_tests:
