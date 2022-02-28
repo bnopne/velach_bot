@@ -37,7 +37,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - name: Install Local Dependencies
+    - name: Install Dependencies
       run: npm ci
 
     - name: Create DB Tables
@@ -54,9 +54,19 @@ jobs:
 
     - name: Prepare Distribution Folder
       run: |
-        mv package.json dist/package.json
-        mv package-lock.json dist/package-lock.json
+        mv node_modules dist/node_modules
         mv src/common/database/migrations dist/common/database/migrations
+        
+    - name: Copy Distribution To Server
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.FILE_TRANSFER_KEY }}
+        ARGS: "-rltgoDzvO"
+        SOURCE: "dist/"
+        REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
+        REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
+        REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
+        TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
 
     - name: Stop Bot
       uses: appleboy/ssh-action@master
@@ -83,28 +93,6 @@ jobs:
           export VELACH_BOT_DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
           export VELACH_BOT_DROPBOX_TOKEN="${{ secrets.DROPBOX_ACCESS_TOKEN }}"
           node cli.js --backup-db pre-deploy-dump-${{ github.sha }}
-
-    - name: Copy Distribution To Server
-      uses: easingthemes/ssh-deploy@main
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.FILE_TRANSFER_KEY }}
-        ARGS: "-rltgoDzvO"
-        SOURCE: "dist/"
-        REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
-        REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
-        REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
-        TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
-
-    - name: Install Server Dependencies
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.PROD_SERVER_HOST }}
-        port: ${{ secrets.PROD_SERVER_PORT }}
-        username: ${{ secrets.PROD_SERVER_USER }}
-        key: ${{ secrets.COMMAND_EXECUTION_KEY }}
-        script: |
-          cd velach_bot
-          npm ci
 
     - name: Apply Migrations
       uses: appleboy/ssh-action@master
