@@ -1,4 +1,10 @@
-import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
+import {
+  readFileSync,
+  writeFileSync,
+  readdirSync,
+  existsSync,
+  unlinkSync,
+} from 'fs';
 import { join, parse } from 'path';
 import { execSync } from 'child_process';
 
@@ -55,15 +61,16 @@ async function seedDatabase(): Promise<void> {
   }
 }
 
-async function backupDatabase(backupName?: string): Promise<void> {
+async function backupDatabase(filename?: string): Promise<void> {
   const configService = await getConfigService();
 
-  const dumpFilename = backupName
-    ? `${backupName}.sql`
+  const dumpFilename = filename
+    ? `${filename}.sql`
     : `velach_bot_database_dump_${format(
         new Date(),
         'dd.MM.yyyy_HH:mm:ss',
       )}.sql`;
+
   const dumpFullname = join('/tmp', dumpFilename);
 
   execSync(
@@ -91,6 +98,8 @@ async function backupDatabase(backupName?: string): Promise<void> {
     contents: dump,
     path: `/${dumpFilename}`,
   });
+
+  unlinkSync(dumpFullname);
 }
 
 async function createMigrationFile(name: string): Promise<void> {

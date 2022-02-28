@@ -35,7 +35,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - name: Install Dependencies
+    - name: Install Local Dependencies
       run: npm ci
 
     - name: Create DB Tables
@@ -52,7 +52,7 @@ jobs:
 
     - name: Prepare Distribution Folder
       run: |
-        mv node_modules dist/node_modules
+        mv package-lock.json dist/package-lock.json
         mv src/common/database/migrations dist/common/database/migrations
 
     - name: Stop Bot
@@ -62,7 +62,7 @@ jobs:
         port: ${{ secrets.PROD_SERVER_PORT }}
         username: ${{ secrets.PROD_SERVER_USER }}
         key: ${{ secrets.COMMAND_EXECUTION_KEY }}
-        script: pm2 stop ecosystem.config.js
+        script: pm2 stop "Velach Bot"
 
     - name: Backup Database
       uses: appleboy/ssh-action@master
@@ -92,6 +92,17 @@ jobs:
         REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
         TARGET: ${{ secrets.PROD_SERVER_APP_ROOT }}
 
+    - name: Install Server Dependencies
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.PROD_SERVER_HOST }}
+        port: ${{ secrets.PROD_SERVER_PORT }}
+        username: ${{ secrets.PROD_SERVER_USER }}
+        key: ${{ secrets.COMMAND_EXECUTION_KEY }}
+        script: |
+          cd velach_bot
+          node ci
+
     - name: Apply Migrations
       uses: appleboy/ssh-action@master
       with:
@@ -115,4 +126,4 @@ jobs:
         port: ${{ secrets.PROD_SERVER_PORT }}
         username: ${{ secrets.PROD_SERVER_USER }}
         key: ${{ secrets.COMMAND_EXECUTION_KEY }}
-        script: pm2 restart ecosystem.config.js
+        script: pm2 restart "Velach Bot"
