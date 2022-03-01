@@ -11,12 +11,14 @@ import {
   getMessageFromContext,
 } from 'src/common/utils/context';
 import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
+import { BikecheckVoteService } from 'src/modules/entities/bikecheck-vote/bikecheck-vote.service';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { TemplatesService } from 'src/modules/templates/templates.service';
 import { DbMiddlewareService } from 'src/modules/middlewares/db-middleware.service';
 import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-data-save.service';
 import { composeMiddlewares } from 'src/common/utils/middlewares';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 import { getTopKeyboard } from './keyboards';
 import { parseCallbackData } from 'src/common/utils/keyboard';
@@ -27,18 +29,22 @@ import { ITopCallbackQueryData } from './types';
 export class TopCommandService {
   constructor(
     private bikecheckService: BikecheckService,
+    private bikecheckVoteService: BikecheckVoteService,
     private templatesService: TemplatesService,
     private userService: UserService,
     private dbMiddlewareService: DbMiddlewareService,
     private preliminaryDataSaveService: PreliminaryDataSaveService,
     private featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
+    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
     const client = getConnectionFromContext(ctx);
     const message = getMessageFromContext(ctx);
 
-    const topData = await this.bikecheckService.getBikechecksTopData(client);
+    const topData = await this.bikecheckVoteService.getBikechecksTopData(
+      client,
+    );
 
     if (!topData.length) {
       const text = await this.templatesService.renderTemplate(
@@ -85,7 +91,9 @@ export class TopCommandService {
       return;
     }
 
-    const topData = await this.bikecheckService.getBikechecksTopData(client);
+    const topData = await this.bikecheckVoteService.getBikechecksTopData(
+      client,
+    );
 
     if (!topData.length || data.position > topData.length) {
       await ctx.tg.answerCbQuery(callbackQuery.id);
@@ -143,6 +151,7 @@ export class TopCommandService {
       this.featureAnalyticsMiddlewareService.getMiddleware(
         'top-command/message-command',
       ),
+      this.messageAgeMiddlewareService.getMiddleware(),
       this.processMessage.bind(this),
     ]);
   }

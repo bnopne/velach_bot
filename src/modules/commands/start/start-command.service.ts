@@ -13,6 +13,7 @@ import { DbMiddlewareService } from 'src/modules/middlewares/db-middleware.servi
 import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-data-save.service';
 import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 @Injectable()
 export class StartCommandService {
@@ -22,6 +23,7 @@ export class StartCommandService {
     private preliminaryDataSaveService: PreliminaryDataSaveService,
     private privateChatsOnlyMiddlewareService: PrivateChatsOnlyMiddlewareService,
     private featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
+    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
@@ -47,6 +49,7 @@ export class StartCommandService {
       this.featureAnalyticsMiddlewareService.getMiddleware(
         'start-command/message-command',
       ),
+      this.messageAgeMiddlewareService.getMiddleware(),
       this.processMessage.bind(this),
     ]);
   }

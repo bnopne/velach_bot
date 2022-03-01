@@ -9,6 +9,9 @@ import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.servi
 
 export const BILLY_ID = '1';
 export const VAN_ID = '2';
+export const MARK_ID = '3';
+export const STEVE_ID = '4';
+
 export const GYM_CHAT_ID = '1';
 export const BILLY_PRIVATE_CHAT_ID = '2';
 
@@ -39,8 +42,28 @@ export async function seedTestDatabase(client: PoolClient): Promise<void> {
     username: 'van',
   });
 
+  let markWolff = new User({
+    id: MARK_ID,
+    firstName: 'Mark',
+    lastName: 'Wolff',
+    isBot: false,
+    stravaLink: 'https://strava.com/athletes/314159265',
+    username: 'mark',
+  });
+
+  let steveRambo = new User({
+    id: STEVE_ID,
+    firstName: 'Steve',
+    lastName: 'Rambo',
+    isBot: false,
+    stravaLink: 'https://strava.com/athletes/314159265',
+    username: 'steve',
+  });
+
   billyHerrington = await userService.createUser(client, billyHerrington);
   vanDarkholme = await userService.createUser(client, vanDarkholme);
+  markWolff = await userService.createUser(client, markWolff);
+  steveRambo = await userService.createUser(client, steveRambo);
 
   /**
    * Create chats
@@ -59,6 +82,8 @@ export async function seedTestDatabase(client: PoolClient): Promise<void> {
    * Add users to chats
    */
   await userChatMtmService.create(client, vanDarkholme.id, gym.id);
+  await userChatMtmService.create(client, markWolff.id, gym.id);
+  await userChatMtmService.create(client, steveRambo.id, gym.id);
   await userChatMtmService.create(client, billyHerrington.id, billyChat.id);
 
   /**

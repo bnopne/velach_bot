@@ -6,12 +6,10 @@ import {
   findById,
   findActive,
   getActiveBikechecksCount,
-  getRank,
   update,
   insertActive,
   findInactive,
   findOnSale,
-  findTopBikecheck,
 } from 'src/modules/entities/bikecheck/queries';
 
 @Injectable()
@@ -71,27 +69,8 @@ export class BikecheckService {
     return Number(rows[0].count);
   }
 
-  // TODO: Move to BikecheckVote service
-  async getBikecheckRank(
-    client: PoolClient,
-    bikecheckId: string,
-  ): Promise<number | null> {
-    const rows = await getRank.run({ bikecheckId }, client);
-    return rows.length ? Number(rows[0].rank) : null;
-  }
-
   async findOnSale(client: PoolClient): Promise<Bikecheck[]> {
     const rows = await findOnSale.run(undefined, client);
     return rows.map((r) => Bikecheck.fromTableRow(r));
-  }
-
-  // TODO: Move to BikecheckVote service
-  async getBikechecksTopData(
-    client: PoolClient,
-  ): Promise<{ bikecheckId: string; likes: number }[]> {
-    const rows = await findTopBikecheck.run(undefined, client);
-    return rows
-      .map((r) => ({ bikecheckId: r.id, likes: parseInt(r.count || '0', 10) }))
-      .filter((d) => d.likes);
   }
 }

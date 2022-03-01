@@ -9,6 +9,7 @@ import { TemplatesService } from 'src/modules/templates/templates.service';
 import { DbMiddlewareService } from 'src/modules/middlewares/db-middleware.service';
 import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-data-save.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 @Injectable()
 export class HelpCommandService {
@@ -17,6 +18,7 @@ export class HelpCommandService {
     private dbMiddlewareService: DbMiddlewareService,
     private preliminaryDataSaveService: PreliminaryDataSaveService,
     private featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
+    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
   private async processCommand(ctx: Context): Promise<void> {
@@ -36,6 +38,7 @@ export class HelpCommandService {
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
       this.featureAnalyticsMiddlewareService.getMiddleware('help command'),
+      this.messageAgeMiddlewareService.getMiddleware(),
       this.processCommand.bind(this),
     ]);
   }

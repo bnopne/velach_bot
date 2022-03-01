@@ -9,6 +9,8 @@ import {
   selectByUserAndBikecheck,
   update,
   insert,
+  getRank,
+  findTopBikecheck,
 } from 'src/modules/entities/bikecheck-vote/queries';
 
 @Injectable()
@@ -83,5 +85,22 @@ export class BikecheckVoteService {
   ): Promise<BikecheckVote> {
     const rows = await insert.run({ userId, bikecheckId, points }, client);
     return BikecheckVote.fromTableRow(rows[0]);
+  }
+
+  async getBikecheckRank(
+    client: PoolClient,
+    bikecheckId: string,
+  ): Promise<number | null> {
+    const rows = await getRank.run({ bikecheckId }, client);
+    return rows.length ? Number(rows[0].rank) : null;
+  }
+
+  async getBikechecksTopData(
+    client: PoolClient,
+  ): Promise<{ bikecheckId: string; likes: number }[]> {
+    const rows = await findTopBikecheck.run(undefined, client);
+    return rows
+      .map((r) => ({ bikecheckId: r.id, likes: parseInt(r.count || '0', 10) }))
+      .filter((d) => d.likes);
   }
 }
