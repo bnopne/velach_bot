@@ -63,7 +63,7 @@ describe('Test UserService', () => {
 
   test('create() creates user', async () => {
     const user = new User({
-      id: '3',
+      id: '101',
       firstName: 'Mark',
       lastName: 'Wolff',
       isBot: false,
@@ -73,8 +73,8 @@ describe('Test UserService', () => {
 
     await userService.createUser(connection, user);
 
-    const check = await userService.getById(connection, '3');
-    expect(check?.id).toBe('3');
+    const check = await userService.getById(connection, '101');
+    expect(check?.id).toBe('101');
     expect(check?.firstName).toBe('Mark');
     expect(check?.lastName).toBe('Wolff');
     expect(check?.isBot).toBe(false);
@@ -98,7 +98,7 @@ describe('Test UserService', () => {
 
   test('createOrUpdateUser() creates new user', async () => {
     const mark = new User({
-      id: '3',
+      id: '101',
       firstName: 'Mark',
       lastName: 'Wolff',
       isBot: false,
@@ -108,8 +108,8 @@ describe('Test UserService', () => {
 
     await userService.createOrUpdateUser(connection, mark);
 
-    const check = await userService.getById(connection, '3');
-    expect(check?.id).toBe('3');
+    const check = await userService.getById(connection, '101');
+    expect(check?.id).toBe('101');
     expect(check?.firstName).toBe('Mark');
     expect(check?.lastName).toBe('Wolff');
     expect(check?.isBot).toBe(false);

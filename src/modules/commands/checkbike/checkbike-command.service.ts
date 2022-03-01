@@ -15,6 +15,7 @@ import { DbMiddlewareService } from 'src/modules/middlewares/db-middleware.servi
 import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-data-save.service';
 import { TemplatesService } from 'src/modules/templates/templates.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 @Injectable()
 export class CheckbikeCommandService {
@@ -25,6 +26,7 @@ export class CheckbikeCommandService {
     private userService: UserService,
     private bikecheckService: BikecheckService,
     private featureAnalyticsService: FeatureAnalyticsMiddlewareService,
+    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
   private async processCommand(ctx: Context): Promise<void> {
@@ -99,6 +101,7 @@ export class CheckbikeCommandService {
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
       this.featureAnalyticsService.getMiddleware('checkbike command'),
+      this.messageAgeMiddlewareService.getMiddleware(),
       this.processCommand.bind(this),
     ]);
   }

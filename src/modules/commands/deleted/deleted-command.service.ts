@@ -20,6 +20,7 @@ import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.servi
 import { parseCallbackData } from 'src/common/utils/keyboard';
 import { IBikecheckCommandData } from 'src/modules/commands/types';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 import { getDeletedKeyboard } from './keyboards';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
@@ -48,6 +49,7 @@ export class DeletedCommandService {
     private userService: UserService,
     private bikecheckService: BikecheckService,
     private featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
+    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
   private async processCommand(ctx: Context): Promise<void> {
@@ -240,6 +242,7 @@ export class DeletedCommandService {
       this.featureAnalyticsMiddlewareService.getMiddleware(
         'deleted-command/message-command',
       ),
+      this.messageAgeMiddlewareService.getMiddleware(),
       this.processCommand.bind(this),
     ]);
   }
