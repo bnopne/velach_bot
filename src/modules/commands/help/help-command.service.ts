@@ -37,7 +37,7 @@ export class HelpCommandService {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
-      this.featureAnalyticsMiddlewareService.getMiddleware('help command'),
+      this.featureAnalyticsMiddlewareService.getMiddleware('help-command'),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.processCommand.bind(this),
     ]);
