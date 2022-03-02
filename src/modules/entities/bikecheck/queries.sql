@@ -42,3 +42,20 @@ SELECT *
 FROM "Bikecheck"
 WHERE "onSale" = TRUE and "isActive" = TRUE
 ORDER BY "saleRank" DESC;
+
+/* @name findLiked */
+SELECT T_BIKECHECK.*, T_VOTE."updatedAt" AS "likeDate"
+FROM
+(
+  SELECT *
+  FROM "Bikecheck"
+  where "isActive" = TRUE
+) T_BIKECHECK
+INNER JOIN
+(
+  SELECT "bikecheckId", "updatedAt"
+  FROM "BikecheckVote"
+  WHERE "userId" = :userId AND "points" > 0
+) T_VOTE
+ON T_BIKECHECK."id" = T_VOTE."bikecheckId"
+ORDER BY "likeDate" DESC;

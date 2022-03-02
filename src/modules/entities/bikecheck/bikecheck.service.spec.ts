@@ -7,17 +7,23 @@ import {
   getTestConnection,
   getTestingModule,
 } from 'src/common/utils/test-utils';
+import { BikecheckVoteService } from 'src/modules/entities/bikecheck-vote/bikecheck-vote.service';
 
 import { Bikecheck } from './bikecheck.entity';
 import { BikecheckService } from './bikecheck.service';
 
 describe('Test BikecheckService', () => {
-  let service: BikecheckService;
+  let bikecheckService: BikecheckService;
+  let voteService: BikecheckVoteService;
   let connection: PoolClient;
 
   beforeEach(async () => {
-    const module: TestingModule = await getTestingModule([BikecheckService]);
-    service = module.get<BikecheckService>(BikecheckService);
+    const module: TestingModule = await getTestingModule([
+      BikecheckService,
+      BikecheckVoteService,
+    ]);
+    bikecheckService = module.get(BikecheckService);
+    voteService = module.get(BikecheckVoteService);
     connection = await getTestConnection(module);
     await connection.query('START TRANSACTION');
   });
@@ -32,23 +38,23 @@ describe('Test BikecheckService', () => {
   });
 
   test('findById() returns existing bikecheck', async () => {
-    const bikecheck = await service.findById(connection, '1');
+    const bikecheck = await bikecheckService.findById(connection, '1');
     expect(bikecheck).toBeInstanceOf(Bikecheck);
   });
 
   test('findById() returns null if bikecheck does not exist', async () => {
-    const bikecheck = await service.findById(connection, '100500');
+    const bikecheck = await bikecheckService.findById(connection, '100500');
     expect(bikecheck).toBe(null);
   });
 
   test('getById() returns existing bikecheck', async () => {
-    const bikecheck = await service.getById(connection, '1');
+    const bikecheck = await bikecheckService.getById(connection, '1');
     expect(bikecheck).toBeInstanceOf(Bikecheck);
   });
 
   test('getById() throws error if bikecheck does not exist', async () => {
     try {
-      await service.getById(connection, '100500');
+      await bikecheckService.getById(connection, '100500');
     } catch (err) {
       expect(err).toBeDefined();
     }
@@ -57,42 +63,48 @@ describe('Test BikecheckService', () => {
   });
 
   test('findActive() returns active bikechecks', async () => {
-    let b = await service.findActive(connection, BILLY_ID);
+    let b = await bikecheckService.findActive(connection, BILLY_ID);
     expect(b.length).toBe(2);
-    b = await service.findActive(connection, VAN_ID);
+    b = await bikecheckService.findActive(connection, VAN_ID);
     expect(b.length).toBe(1);
   });
 
   test('findDeleted() returns inactive bikechecks', async () => {
-    let b = await service.findDeleted(connection, BILLY_ID);
+    let b = await bikecheckService.findDeleted(connection, BILLY_ID);
     expect(b.length).toBe(0);
-    b = await service.findDeleted(connection, VAN_ID);
+    b = await bikecheckService.findDeleted(connection, VAN_ID);
     expect(b.length).toBe(1);
   });
 
   test('updateBikecheck() updates bikecheck', async () => {
-    let bikechecks = await service.findDeleted(connection, VAN_ID);
+    let bikechecks = await bikecheckService.findDeleted(connection, VAN_ID);
     expect(bikechecks.length).toBe(1);
 
     bikechecks[0].isActive = true;
-    await service.updateBikecheck(connection, bikechecks[0]);
+    await bikecheckService.updateBikecheck(connection, bikechecks[0]);
 
-    bikechecks = await service.findDeleted(connection, VAN_ID);
+    bikechecks = await bikecheckService.findDeleted(connection, VAN_ID);
     expect(bikechecks.length).toBe(0);
   });
 
   test('getBikechecksCount() returns active bikechecks count', async () => {
-    expect(await service.getBikechecksCount(connection, BILLY_ID)).toBe(2);
-    expect(await service.getBikechecksCount(connection, VAN_ID)).toBe(1);
+    expect(
+      await bikecheckService.getBikechecksCount(connection, BILLY_ID),
+    ).toBe(2);
+    expect(await bikecheckService.getBikechecksCount(connection, VAN_ID)).toBe(
+      1,
+    );
   });
 
   test('findOnSale() returns bikechecks on sale', async () => {
-    expect(await service.findOnSale(connection)).toHaveLength(0);
+    expect(await bikecheckService.findOnSale(connection)).toHaveLength(0);
 
-    const bikecheck = await service.getById(connection, '1');
+    const bikecheck = await bikecheckService.getById(connection, '1');
     bikecheck.onSale = true;
-    await service.updateBikecheck(connection, bikecheck);
+    await bikecheckService.updateBikecheck(connection, bikecheck);
 
-    expect(await service.findOnSale(connection)).toHaveLength(1);
+    expect(await bikecheckService.findOnSale(connection)).toHaveLength(1);
   });
+
+  test('findLiked() returns bikechecks liked by user', async () => {});
 });
