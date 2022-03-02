@@ -19,6 +19,7 @@ import {
   getMessageFromContext,
   getMessageReplyTo,
 } from 'src/common/utils/context';
+import { getNextIndex, getPreviousIndex } from 'src/common/utils/misc';
 import { Context, Middleware } from 'src/common/types/bot';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { ChatService } from 'src/modules/entities/chat/chat.service';
@@ -36,20 +37,6 @@ import {
 } from './keyboards';
 import { InlineQueryResult } from 'typegram';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
-
-function getNextBikecheckIndex(
-  currentIndex: number,
-  totalBikechecks: number,
-): number {
-  return (currentIndex + 1) % totalBikechecks;
-}
-
-function getPreviousBikecheckIndex(
-  currentIndex: number,
-  totalBikechecks: number,
-): number {
-  return currentIndex <= 0 ? totalBikechecks - 1 : currentIndex - 1;
-}
 
 @Injectable()
 export class BikecheckCommandService {
@@ -275,11 +262,8 @@ export class BikecheckCommandService {
 
     const nextBikecheckIndex =
       direction === 'next'
-        ? getNextBikecheckIndex(sourceBikecheckIndex, activeBikechecks.length)
-        : getPreviousBikecheckIndex(
-            sourceBikecheckIndex,
-            activeBikechecks.length,
-          );
+        ? getNextIndex(sourceBikecheckIndex, activeBikechecks.length)
+        : getPreviousIndex(sourceBikecheckIndex, activeBikechecks.length);
 
     const nextBikecheck = activeBikechecks[nextBikecheckIndex];
 

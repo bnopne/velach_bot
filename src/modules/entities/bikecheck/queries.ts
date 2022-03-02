@@ -260,3 +260,52 @@ const findOnSaleIR: any = {"name":"findOnSale","params":[],"usedParamSet":{},"st
 export const findOnSale = new PreparedQuery<IFindOnSaleParams,IFindOnSaleResult>(findOnSaleIR);
 
 
+/** 'FindLiked' parameters type */
+export interface IFindLikedParams {
+  userId: string | null | void;
+}
+
+/** 'FindLiked' return type */
+export interface IFindLikedResult {
+  createdAt: Date;
+  id: string;
+  isActive: boolean;
+  likeDate: Date;
+  onSale: boolean | null;
+  saleRank: number | null;
+  telegramImageId: string;
+  updatedAt: Date;
+  userId: string;
+}
+
+/** 'FindLiked' query type */
+export interface IFindLikedQuery {
+  params: IFindLikedParams;
+  result: IFindLikedResult;
+}
+
+const findLikedIR: any = {"name":"findLiked","params":[{"name":"userId","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":1239,"b":1244,"line":58,"col":20}]}}],"usedParamSet":{"userId":true},"statement":{"body":"SELECT T_BIKECHECK.*, T_VOTE.\"updatedAt\" AS \"likeDate\"\nFROM\n(\n  SELECT *\n  FROM \"Bikecheck\"\n  where \"isActive\" = TRUE\n) T_BIKECHECK\nINNER JOIN\n(\n  SELECT \"bikecheckId\", \"updatedAt\"\n  FROM \"BikecheckVote\"\n  WHERE \"userId\" = :userId AND \"points\" > 0\n) T_VOTE\nON T_BIKECHECK.\"id\" = T_VOTE.\"bikecheckId\"\nORDER BY \"likeDate\" DESC","loc":{"a":1015,"b":1338,"line":47,"col":0}}};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT T_BIKECHECK.*, T_VOTE."updatedAt" AS "likeDate"
+ * FROM
+ * (
+ *   SELECT *
+ *   FROM "Bikecheck"
+ *   where "isActive" = TRUE
+ * ) T_BIKECHECK
+ * INNER JOIN
+ * (
+ *   SELECT "bikecheckId", "updatedAt"
+ *   FROM "BikecheckVote"
+ *   WHERE "userId" = :userId AND "points" > 0
+ * ) T_VOTE
+ * ON T_BIKECHECK."id" = T_VOTE."bikecheckId"
+ * ORDER BY "likeDate" DESC
+ * ```
+ */
+export const findLiked = new PreparedQuery<IFindLikedParams,IFindLikedResult>(findLikedIR);
+
+

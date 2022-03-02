@@ -10,6 +10,7 @@ import {
   insertActive,
   findInactive,
   findOnSale,
+  findLiked,
 } from 'src/modules/entities/bikecheck/queries';
 
 @Injectable()
@@ -72,5 +73,16 @@ export class BikecheckService {
   async findOnSale(client: PoolClient): Promise<Bikecheck[]> {
     const rows = await findOnSale.run(undefined, client);
     return rows.map((r) => Bikecheck.fromTableRow(r));
+  }
+
+  async findLiked(
+    client: PoolClient,
+    userId: string,
+  ): Promise<{ bikecheck: Bikecheck; likeDate: Date }[]> {
+    const rows = await findLiked.run({ userId }, client);
+    return rows.map((r) => ({
+      bikecheck: Bikecheck.fromTableRow(r),
+      likeDate: r.likeDate,
+    }));
   }
 }
