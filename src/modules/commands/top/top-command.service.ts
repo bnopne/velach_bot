@@ -144,7 +144,7 @@ export class TopCommandService {
     ]);
   }
 
-  getMiddleware(): Middleware {
+  getMessageMiddleware(): Middleware {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),

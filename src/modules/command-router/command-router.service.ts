@@ -15,6 +15,7 @@ import { SetStravaCommandService } from 'src/modules/commands/set-strava/set-str
 import { StartCommandService } from 'src/modules/commands/start/start-command.service';
 import { OnSaleCommandService } from 'src/modules/commands/on-sale/on-sale-command.service';
 import { TopCommandService } from 'src/modules/commands/top/top-command.service';
+import { MyLikesCommandService } from 'src/modules/commands/my-likes/my-likes-command.service';
 
 function parseCommand(text: string, botUsername: string): string | null {
   const regexp = new RegExp(`^\/([A-Za-z]+)(?:@${botUsername})?$`);
@@ -38,6 +39,7 @@ export class CommandRouterService {
   private startCommandService: StartCommandService;
   private onSaleCommandService: OnSaleCommandService;
   private topCommandService: TopCommandService;
+  private myLikesCommandService: MyLikesCommandService;
 
   constructor(
     helpCommandService: HelpCommandService,
@@ -91,7 +93,8 @@ export class CommandRouterService {
       .on(COMMANDS.SET_STRAVA, this.setStravaCommandService.getMiddleware())
       .on(COMMANDS.START, this.startCommandService.getMessageMiddleware())
       .on(COMMANDS.ON_SALE, this.onSaleCommandService.getMessageMiddleware())
-      .on(COMMANDS.TOP, this.topCommandService.getMiddleware())
+      .on(COMMANDS.TOP, this.topCommandService.getMessageMiddleware())
+      .on(COMMANDS.MY_LIKES, this.myLikesCommandService.getMessageMiddleware())
       .otherwise((command, next) => {
         next();
       });

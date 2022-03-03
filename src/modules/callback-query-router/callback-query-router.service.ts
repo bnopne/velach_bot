@@ -18,6 +18,7 @@ import { BikecheckCommandService } from 'src/modules/commands/bikecheck/bikechec
 import { DeletedCommandService } from 'src/modules/commands/deleted/deleted-command.service';
 import { OnSaleCommandService } from 'src/modules/commands/on-sale/on-sale-command.service';
 import { TopCommandService } from 'src/modules/commands/top/top-command.service';
+import { MyLikesCommandService } from 'src/modules/commands/my-likes/my-likes-command.service';
 
 const logger = new Logger('Callback Queries Service');
 
@@ -28,6 +29,7 @@ export class CallbackQueryRouterService {
   private deletedCommandService: DeletedCommandService;
   private onSaleCommandService: OnSaleCommandService;
   private topCommandService: TopCommandService;
+  private myLikesCommandService: MyLikesCommandService;
 
   constructor(
     bikecheckCommandService: BikecheckCommandService,
@@ -140,6 +142,18 @@ export class CallbackQueryRouterService {
       .on(
         CALLBACK_QUERY_COMMANDS.SHOW_TOP_BIKECHECK,
         this.topCommandService.getCallbackQueryMiddleware(),
+      )
+      .on(
+        CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_LIKED_BIKECHECK,
+        this.myLikesCommandService.getCallbackQueryMiddleware(
+          CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_LIKED_BIKECHECK,
+        ),
+      )
+      .on(
+        CALLBACK_QUERY_COMMANDS.SHOW_NEXT_LIKED_BIKECHECK,
+        this.myLikesCommandService.getCallbackQueryMiddleware(
+          CALLBACK_QUERY_COMMANDS.SHOW_NEXT_LIKED_BIKECHECK,
+        ),
       )
       .otherwise((_, next) => {
         next();
