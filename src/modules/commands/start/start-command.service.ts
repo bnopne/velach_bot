@@ -5,8 +5,8 @@ import { Injectable } from '@nestjs/common';
 import { Context, Middleware } from 'src/common/types/bot';
 import { TemplatesService } from 'src/modules/templates/templates.service';
 import {
-  getMessageChat,
-  getMessageFromContext,
+  getMessageChatOrFail,
+  getContextMessageOrFail,
 } from 'src/common/utils/context';
 import { composeMiddlewares } from 'src/common/utils/middlewares';
 import { DbMiddlewareService } from 'src/modules/middlewares/db-middleware.service';
@@ -32,8 +32,8 @@ export class StartCommandService {
       {},
     );
 
-    const message = getMessageFromContext(ctx);
-    const chat = getMessageChat(message);
+    const message = getContextMessageOrFail(ctx);
+    const chat = getMessageChatOrFail(message);
 
     ctx.tg.sendMessage(chat.id, text, {
       reply_to_message_id: message.message_id,

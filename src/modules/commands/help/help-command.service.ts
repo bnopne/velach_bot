@@ -3,7 +3,7 @@ import { join } from 'path';
 import { Injectable } from '@nestjs/common';
 
 import { Context, Middleware } from 'src/common/types/bot';
-import { getContextChat } from 'src/common/utils/context';
+import { getContextChatOrFail } from 'src/common/utils/context';
 import { composeMiddlewares } from 'src/common/utils/middlewares';
 import { TemplatesService } from 'src/modules/templates/templates.service';
 import { DbMiddlewareService } from 'src/modules/middlewares/db-middleware.service';
@@ -27,7 +27,7 @@ export class HelpCommandService {
       {},
     );
 
-    ctx.tg.sendMessage(getContextChat(ctx).id, messageText, {
+    ctx.tg.sendMessage(getContextChatOrFail(ctx).id, messageText, {
       parse_mode: 'MarkdownV2',
       disable_web_page_preview: true,
     });

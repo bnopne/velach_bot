@@ -9,14 +9,14 @@ import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-
 import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only.service';
 import { composeMiddlewares } from 'src/common/utils/middlewares';
 import {
-  getCallbackQueryData,
-  getCallbackQueryMessage,
-  getConnectionFromContext,
-  getContextCallbackQuery,
-  getContextInlineQuery,
-  getMessageChat,
-  getMessageFrom,
-  getMessageFromContext,
+  getCallbackQueryDataOrFail,
+  getCallbackQueryMessageOrFail,
+  getContextConnectionOrFail,
+  getContextCallbackQueryOrFail,
+  getContextInlineQueryOrFail,
+  getMessageChatOrFail,
+  getMessageFromOrFail,
+  getContextMessageOrFail,
   getMessageReplyTo,
 } from 'src/common/utils/context';
 import { getNextIndex, getPreviousIndex } from 'src/common/utils/misc';
@@ -80,8 +80,8 @@ export class BikecheckCommandService {
     bikecheck: Bikecheck,
     activeBikechecks: Bikecheck[],
   ): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const callbackQuery = getContextCallbackQuery(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
 
     const { likes, dislikes, rank } = await this.getBikecheckStats(
       client,
@@ -147,20 +147,20 @@ export class BikecheckCommandService {
   }
 
   private async processMessage(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const primaryMessage = getMessageFromContext(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const primaryMessage = getContextMessageOrFail(ctx);
     const replyTo = getMessageReplyTo(primaryMessage);
 
     const message = replyTo || primaryMessage;
 
     const chat = await this.chatService.getById(
       client,
-      getMessageChat(message).id.toString(),
+      getMessageChatOrFail(message).id.toString(),
     );
 
     const user = await this.userService.getById(
       client,
-      getMessageFrom(message).id.toString(),
+      getMessageFromOrFail(message).id.toString(),
     );
 
     const activeBikechecks = await this.bikecheckService.findActive(
@@ -232,10 +232,10 @@ export class BikecheckCommandService {
     ctx: Context,
     direction: 'next' | 'previous',
   ): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const callbackQuery = getContextCallbackQuery(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
     const data = parseCallbackData<IBikecheckCommandData>(
-      getCallbackQueryData(callbackQuery),
+      getCallbackQueryDataOrFail(callbackQuery),
     );
 
     const sourceBikecheck = await this.bikecheckService.getById(
@@ -279,10 +279,10 @@ export class BikecheckCommandService {
     ctx: Context,
     points: number,
   ): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const callbackQuery = getContextCallbackQuery(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
     const { bikecheckId } = parseCallbackData<IBikecheckCommandData>(
-      getCallbackQueryData(callbackQuery),
+      getCallbackQueryDataOrFail(callbackQuery),
     );
 
     const bikecheck = await this.bikecheckService.getById(client, bikecheckId);
@@ -328,10 +328,10 @@ export class BikecheckCommandService {
   }
 
   private async processToggleOnSaleCommand(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const callbackQuery = getContextCallbackQuery(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
     const data = parseCallbackData<IBikecheckCommandData>(
-      getCallbackQueryData(callbackQuery),
+      getCallbackQueryDataOrFail(callbackQuery),
     );
 
     let bikecheck = await this.bikecheckService.getById(
@@ -360,10 +360,10 @@ export class BikecheckCommandService {
   }
 
   private async processDeleteCommand(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const callbackQuery = getContextCallbackQuery(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
     const data = parseCallbackData<IBikecheckCommandData>(
-      getCallbackQueryData(callbackQuery),
+      getCallbackQueryDataOrFail(callbackQuery),
     );
 
     const bikecheck = await this.bikecheckService.getById(
@@ -388,7 +388,7 @@ export class BikecheckCommandService {
       bikecheck.userId,
     );
 
-    const message = getCallbackQueryMessage(callbackQuery);
+    const message = getCallbackQueryMessageOrFail(callbackQuery);
 
     if (!activeBikechecks.length) {
       const caption = await this.templatesService.renderTemplate(
@@ -420,8 +420,8 @@ export class BikecheckCommandService {
   }
 
   private async processInlineQuery(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const inlineQuery = getContextInlineQuery(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const inlineQuery = getContextInlineQueryOrFail(ctx);
 
     const user = await this.userService.getById(
       client,

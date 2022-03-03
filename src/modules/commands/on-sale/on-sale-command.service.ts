@@ -4,11 +4,11 @@ import { Injectable } from '@nestjs/common';
 
 import { Context, Middleware } from 'src/common/types/bot';
 import {
-  getCallbackQueryData,
-  getCallbackQueryMessage,
-  getConnectionFromContext,
-  getContextCallbackQuery,
-  getMessageFromContext,
+  getCallbackQueryDataOrFail,
+  getCallbackQueryMessageOrFail,
+  getContextConnectionOrFail,
+  getContextCallbackQueryOrFail,
+  getContextMessageOrFail,
 } from 'src/common/utils/context';
 import { parseCallbackData } from 'src/common/utils/keyboard';
 import { composeMiddlewares } from 'src/common/utils/middlewares';
@@ -38,8 +38,8 @@ export class OnSaleCommandService {
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const message = getMessageFromContext(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const message = getContextMessageOrFail(ctx);
 
     const bikechecks = await this.bikecheckService.findOnSale(client);
 
@@ -76,11 +76,11 @@ export class OnSaleCommandService {
     ctx: Context,
     direction: 'previous' | 'next',
   ): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const callbackQuery = getContextCallbackQuery(ctx);
-    const message = getCallbackQueryMessage(callbackQuery);
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
+    const message = getCallbackQueryMessageOrFail(callbackQuery);
     const data = parseCallbackData<IBikecheckCommandData>(
-      getCallbackQueryData(callbackQuery),
+      getCallbackQueryDataOrFail(callbackQuery),
     );
 
     const bikechecks = await this.bikecheckService.findOnSale(client);

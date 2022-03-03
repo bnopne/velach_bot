@@ -9,12 +9,12 @@ import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-
 import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only.service';
 import { composeMiddlewares } from 'src/common/utils/middlewares';
 import {
-  getCallbackQueryData,
-  getCallbackQueryMessage,
-  getConnectionFromContext,
-  getContextCallbackQuery,
-  getMessageFrom,
-  getMessageFromContext,
+  getCallbackQueryDataOrFail,
+  getCallbackQueryMessageOrFail,
+  getContextConnectionOrFail,
+  getContextCallbackQueryOrFail,
+  getMessageFromOrFail,
+  getContextMessageOrFail,
 } from 'src/common/utils/context';
 import { Context, Middleware } from 'src/common/types/bot';
 import { UserService } from 'src/modules/entities/user/user.service';
@@ -46,12 +46,12 @@ export class MyLikesCommandService {
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const message = getMessageFromContext(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const message = getContextMessageOrFail(ctx);
 
     const user = await this.userService.getById(
       client,
-      getMessageFrom(message).id.toString(),
+      getMessageFromOrFail(message).id.toString(),
     );
 
     const likedBikechecks = await this.bikecheckService.findLiked(
@@ -78,8 +78,7 @@ export class MyLikesCommandService {
     const caption = await this.templatesService.renderTemplate(
       join(__dirname, 'templates', 'caption.mustache'),
       {
-        ownerId: liked.bikecheck.userId,
-        likeDate: format(liked.likeDate, 'dd\\.MM\\.yyyy HH\\:mm\\:ss'),
+        likeDate: format(liked.likeDate, 'dd\\.MM\\.yyyy'),
       },
     );
 
@@ -95,11 +94,11 @@ export class MyLikesCommandService {
     ctx: Context,
     direction: 'previous' | 'next',
   ): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const callbackQuery = getContextCallbackQuery(ctx);
-    const message = getCallbackQueryMessage(callbackQuery);
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
+    const message = getCallbackQueryMessageOrFail(callbackQuery);
     const data = parseCallbackData<IBikecheckCommandData>(
-      getCallbackQueryData(callbackQuery),
+      getCallbackQueryDataOrFail(callbackQuery),
     );
 
     const sourceBikecheck = await this.bikecheckService.getById(
@@ -109,7 +108,7 @@ export class MyLikesCommandService {
 
     const likedBikechecks = await this.bikecheckService.findLiked(
       client,
-      sourceBikecheck.userId,
+      callbackQuery.from.id.toString(),
     );
 
     if (likedBikechecks.length === 0) {
@@ -150,11 +149,7 @@ export class MyLikesCommandService {
     const caption = await this.templatesService.renderTemplate(
       join(__dirname, 'templates', 'caption.mustache'),
       {
-        ownerId: likedBikechecks[index].bikecheck.userId,
-        likeDate: format(
-          likedBikechecks[index].likeDate,
-          'dd\\.MM\\.yyyy HH\\:mm\\:ss',
-        ),
+        likeDate: format(likedBikechecks[index].likeDate, 'dd\\.MM\\.yyyy'),
       },
     );
 

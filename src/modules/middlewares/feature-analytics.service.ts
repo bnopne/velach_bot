@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 
 import { FeatureAnalyticsService } from 'src/modules/entities/feature-analytics/feature-analytics.service';
 import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
-import { getConnectionFromContext } from 'src/common/utils/context';
+import { getContextConnectionOrFail } from 'src/common/utils/context';
 
 const logger = new Logger('Feature Analytics Middleware Service');
 
@@ -16,7 +16,7 @@ export class FeatureAnalyticsMiddlewareService {
     next: MiddlewareNext,
     feature: string,
   ): Promise<void> {
-    const client = getConnectionFromContext(ctx);
+    const client = getContextConnectionOrFail(ctx);
 
     const chatId = ctx.chat?.id;
     const userId = ctx.from?.id;

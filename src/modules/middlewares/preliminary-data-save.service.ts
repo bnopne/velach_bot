@@ -4,9 +4,9 @@ import { Message, User as TgUser, Chat as TgChat, InlineQuery } from 'typegram';
 
 import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
 import {
-  getConnectionFromContext,
-  getMessageChat,
-  getMessageFrom,
+  getContextConnectionOrFail,
+  getMessageChatOrFail,
+  getMessageFromOrFail,
   getMessageReplyTo,
 } from 'src/common/utils/context';
 import { UserService } from 'src/modules/entities/user/user.service';
@@ -38,7 +38,7 @@ export class PreliminaryDataSaveService {
       return next();
     }
 
-    const client = getConnectionFromContext(context);
+    const client = getContextConnectionOrFail(context);
 
     await this.saveMessageData(client, context.message);
 
@@ -63,7 +63,7 @@ export class PreliminaryDataSaveService {
     let chat: Chat | null = null;
 
     try {
-      tgChat = getMessageChat(message);
+      tgChat = getMessageChatOrFail(message);
     } catch (err) {
       logger.error(err);
     }
@@ -84,7 +84,7 @@ export class PreliminaryDataSaveService {
     let user: User | null = null;
 
     try {
-      tgUser = getMessageFrom(message);
+      tgUser = getMessageFromOrFail(message);
     } catch (err) {
       logger.error(err);
     }

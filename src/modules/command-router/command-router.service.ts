@@ -3,7 +3,7 @@ import { Router } from 'telegraf';
 
 import { RouteFn, Context, Middleware } from 'src/common/types/bot';
 import {
-  getMessageFromContext,
+  getContextMessageOrFail,
   getMessageText,
 } from 'src/common/utils/context';
 import { COMMANDS } from 'src/common/constants';
@@ -64,7 +64,7 @@ export class CommandRouterService {
 
     const routeFn: RouteFn = (ctx) => {
       const command = parseCommand(
-        getMessageText(getMessageFromContext(ctx)) || '',
+        getMessageText(getContextMessageOrFail(ctx)) || '',
         ctx.botInfo.username,
       );
 

@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { join } from 'path';
 import { Context, Middleware } from 'src/common/types/bot';
 import {
-  getConnectionFromContext,
-  getMessageFromContext,
+  getContextConnectionOrFail,
+  getContextMessageOrFail,
   getMessageReplyTo,
   getMessageBiggestPhoto,
-  getMessageFrom,
+  getMessageFromOrFail,
 } from 'src/common/utils/context';
 import { composeMiddlewares } from 'src/common/utils/middlewares';
 import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
@@ -30,8 +30,8 @@ export class CheckbikeCommandService {
   ) {}
 
   private async processCommand(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const message = getMessageFromContext(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const message = getContextMessageOrFail(ctx);
     const replyToMessage = getMessageReplyTo(message);
 
     if (!replyToMessage) {
@@ -80,7 +80,7 @@ export class CheckbikeCommandService {
 
     const user = await this.userService.getById(
       client,
-      getMessageFrom(message).id.toString(),
+      getMessageFromOrFail(message).id.toString(),
     );
 
     await this.bikecheckService.createActive(client, user.id, photo.file_id);

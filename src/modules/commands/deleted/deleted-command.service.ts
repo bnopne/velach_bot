@@ -7,12 +7,12 @@ import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-
 import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only.service';
 import { composeMiddlewares } from 'src/common/utils/middlewares';
 import {
-  getCallbackQueryData,
-  getCallbackQueryMessage,
-  getConnectionFromContext,
-  getContextCallbackQuery,
-  getMessageFrom,
-  getMessageFromContext,
+  getCallbackQueryDataOrFail,
+  getCallbackQueryMessageOrFail,
+  getContextConnectionOrFail,
+  getContextCallbackQueryOrFail,
+  getMessageFromOrFail,
+  getContextMessageOrFail,
 } from 'src/common/utils/context';
 import { Context, Middleware } from 'src/common/types/bot';
 import { UserService } from 'src/modules/entities/user/user.service';
@@ -53,12 +53,12 @@ export class DeletedCommandService {
   ) {}
 
   private async processCommand(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const message = getMessageFromContext(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const message = getContextMessageOrFail(ctx);
 
     const user = await this.userService.getById(
       client,
-      getMessageFrom(message).id.toString(),
+      getMessageFromOrFail(message).id.toString(),
     );
 
     const bikechecks = await this.bikecheckService.findDeleted(client, user.id);
@@ -87,10 +87,10 @@ export class DeletedCommandService {
     ctx: Context,
     direction: 'next' | 'previous',
   ): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const callbackQuery = getContextCallbackQuery(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
     const data = parseCallbackData<IBikecheckCommandData>(
-      getCallbackQueryData(callbackQuery),
+      getCallbackQueryDataOrFail(callbackQuery),
     );
 
     const sourceBikecheck = await this.bikecheckService.getById(
@@ -127,7 +127,7 @@ export class DeletedCommandService {
       return;
     }
 
-    const message = getCallbackQueryMessage(callbackQuery);
+    const message = getCallbackQueryMessageOrFail(callbackQuery);
 
     await ctx.tg.editMessageMedia(
       message.chat.id,
@@ -145,10 +145,10 @@ export class DeletedCommandService {
   }
 
   private async processRestoreBikecheckCommand(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const callbackQuery = getContextCallbackQuery(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
     const data = parseCallbackData<IBikecheckCommandData>(
-      getCallbackQueryData(callbackQuery),
+      getCallbackQueryDataOrFail(callbackQuery),
     );
 
     const bikecheck = await this.bikecheckService.getById(
@@ -178,7 +178,7 @@ export class DeletedCommandService {
       return;
     }
 
-    const message = getCallbackQueryMessage(callbackQuery);
+    const message = getCallbackQueryMessageOrFail(callbackQuery);
 
     await ctx.tg.editMessageMedia(
       message.chat.id,

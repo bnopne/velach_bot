@@ -9,8 +9,8 @@ import {
   IBaseCallbackQueryData,
 } from 'src/common/types/bot';
 import {
-  getContextCallbackQuery,
-  getCallbackQueryData,
+  getContextCallbackQueryOrFail,
+  getCallbackQueryDataOrFail,
 } from 'src/common/utils/context';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
 import { parseCallbackData } from 'src/common/utils/keyboard';
@@ -48,7 +48,7 @@ export class CallbackQueryRouterService {
       let callbackQuery: CallbackQuery;
 
       try {
-        callbackQuery = getContextCallbackQuery(ctx);
+        callbackQuery = getContextCallbackQueryOrFail(ctx);
       } catch (err) {
         logger.error('No callback query found in context');
         return null;
@@ -58,7 +58,7 @@ export class CallbackQueryRouterService {
 
       try {
         data = parseCallbackData<IBaseCallbackQueryData>(
-          getCallbackQueryData(callbackQuery),
+          getCallbackQueryDataOrFail(callbackQuery),
         );
       } catch (err) {
         logger.error('Could not parse callback query data');

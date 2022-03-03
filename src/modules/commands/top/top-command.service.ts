@@ -4,11 +4,11 @@ import { Injectable } from '@nestjs/common';
 
 import { Context, Middleware } from 'src/common/types/bot';
 import {
-  getCallbackQueryData,
-  getCallbackQueryMessage,
-  getConnectionFromContext,
-  getContextCallbackQuery,
-  getMessageFromContext,
+  getCallbackQueryDataOrFail,
+  getCallbackQueryMessageOrFail,
+  getContextConnectionOrFail,
+  getContextCallbackQueryOrFail,
+  getContextMessageOrFail,
 } from 'src/common/utils/context';
 import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
 import { BikecheckVoteService } from 'src/modules/entities/bikecheck-vote/bikecheck-vote.service';
@@ -39,8 +39,8 @@ export class TopCommandService {
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const message = getMessageFromContext(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const message = getContextMessageOrFail(ctx);
 
     const topData = await this.bikecheckVoteService.getBikechecksTopData(
       client,
@@ -79,11 +79,11 @@ export class TopCommandService {
   }
 
   private async processCallbackQuery(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const callbackQuery = getContextCallbackQuery(ctx);
-    const message = getCallbackQueryMessage(callbackQuery);
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
+    const message = getCallbackQueryMessageOrFail(callbackQuery);
     const data = parseCallbackData<ITopCallbackQueryData>(
-      getCallbackQueryData(callbackQuery),
+      getCallbackQueryDataOrFail(callbackQuery),
     );
 
     if (!data.position) {

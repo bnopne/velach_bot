@@ -4,9 +4,9 @@ import { Injectable } from '@nestjs/common';
 
 import { Context, Middleware } from 'src/common/types/bot';
 import {
-  getConnectionFromContext,
-  getMessageFrom,
-  getMessageFromContext,
+  getContextConnectionOrFail,
+  getMessageFromOrFail,
+  getContextMessageOrFail,
   getMessageReplyTo,
   getMessageText,
 } from 'src/common/utils/context';
@@ -34,8 +34,8 @@ export class SetStravaCommandService {
   ) {}
 
   private async processCommand(ctx: Context): Promise<void> {
-    const client = getConnectionFromContext(ctx);
-    const message = getMessageFromContext(ctx);
+    const client = getContextConnectionOrFail(ctx);
+    const message = getContextMessageOrFail(ctx);
     const replyTo = getMessageReplyTo(message);
 
     if (!replyTo) {
@@ -70,8 +70,8 @@ export class SetStravaCommandService {
       return;
     }
 
-    const messageSender = getMessageFrom(message);
-    const replyToSender = getMessageFrom(replyTo);
+    const messageSender = getMessageFromOrFail(message);
+    const replyToSender = getMessageFromOrFail(replyTo);
 
     if (messageSender.id !== replyToSender.id) {
       const text = await this.templatesService.renderTemplate(
