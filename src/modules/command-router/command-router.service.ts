@@ -50,6 +50,7 @@ export class CommandRouterService {
     startCommandService: StartCommandService,
     onSaleCommandService: OnSaleCommandService,
     topCommandService: TopCommandService,
+    myLikesCommandService: MyLikesCommandService,
   ) {
     this.helpCommandService = helpCommandService;
     this.bikecheckCommandService = bikecheckCommandService;
@@ -59,6 +60,7 @@ export class CommandRouterService {
     this.startCommandService = startCommandService;
     this.onSaleCommandService = onSaleCommandService;
     this.topCommandService = topCommandService;
+    this.myLikesCommandService = myLikesCommandService;
 
     const routeFn: RouteFn = (ctx) => {
       const command = parseCommand(

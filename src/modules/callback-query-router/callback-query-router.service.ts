@@ -36,11 +36,13 @@ export class CallbackQueryRouterService {
     deletedCommandService: DeletedCommandService,
     onSaleCommandService: OnSaleCommandService,
     topCommandService: TopCommandService,
+    myLikesCommandService: MyLikesCommandService,
   ) {
     this.bikecheckCommandService = bikecheckCommandService;
     this.deletedCommandService = deletedCommandService;
     this.onSaleCommandService = onSaleCommandService;
     this.topCommandService = topCommandService;
+    this.myLikesCommandService = myLikesCommandService;
 
     const routeFn: RouteFn = (ctx) => {
       let callbackQuery: CallbackQuery;
