@@ -28,6 +28,7 @@ import { BikecheckVoteService } from 'src/modules/entities/bikecheck-vote/bikech
 import { parseCallbackData } from 'src/common/utils/keyboard';
 import { IBikecheckCommandData } from 'src/modules/commands/types';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 import {
   getPrivateBikecheckKeyboard,
@@ -62,6 +63,7 @@ export class BikecheckCommandService {
     private bikecheckService: BikecheckService,
     private bikecheckVoteService: BikecheckVoteService,
     private featureAnalyticsService: FeatureAnalyticsMiddlewareService,
+    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
   private async getBikecheckStats(
@@ -78,7 +80,7 @@ export class BikecheckCommandService {
       bikecheck.id,
     );
 
-    const rank = await this.bikecheckService.getBikecheckRank(
+    const rank = await this.bikecheckVoteService.getBikecheckRank(
       client,
       bikecheck.id,
     );
@@ -569,6 +571,7 @@ export class BikecheckCommandService {
       this.featureAnalyticsService.getMiddleware(
         'bikecheck-command/message-command',
       ),
+      this.messageAgeMiddlewareService.getMiddleware(),
       this.processMessage.bind(this),
     ]);
   }

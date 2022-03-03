@@ -17,6 +17,7 @@ import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-
 import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only.service';
 import { TemplatesService } from 'src/modules/templates/templates.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 const stravaLinkRegexp = /^(https:\/\/)?(www.)?strava.com\/athletes\/\d+$/;
 
@@ -29,6 +30,7 @@ export class SetStravaCommandService {
     private privateChatsOnlyMiddlewareService: PrivateChatsOnlyMiddlewareService,
     private templatesService: TemplatesService,
     private featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
+    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
   private async processCommand(ctx: Context): Promise<void> {
@@ -112,6 +114,7 @@ export class SetStravaCommandService {
       this.featureAnalyticsMiddlewareService.getMiddleware(
         'setstrava-command/message-command',
       ),
+      this.messageAgeMiddlewareService.getMiddleware(),
       this.processCommand.bind(this),
     ]);
   }

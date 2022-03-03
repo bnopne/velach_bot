@@ -20,6 +20,7 @@ import { TemplatesService } from 'src/modules/templates/templates.service';
 import { IBikecheckCommandData } from 'src/modules/commands/types';
 import { getNextIndex, getPreviousIndex } from 'src/common/utils/misc';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 import { getOnSaleKeyboard } from './keyboards';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
@@ -33,6 +34,7 @@ export class OnSaleCommandService {
     private dbMiddlewareService: DbMiddlewareService,
     private preliminaryDataSaveService: PreliminaryDataSaveService,
     private featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
+    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
@@ -170,6 +172,7 @@ export class OnSaleCommandService {
       this.featureAnalyticsMiddlewareService.getMiddleware(
         'onsale command/message-command',
       ),
+      this.messageAgeMiddlewareService.getMiddleware(),
       this.processMessage.bind(this),
     ]);
   }
