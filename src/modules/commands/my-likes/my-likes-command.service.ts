@@ -79,7 +79,7 @@ export class MyLikesCommandService {
       join(__dirname, 'templates', 'caption.mustache'),
       {
         ownerId: liked.bikecheck.userId,
-        likeDate: format(liked.likeDate, 'dd.MM.yyyy HH:mm:ss'),
+        likeDate: format(liked.likeDate, 'dd\\.MM\\.yyyy HH\\:mm\\:ss'),
       },
     );
 
@@ -153,7 +153,7 @@ export class MyLikesCommandService {
         ownerId: likedBikechecks[index].bikecheck.userId,
         likeDate: format(
           likedBikechecks[index].likeDate,
-          'dd.MM.yyyy HH:mm:ss',
+          'dd\\.MM\\.yyyy HH\\:mm\\:ss',
         ),
       },
     );
