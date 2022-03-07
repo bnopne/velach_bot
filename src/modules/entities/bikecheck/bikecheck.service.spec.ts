@@ -14,7 +14,6 @@ import { BikecheckService } from './bikecheck.service';
 
 describe('Test BikecheckService', () => {
   let bikecheckService: BikecheckService;
-  let voteService: BikecheckVoteService;
   let connection: PoolClient;
 
   beforeEach(async () => {
@@ -23,7 +22,6 @@ describe('Test BikecheckService', () => {
       BikecheckVoteService,
     ]);
     bikecheckService = module.get(BikecheckService);
-    voteService = module.get(BikecheckVoteService);
     connection = await getTestConnection(module);
     await connection.query('START TRANSACTION');
   });
@@ -105,6 +103,4 @@ describe('Test BikecheckService', () => {
 
     expect(await bikecheckService.findOnSale(connection)).toHaveLength(1);
   });
-
-  test('findLiked() returns bikechecks liked by user', async () => {});
 });

@@ -29,7 +29,7 @@ export class CheckbikeCommandService {
     private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
-  private async processCommand(ctx: Context): Promise<void> {
+  private async processMessage(ctx: Context): Promise<void> {
     const client = getContextConnectionOrFail(ctx);
     const message = getContextMessageOrFail(ctx);
     const replyToMessage = getMessageReplyTo(message);
@@ -102,7 +102,7 @@ export class CheckbikeCommandService {
       this.preliminaryDataSaveService.getMiddleware(),
       this.featureAnalyticsService.getMiddleware('checkbike command'),
       this.messageAgeMiddlewareService.getMiddleware(),
-      this.processCommand.bind(this),
+      this.processMessage.bind(this),
     ]);
   }
 }
