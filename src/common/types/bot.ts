@@ -1,7 +1,7 @@
 import { PoolClient } from 'pg';
 import { Context as TelegrafContext, MiddlewareFn } from 'telegraf';
 
-export interface Context extends TelegrafContext {
+export class Context extends TelegrafContext {
   database?: {
     connection: PoolClient;
   };
