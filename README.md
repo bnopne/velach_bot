@@ -1,6 +1,6 @@
 # Velach Bot
 
-Официальный [Telegram-бот](https://t.me/velach_bot) чата [Велач](https://t.me/veloch).
+[Telegram-бот](https://t.me/velach_bot).
 Умеет запоминать и показывать другим пользователям Telegram ваши велосипеды.
 
 ## Команды
