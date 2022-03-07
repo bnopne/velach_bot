@@ -5,8 +5,8 @@ import { PoolClient } from 'pg';
 
 import { TemplatesService } from 'src/modules/templates/templates.service';
 import { DbMiddlewareService } from 'src/modules/middlewares/db-middleware.service';
-import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-data-save.service';
-import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only.service';
+import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-data-save-middleware.service';
+import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only-middleware.service';
 import { composeMiddlewares } from 'src/common/utils/middlewares';
 import {
   getCallbackQueryDataOrFail,
@@ -28,7 +28,7 @@ import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.servi
 import { BikecheckVoteService } from 'src/modules/entities/bikecheck-vote/bikecheck-vote.service';
 import { parseCallbackData } from 'src/common/utils/keyboard';
 import { IBikecheckCommandData } from 'src/modules/commands/types';
-import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 import {

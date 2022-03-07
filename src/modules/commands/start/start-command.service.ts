@@ -10,9 +10,9 @@ import {
 } from 'src/common/utils/context';
 import { composeMiddlewares } from 'src/common/utils/middlewares';
 import { DbMiddlewareService } from 'src/modules/middlewares/db-middleware.service';
-import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-data-save.service';
-import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only.service';
-import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-data-save-middleware.service';
+import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only-middleware.service';
+import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 @Injectable()

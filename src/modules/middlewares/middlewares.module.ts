@@ -6,9 +6,9 @@ import { EntitiesModule } from 'src/modules/entities/entities.module';
 
 import { DbMiddlewareService } from './db-middleware.service';
 import { MessageAgeMiddlewareService } from './message-age-middleware.service';
-import { PreliminaryDataSaveService } from './preliminary-data-save.service';
-import { PrivateChatsOnlyMiddlewareService } from './private-chats-only.service';
-import { FeatureAnalyticsMiddlewareService } from './feature-analytics.service';
+import { PreliminaryDataSaveService } from './preliminary-data-save-middleware.service';
+import { PrivateChatsOnlyMiddlewareService } from './private-chats-only-middleware.service';
+import { FeatureAnalyticsMiddlewareService } from './feature-analytics-middleware.service';
 
 @Module({
   imports: [PgPoolModule, EntitiesModule, ConfigModule],
