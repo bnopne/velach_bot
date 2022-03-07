@@ -13,10 +13,10 @@ import {
 import { composeMiddlewares } from 'src/common/utils/middlewares';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { DbMiddlewareService } from 'src/modules/middlewares/db-middleware.service';
-import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-data-save.service';
-import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only.service';
+import { PreliminaryDataSaveService } from 'src/modules/middlewares/preliminary-data-save-middleware.service';
+import { PrivateChatsOnlyMiddlewareService } from 'src/modules/middlewares/private-chats-only-middleware.service';
 import { TemplatesService } from 'src/modules/templates/templates.service';
-import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics.service';
+import { FeatureAnalyticsMiddlewareService } from 'src/modules/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/middlewares/message-age-middleware.service';
 
 const stravaLinkRegexp = /^(https:\/\/)?(www.)?strava.com\/athletes\/\d+$/;
