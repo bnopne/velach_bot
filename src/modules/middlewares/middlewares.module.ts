@@ -9,6 +9,7 @@ import { MessageAgeMiddlewareService } from './message-age-middleware.service';
 import { PreliminaryDataSaveService } from './preliminary-data-save-middleware.service';
 import { PrivateChatsOnlyMiddlewareService } from './private-chats-only-middleware.service';
 import { FeatureAnalyticsMiddlewareService } from './feature-analytics-middleware.service';
+import { AdminOnlyMiddlewareService } from './admin-only-middleware.service';
 
 @Module({
   imports: [PgPoolModule, EntitiesModule, ConfigModule],
@@ -18,6 +19,7 @@ import { FeatureAnalyticsMiddlewareService } from './feature-analytics-middlewar
     PrivateChatsOnlyMiddlewareService,
     FeatureAnalyticsMiddlewareService,
     MessageAgeMiddlewareService,
+    AdminOnlyMiddlewareService,
   ],
   exports: [
     DbMiddlewareService,
@@ -25,6 +27,7 @@ import { FeatureAnalyticsMiddlewareService } from './feature-analytics-middlewar
     PrivateChatsOnlyMiddlewareService,
     FeatureAnalyticsMiddlewareService,
     MessageAgeMiddlewareService,
+    AdminOnlyMiddlewareService,
   ],
 })
 export class MiddlewaresModule {}
