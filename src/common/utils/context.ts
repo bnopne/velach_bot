@@ -100,6 +100,14 @@ export function getCallbackQueryMessageOrFail(
  * Getters that return null if no value could be returned
  */
 
+export function getContextMessage(ctx: Context): Message | null {
+  return ctx.message || null;
+}
+
+export function getMessageFrom(message: Message): User | null {
+  return message.from || null;
+}
+
 export function getMessageBiggestPhoto(message: Message): PhotoSize | null {
   if (!(message as Message.PhotoMessage).photo) {
     return null;
