@@ -21,7 +21,7 @@ export class HelpCommandService {
     private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
-  private async processCommand(ctx: Context): Promise<void> {
+  private async processMessage(ctx: Context): Promise<void> {
     const messageText = await this.templatesService.renderTemplate(
       join(__dirname, 'templates', 'help-message.mustache'),
       {},
@@ -39,7 +39,7 @@ export class HelpCommandService {
       this.preliminaryDataSaveService.getMiddleware(),
       this.featureAnalyticsMiddlewareService.getMiddleware('help-command'),
       this.messageAgeMiddlewareService.getMiddleware(),
-      this.processCommand.bind(this),
+      this.processMessage.bind(this),
     ]);
   }
 }
