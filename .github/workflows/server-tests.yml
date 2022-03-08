@@ -1,10 +1,14 @@
-name: Common Velach Bot Workflow
+name: Server Tests Workflow
 
 on:
   push:
     branches:
-      - 'feature/*'
-      - 'fix/*'
+    - 'feature/*'
+    - 'fix/*'
+    paths:
+    - 'server/*'
+    - '.github/workflows/**'
+  workflow_dispatch:
 
 jobs:
   run_tests:
@@ -29,6 +33,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: server/package-lock.json
 
     - name: Setup PostgreSQL
       uses: harmon758/postgresql-action@v1
@@ -39,13 +44,17 @@ jobs:
         postgresql password: 'pass'
 
     - name: Install Dependencies
+      working-directory: server
       run: npm ci
 
     - name: Create DB Tables
+      working-directory: server
       run: npm run create-tables
 
     - name: Seed Test DB
+      working-directory: server
       run: npm run seed-test-db
 
     - name: Run Tests
+      working-directory: server
       run: npm run test
