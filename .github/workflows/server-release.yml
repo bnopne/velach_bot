@@ -1,9 +1,11 @@
-name: Release Workflow
+name: Server Release Workflow
 
 on:
   push:
     branches:
     - master
+    paths:
+    - 'server/*'
 
 jobs:
   release:
@@ -23,6 +25,13 @@ jobs:
     - name: Fetch Repo
       uses: actions/checkout@v2
 
+    - name: Setup Node ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: subdir/package-lock.json
+
     - name: Setup PostgreSQL
       uses: harmon758/postgresql-action@v1
       with:
@@ -31,28 +40,28 @@ jobs:
         postgresql user: 'velach_bot'
         postgresql password: 'pass'
 
-    - name: Setup Node ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-
     - name: Install Dependencies
+      working-directory: server
       run: npm ci
 
     - name: Create DB Tables
+      working-directory: server
       run: npm run create-tables
 
     - name: Seed Test DB
+      working-directory: server
       run: npm run seed-test-db
 
     - name: Run Tests
+      working-directory: server
       run: npm run test
 
     - name: Build
+      working-directory: server
       run: npm run build
 
     - name: Prepare Distribution Folder
+      working-directory: server
       run: |
         mv node_modules dist/node_modules
         mv src/common/database/migrations dist/common/database/migrations
@@ -62,7 +71,7 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.FILE_TRANSFER_KEY }}
         ARGS: "-rltgoDzvO --delete"
-        SOURCE: "dist/"
+        SOURCE: "server/dist/"
         REMOTE_HOST: ${{ secrets.PROD_SERVER_HOST }}
         REMOTE_PORT: ${{ secrets.PROD_SERVER_PORT }}
         REMOTE_USER: ${{ secrets.PROD_SERVER_USER }}
