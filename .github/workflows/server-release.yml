@@ -30,7 +30,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: subdir/package-lock.json
+        cache-dependency-path: server/package-lock.json
 
     - name: Setup PostgreSQL
       uses: harmon758/postgresql-action@v1
