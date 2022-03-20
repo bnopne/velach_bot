@@ -5,7 +5,7 @@ on:
     branches:
     - master
     paths:
-    - 'server/*'
+    - 'server/src/*'
     - '.github/workflows/server-release.yml'
 
 jobs:
