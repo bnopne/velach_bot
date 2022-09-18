@@ -3,10 +3,10 @@ name: Server Release Workflow
 on:
   push:
     branches:
-    - master
+      - master
     paths:
-    - 'server/src/*'
-    - '.github/workflows/server-release.yml'
+      - 'server/src/*'
+      - '.github/workflows/server-release.yml'
 
 jobs:
   release:
