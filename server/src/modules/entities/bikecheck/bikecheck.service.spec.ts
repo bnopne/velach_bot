@@ -1,7 +1,7 @@
 import { TestingModule } from '@nestjs/testing';
 import { PoolClient } from 'pg';
 
-import { BILLY_ID, VAN_ID } from 'src/common/database/test-database';
+import { USER_IDS } from 'src/common/database/test-database';
 import { disconnect } from 'src/common/database/connection';
 import {
   getTestConnection,
@@ -22,7 +22,7 @@ describe('Test BikecheckService', () => {
       BikecheckVoteService,
     ]);
     bikecheckService = module.get(BikecheckService);
-    connection = await getTestConnection(module);
+    connection = await getTestConnection();
     await connection.query('START TRANSACTION');
   });
 
@@ -61,37 +61,40 @@ describe('Test BikecheckService', () => {
   });
 
   test('findActive() returns active bikechecks', async () => {
-    let b = await bikecheckService.findActive(connection, BILLY_ID);
+    let b = await bikecheckService.findActive(connection, USER_IDS.BILLY);
     expect(b.length).toBe(2);
-    b = await bikecheckService.findActive(connection, VAN_ID);
+    b = await bikecheckService.findActive(connection, USER_IDS.VAN);
     expect(b.length).toBe(1);
   });
 
   test('findDeleted() returns inactive bikechecks', async () => {
-    let b = await bikecheckService.findDeleted(connection, BILLY_ID);
+    let b = await bikecheckService.findDeleted(connection, USER_IDS.BILLY);
     expect(b.length).toBe(0);
-    b = await bikecheckService.findDeleted(connection, VAN_ID);
+    b = await bikecheckService.findDeleted(connection, USER_IDS.VAN);
     expect(b.length).toBe(1);
   });
 
   test('updateBikecheck() updates bikecheck', async () => {
-    let bikechecks = await bikecheckService.findDeleted(connection, VAN_ID);
+    let bikechecks = await bikecheckService.findDeleted(
+      connection,
+      USER_IDS.VAN,
+    );
     expect(bikechecks.length).toBe(1);
 
     bikechecks[0].isActive = true;
     await bikecheckService.updateBikecheck(connection, bikechecks[0]);
 
-    bikechecks = await bikecheckService.findDeleted(connection, VAN_ID);
+    bikechecks = await bikecheckService.findDeleted(connection, USER_IDS.VAN);
     expect(bikechecks.length).toBe(0);
   });
 
   test('getBikechecksCount() returns active bikechecks count', async () => {
     expect(
-      await bikecheckService.getBikechecksCount(connection, BILLY_ID),
+      await bikecheckService.getBikechecksCount(connection, USER_IDS.BILLY),
     ).toBe(2);
-    expect(await bikecheckService.getBikechecksCount(connection, VAN_ID)).toBe(
-      1,
-    );
+    expect(
+      await bikecheckService.getBikechecksCount(connection, USER_IDS.VAN),
+    ).toBe(1);
   });
 
   test('findOnSale() returns bikechecks on sale', async () => {

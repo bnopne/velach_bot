@@ -17,7 +17,7 @@ describe('Test ChatService', () => {
   beforeEach(async () => {
     const module: TestingModule = await getTestingModule([ChatService]);
     service = module.get<ChatService>(ChatService);
-    connection = await getTestConnection(module);
+    connection = await getTestConnection();
     await connection.query('START TRANSACTION');
   });
 

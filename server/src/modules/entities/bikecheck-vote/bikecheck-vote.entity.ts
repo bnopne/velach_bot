@@ -9,7 +9,7 @@ export interface IBikecheckVoteConstructorParams {
   userId: string;
 }
 
-export interface ITableRow {
+export interface IBikecheckVoteTableRow {
   bikecheckId: string;
   createdAt: Date;
   id: string;
@@ -26,7 +26,7 @@ export class BikecheckVote extends BaseEntity {
   updatedAt: Date;
   userId: string;
 
-  static fromTableRow(row: ITableRow): BikecheckVote {
+  static fromTableRow(row: IBikecheckVoteTableRow): BikecheckVote {
     return new BikecheckVote(row);
   }
 

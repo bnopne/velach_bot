@@ -1,5 +1,4 @@
-import { Pool, PoolClient, ClientConfig } from 'pg';
-import { ConfigService } from '@nestjs/config';
+import { Pool, PoolConfig, PoolClient, ClientConfig } from 'pg';
 
 export interface IRunWithPGConnection<T> {
   (connection: PoolClient, ...args: any[]): Promise<T>;
@@ -16,15 +15,9 @@ function getPool(config: ClientConfig): Pool {
 }
 
 export async function getConnection(
-  configService: ConfigService,
+  poolConfig: PoolConfig,
 ): Promise<PoolClient> {
-  return getPool({
-    host: configService.get<string>('VELACH_BOT_DB_HOST'),
-    port: configService.get<number>('VELACH_BOT_DB_PORT'),
-    database: configService.get<string>('VELACH_BOT_DB_DATABASE'),
-    user: configService.get<string>('VELACH_BOT_DB_USER'),
-    password: configService.get<string>('VELACH_BOT_DB_PASSWORD'),
-  }).connect();
+  return getPool(poolConfig).connect();
 }
 
 export async function disconnect(): Promise<void> {

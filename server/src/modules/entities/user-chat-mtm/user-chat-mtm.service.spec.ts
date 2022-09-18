@@ -21,7 +21,7 @@ describe('Test UserChatMtmService', () => {
   beforeEach(async () => {
     const module: TestingModule = await getTestingModule([UserChatMtmService]);
     service = module.get<UserChatMtmService>(UserChatMtmService);
-    client = await getTestConnection(module);
+    client = await getTestConnection();
     await client.query('START TRANSACTION');
   });
 

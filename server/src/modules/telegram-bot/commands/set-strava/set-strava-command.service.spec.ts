@@ -2,7 +2,7 @@ import { join } from 'path';
 
 import { PoolClient } from 'pg';
 
-import { BILLY_ID, VAN_ID } from 'src/common/database/test-database';
+import { USER_IDS } from 'src/common/database/test-database';
 import { Context } from 'src/common/types/bot';
 import { disconnect } from 'src/common/database/connection';
 import {
@@ -31,7 +31,7 @@ describe('Test SetStravaCommandService', () => {
 
     service = module.get(SetStravaCommandService);
     templatesService = module.get(TemplatesService);
-    connection = await getTestConnection(module);
+    connection = await getTestConnection();
     await connection.query('START TRANSACTION');
   });
 
@@ -62,7 +62,7 @@ describe('Test SetStravaCommandService', () => {
         message: {
           message_id: 2,
           from: {
-            id: Number(BILLY_ID),
+            id: Number(USER_IDS.BILLY),
             first_name: 'Billy',
             is_bot: false,
           },
@@ -76,7 +76,7 @@ describe('Test SetStravaCommandService', () => {
           reply_to_message: {
             message_id: 1,
             from: {
-              id: Number(BILLY_ID),
+              id: Number(USER_IDS.BILLY),
               first_name: 'Billy',
               is_bot: false,
             },
@@ -121,7 +121,7 @@ describe('Test SetStravaCommandService', () => {
         message: {
           message_id: 2,
           from: {
-            id: Number(BILLY_ID),
+            id: Number(USER_IDS.BILLY),
             first_name: 'Billy',
             is_bot: false,
           },
@@ -135,7 +135,7 @@ describe('Test SetStravaCommandService', () => {
           reply_to_message: {
             message_id: 1,
             from: {
-              id: Number(BILLY_ID),
+              id: Number(USER_IDS.BILLY),
               first_name: 'Billy',
               is_bot: false,
             },
@@ -180,7 +180,7 @@ describe('Test SetStravaCommandService', () => {
         message: {
           message_id: 2,
           from: {
-            id: Number(BILLY_ID),
+            id: Number(USER_IDS.BILLY),
             first_name: 'Billy',
             is_bot: false,
           },
@@ -194,7 +194,7 @@ describe('Test SetStravaCommandService', () => {
           reply_to_message: {
             message_id: 1,
             from: {
-              id: Number(BILLY_ID),
+              id: Number(USER_IDS.BILLY),
               first_name: 'Billy',
               is_bot: false,
             },
@@ -239,7 +239,7 @@ describe('Test SetStravaCommandService', () => {
         message: {
           message_id: 2,
           from: {
-            id: Number(BILLY_ID),
+            id: Number(USER_IDS.BILLY),
             first_name: 'Billy',
             is_bot: false,
           },
@@ -253,7 +253,7 @@ describe('Test SetStravaCommandService', () => {
           reply_to_message: {
             message_id: 1,
             from: {
-              id: Number(BILLY_ID),
+              id: Number(USER_IDS.BILLY),
               first_name: 'Billy',
               is_bot: false,
             },
@@ -298,7 +298,7 @@ describe('Test SetStravaCommandService', () => {
         message: {
           message_id: 2,
           from: {
-            id: Number(BILLY_ID),
+            id: Number(USER_IDS.BILLY),
             first_name: 'Billy',
             is_bot: false,
           },
@@ -341,7 +341,7 @@ describe('Test SetStravaCommandService', () => {
         message: {
           message_id: 2,
           from: {
-            id: Number(BILLY_ID),
+            id: Number(USER_IDS.BILLY),
             first_name: 'Billy',
             is_bot: false,
           },
@@ -355,7 +355,7 @@ describe('Test SetStravaCommandService', () => {
           reply_to_message: {
             message_id: 1,
             from: {
-              id: Number(VAN_ID),
+              id: Number(USER_IDS.VAN),
               first_name: 'Van',
               is_bot: false,
             },

@@ -9,8 +9,8 @@ import {
   getContextMessageOrFail,
   getMessageReplyTo,
   getMessageText,
-} from 'src/common/utils/context';
-import { composeMiddlewares } from 'src/common/utils/middlewares';
+} from 'src/common/utils/telegram-context';
+import { composeMiddlewares } from 'src/common/utils/telegram-middlewares';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { DbMiddlewareService } from 'src/modules/telegram-bot/middlewares/db-middleware.service';
 import { PreliminaryDataSaveService } from 'src/modules/telegram-bot/middlewares/preliminary-data-save-middleware.service';

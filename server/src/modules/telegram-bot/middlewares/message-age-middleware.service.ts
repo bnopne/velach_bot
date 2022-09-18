@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { differenceInSeconds, fromUnixTime } from 'date-fns';
 
 import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
+import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 @Injectable()
 export class MessageAgeMiddlewareService {
-  constructor(private configService: ConfigService) {}
+  constructor(private configurationService: ConfigurationService) {}
 
   private async middleware(ctx: Context, next: MiddlewareNext): Promise<void> {
     const now = new Date();
@@ -20,7 +20,7 @@ export class MessageAgeMiddlewareService {
 
     if (
       differenceInSeconds(now, updateDate) <=
-      this.configService.get<number>('VELACH_BOT_MAX_MESSAGE_AGE', 60)
+      this.configurationService.maxMessageAge
     ) {
       return next();
     }

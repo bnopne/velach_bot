@@ -6,26 +6,32 @@ import { ChatService } from 'src/modules/entities/chat/chat.service';
 import { Chat } from 'src/modules/entities/chat/chat.entity';
 import { UserChatMtmService } from 'src/modules/entities/user-chat-mtm/user-chat-mtm.service';
 import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
+import { AdminSiteAccessService } from 'src/modules/entities/admin-site-access/admin-site-access.service';
 
-export const BILLY_ID = '1';
-export const VAN_ID = '2';
-export const MARK_ID = '3';
-export const STEVE_ID = '4';
+export const USER_IDS = {
+  BILLY: '1',
+  VAN: '2',
+  MARK: '3',
+  STEVE: '4',
+};
 
-export const GYM_CHAT_ID = '1';
-export const BILLY_PRIVATE_CHAT_ID = '2';
+export const CHAT_IDS = {
+  GYM: '1',
+  BILLY_PRIVATE: '2',
+};
 
 export async function seedTestDatabase(client: PoolClient): Promise<void> {
   const userService = new UserService();
   const chatService = new ChatService();
   const userChatMtmService = new UserChatMtmService();
   const bikecheckService = new BikecheckService();
+  const adminAccessService = new AdminSiteAccessService();
 
   /**
    * Create users
    */
   let billyHerrington = new User({
-    id: BILLY_ID,
+    id: USER_IDS.BILLY,
     firstName: 'Billy',
     lastName: 'Herrington',
     isBot: false,
@@ -34,7 +40,7 @@ export async function seedTestDatabase(client: PoolClient): Promise<void> {
   });
 
   let vanDarkholme = new User({
-    id: VAN_ID,
+    id: USER_IDS.VAN,
     firstName: 'Van',
     lastName: 'Darkholme',
     isBot: false,
@@ -43,7 +49,7 @@ export async function seedTestDatabase(client: PoolClient): Promise<void> {
   });
 
   let markWolff = new User({
-    id: MARK_ID,
+    id: USER_IDS.MARK,
     firstName: 'Mark',
     lastName: 'Wolff',
     isBot: false,
@@ -52,7 +58,7 @@ export async function seedTestDatabase(client: PoolClient): Promise<void> {
   });
 
   let steveRambo = new User({
-    id: STEVE_ID,
+    id: USER_IDS.STEVE,
     firstName: 'Steve',
     lastName: 'Rambo',
     isBot: false,
@@ -66,11 +72,16 @@ export async function seedTestDatabase(client: PoolClient): Promise<void> {
   steveRambo = await userService.createUser(client, steveRambo);
 
   /**
+   * Grant admin site access
+   */
+  await adminAccessService.create(client, billyHerrington.id);
+
+  /**
    * Create chats
    */
-  let gym = new Chat({ id: GYM_CHAT_ID, title: 'Gym', type: 'supergroup' });
+  let gym = new Chat({ id: CHAT_IDS.GYM, title: 'Gym', type: 'supergroup' });
   let billyChat = new Chat({
-    id: BILLY_PRIVATE_CHAT_ID,
+    id: CHAT_IDS.BILLY_PRIVATE,
     title: undefined,
     type: 'private',
   });
@@ -89,11 +100,15 @@ export async function seedTestDatabase(client: PoolClient): Promise<void> {
   /**
    * Add bikechecks
    */
-  await bikecheckService.createActive(client, BILLY_ID, 'weewee');
-  await bikecheckService.createActive(client, BILLY_ID, 'AAA');
-  await bikecheckService.createActive(client, VAN_ID, 'bondage');
+  await bikecheckService.createActive(client, USER_IDS.BILLY, 'weewee');
+  await bikecheckService.createActive(client, USER_IDS.BILLY, 'AAA');
+  await bikecheckService.createActive(client, USER_IDS.VAN, 'bondage');
 
-  const b = await bikecheckService.createActive(client, VAN_ID, 'bondage2');
+  const b = await bikecheckService.createActive(
+    client,
+    USER_IDS.VAN,
+    'bondage2',
+  );
   b.isActive = false;
   await bikecheckService.updateBikecheck(client, b);
 }

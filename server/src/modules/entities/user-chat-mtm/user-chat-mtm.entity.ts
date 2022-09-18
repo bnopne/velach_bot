@@ -5,7 +5,7 @@ export interface IUserChatMtmConstructorParams {
   userId: string;
 }
 
-export interface ITableRow {
+export interface IUserChatMtmTableRow {
   chatId: string;
   userId: string;
 }
@@ -14,7 +14,7 @@ export class UserChatMtm extends BaseEntity {
   chatId: string;
   userId: string;
 
-  static fromTableRow(row: ITableRow): UserChatMtm {
+  static fromTableRow(row: IUserChatMtmTableRow): UserChatMtm {
     return new UserChatMtm(row);
   }
 

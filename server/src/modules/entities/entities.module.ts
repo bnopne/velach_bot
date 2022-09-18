@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { AdminSiteAccessModule } from './admin-site-access/admin-site-access.module';
 import { BikecheckModule } from './bikecheck/bikecheck.module';
 import { ChatModule } from './chat/chat.module';
 import { UserModule } from './user/user.module';
@@ -11,6 +12,7 @@ import { MigrationModule } from './migration/migration.module';
 
 @Module({
   imports: [
+    AdminSiteAccessModule,
     BikecheckModule,
     ChatModule,
     UserChatMtmModule,
@@ -21,6 +23,7 @@ import { MigrationModule } from './migration/migration.module';
     MigrationModule,
   ],
   exports: [
+    AdminSiteAccessModule,
     BikecheckModule,
     ChatModule,
     UserChatMtmModule,

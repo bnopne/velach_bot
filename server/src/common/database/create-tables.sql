@@ -13,19 +13,6 @@ CREATE TABLE "Chat" (
 );
 
 
--- public."SequelizeMeta" definition
-
--- Drop table
-
--- DROP TABLE "SequelizeMeta";
-DROP TABLE IF EXISTS "SequelizeMeta" CASCADE;
-
-CREATE TABLE "SequelizeMeta" (
-  "name" varchar(255) NOT NULL,
-  CONSTRAINT "SequelizeMeta_pkey" PRIMARY KEY (name)
-);
-
-
 -- public."User" definition
 
 -- Drop table
@@ -135,6 +122,7 @@ CREATE TABLE "FeatureAnalytics" (
   CONSTRAINT "FeatureAnalytics_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );
 
+
 -- public."Migration" definition
 
 -- Drop table
@@ -146,4 +134,17 @@ CREATE TABLE "Migration" (
   id bigserial,
   "name" varchar(255) NOT NULL,
   "createdAt" timestamptz NOT NULL DEFAULT NOW()
+);
+
+
+-- public."AdminSiteAccess" definition
+
+-- Drop table
+
+-- DROP TABLE "AdminSiteAccess";
+DROP TABLE IF EXISTS "AdminSiteAccess" CASCADE;
+
+CREATE TABLE "AdminSiteAccess" (
+  "userId" int8 NOT NULL,
+  CONSTRAINT "AdminSiteAccess_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );

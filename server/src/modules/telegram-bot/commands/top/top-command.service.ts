@@ -9,19 +9,19 @@ import {
   getContextConnectionOrFail,
   getContextCallbackQueryOrFail,
   getContextMessageOrFail,
-} from 'src/common/utils/context';
+} from 'src/common/utils/telegram-context';
 import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
 import { BikecheckVoteService } from 'src/modules/entities/bikecheck-vote/bikecheck-vote.service';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.service';
 import { DbMiddlewareService } from 'src/modules/telegram-bot/middlewares/db-middleware.service';
 import { PreliminaryDataSaveService } from 'src/modules/telegram-bot/middlewares/preliminary-data-save-middleware.service';
-import { composeMiddlewares } from 'src/common/utils/middlewares';
+import { composeMiddlewares } from 'src/common/utils/telegram-middlewares';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
 
 import { getTopKeyboard } from './keyboards';
-import { parseCallbackData } from 'src/common/utils/keyboard';
+import { parseCallbackData } from 'src/common/utils/telegram-keyboard';
 
 import { ITopCallbackQueryData } from './types';
 

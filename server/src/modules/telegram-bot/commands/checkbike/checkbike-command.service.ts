@@ -7,8 +7,8 @@ import {
   getMessageReplyTo,
   getMessageBiggestPhoto,
   getMessageFromOrFail,
-} from 'src/common/utils/context';
-import { composeMiddlewares } from 'src/common/utils/middlewares';
+} from 'src/common/utils/telegram-context';
+import { composeMiddlewares } from 'src/common/utils/telegram-middlewares';
 import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { DbMiddlewareService } from 'src/modules/telegram-bot/middlewares/db-middleware.service';

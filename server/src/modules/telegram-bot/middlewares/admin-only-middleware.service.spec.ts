@@ -1,26 +1,40 @@
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PoolClient } from 'pg';
 
 import { Context } from 'src/common/types/bot';
 import {
   getTestBotInfo,
+  getTestConnection,
   getTestingModule,
   getTestTelegram,
 } from 'src/common/utils/test-utils';
+import { EntitiesModule } from 'src/modules/entities/entities.module';
+import { disconnect } from 'src/common/database/connection';
 
 import { AdminOnlyMiddlewareService } from './admin-only-middleware.service';
 
 describe('Test AdminOnlyMiddlewareService', () => {
   let service: AdminOnlyMiddlewareService;
-  let configService: ConfigService;
+  let connection: PoolClient;
 
   beforeEach(async () => {
     const module = await getTestingModule(
       [AdminOnlyMiddlewareService],
-      [ConfigModule.forRoot()],
+      [EntitiesModule],
     );
 
     service = module.get(AdminOnlyMiddlewareService);
-    configService = module.get(ConfigService);
+
+    connection = await getTestConnection();
+    await connection.query('START TRANSACTION');
+  });
+
+  afterEach(async () => {
+    await connection.query('ROLLBACK');
+    connection.release();
+  });
+
+  afterAll(async () => {
+    await disconnect();
   });
 
   test('Middleware passes if user is bot admin', async () => {
@@ -32,7 +46,7 @@ describe('Test AdminOnlyMiddlewareService', () => {
         message: {
           message_id: 1,
           from: {
-            id: 123,
+            id: 1,
             first_name: 'Test',
             is_bot: false,
           },
@@ -49,7 +63,7 @@ describe('Test AdminOnlyMiddlewareService', () => {
       getTestBotInfo(),
     );
 
-    jest.spyOn(configService, 'get').mockReturnValue('123');
+    ctx.database = { connection };
 
     const next = jest.fn();
 
@@ -67,7 +81,7 @@ describe('Test AdminOnlyMiddlewareService', () => {
         message: {
           message_id: 1,
           from: {
-            id: 123,
+            id: 2,
             first_name: 'Test',
             is_bot: false,
           },
@@ -83,6 +97,8 @@ describe('Test AdminOnlyMiddlewareService', () => {
       tg,
       getTestBotInfo(),
     );
+
+    ctx.database = { connection };
 
     const next = jest.fn();
 
@@ -101,6 +117,8 @@ describe('Test AdminOnlyMiddlewareService', () => {
       tg,
       getTestBotInfo(),
     );
+
+    ctx.database = { connection };
 
     const next = jest.fn();
 
@@ -131,6 +149,8 @@ describe('Test AdminOnlyMiddlewareService', () => {
       tg,
       getTestBotInfo(),
     );
+
+    ctx.database = { connection };
 
     const next = jest.fn();
 

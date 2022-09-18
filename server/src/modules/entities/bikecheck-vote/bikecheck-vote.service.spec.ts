@@ -1,12 +1,7 @@
 import { TestingModule } from '@nestjs/testing';
 import { PoolClient } from 'pg';
 
-import {
-  BILLY_ID,
-  VAN_ID,
-  MARK_ID,
-  STEVE_ID,
-} from 'src/common/database/test-database';
+import { USER_IDS } from 'src/common/database/test-database';
 import { disconnect } from 'src/common/database/connection';
 import {
   getTestConnection,
@@ -29,7 +24,7 @@ describe('Test BikecheckVoteService', () => {
     ]);
     voteService = module.get(BikecheckVoteService);
     bikecheckService = module.get(BikecheckService);
-    client = await getTestConnection(module);
+    client = await getTestConnection();
     await client.query('START TRANSACTION');
   });
 
@@ -43,23 +38,36 @@ describe('Test BikecheckVoteService', () => {
   });
 
   test('create() creates vote with given points', async () => {
-    const bikecheck = (await bikecheckService.findActive(client, BILLY_ID))[0];
-    await voteService.create(client, bikecheck.id, VAN_ID, 100500);
-    const vote = await voteService.findUserVote(client, VAN_ID, bikecheck.id);
+    const bikecheck = (
+      await bikecheckService.findActive(client, USER_IDS.BILLY)
+    )[0];
+    await voteService.create(client, bikecheck.id, USER_IDS.VAN, 100500);
+    const vote = await voteService.findUserVote(
+      client,
+      USER_IDS.VAN,
+      bikecheck.id,
+    );
 
     expect(vote).toBeInstanceOf(BikecheckVote);
     expect(vote?.points).toBe(100500);
   });
 
   test('update() updates entity', async () => {
-    const bikecheck = (await bikecheckService.findActive(client, BILLY_ID))[0];
-    const vote = await voteService.create(client, bikecheck.id, VAN_ID, 100500);
+    const bikecheck = (
+      await bikecheckService.findActive(client, USER_IDS.BILLY)
+    )[0];
+    const vote = await voteService.create(
+      client,
+      bikecheck.id,
+      USER_IDS.VAN,
+      100500,
+    );
     vote.points = 265;
     await voteService.update(client, vote);
 
     const updatedVote = await voteService.findUserVote(
       client,
-      VAN_ID,
+      USER_IDS.VAN,
       bikecheck.id,
     );
     expect(updatedVote).toBeInstanceOf(BikecheckVote);
@@ -67,19 +75,23 @@ describe('Test BikecheckVoteService', () => {
   });
 
   test('getBikecheckLikesCount() returns likes count', async () => {
-    const bikecheck = (await bikecheckService.findActive(client, BILLY_ID))[0];
+    const bikecheck = (
+      await bikecheckService.findActive(client, USER_IDS.BILLY)
+    )[0];
 
     let likes = await voteService.getBikecheckLikesCount(client, bikecheck.id);
     expect(likes).toBe(0);
 
-    await voteService.create(client, bikecheck.id, VAN_ID, 1);
+    await voteService.create(client, bikecheck.id, USER_IDS.VAN, 1);
 
     likes = await voteService.getBikecheckLikesCount(client, bikecheck.id);
     expect(likes).toBe(1);
   });
 
   test('getBikecheckDislikesCount() returns dislikes count', async () => {
-    const bikecheck = (await bikecheckService.findActive(client, BILLY_ID))[0];
+    const bikecheck = (
+      await bikecheckService.findActive(client, USER_IDS.BILLY)
+    )[0];
 
     let dislikes = await voteService.getBikecheckDislikesCount(
       client,
@@ -87,7 +99,7 @@ describe('Test BikecheckVoteService', () => {
     );
     expect(dislikes).toBe(0);
 
-    await voteService.create(client, bikecheck.id, VAN_ID, -1);
+    await voteService.create(client, bikecheck.id, USER_IDS.VAN, -1);
 
     dislikes = await voteService.getBikecheckDislikesCount(
       client,
@@ -97,22 +109,30 @@ describe('Test BikecheckVoteService', () => {
   });
 
   test('findUserVote() returns user vote', async () => {
-    const bikecheck = (await bikecheckService.findActive(client, BILLY_ID))[0];
-    let vote = await voteService.findUserVote(client, VAN_ID, bikecheck.id);
+    const bikecheck = (
+      await bikecheckService.findActive(client, USER_IDS.BILLY)
+    )[0];
+    let vote = await voteService.findUserVote(
+      client,
+      USER_IDS.VAN,
+      bikecheck.id,
+    );
 
     expect(vote).toBe(null);
 
-    await voteService.create(client, bikecheck.id, VAN_ID, 100500);
+    await voteService.create(client, bikecheck.id, USER_IDS.VAN, 100500);
 
-    vote = await voteService.findUserVote(client, VAN_ID, bikecheck.id);
+    vote = await voteService.findUserVote(client, USER_IDS.VAN, bikecheck.id);
     expect(vote).toBeInstanceOf(BikecheckVote);
   });
 
   test('getBikecheckRank() returns bikecheck rank', async () => {
     const billyBikecheck = (
-      await bikecheckService.findActive(client, BILLY_ID)
+      await bikecheckService.findActive(client, USER_IDS.BILLY)
     )[0];
-    const vanBikecheck = (await bikecheckService.findActive(client, VAN_ID))[0];
+    const vanBikecheck = (
+      await bikecheckService.findActive(client, USER_IDS.VAN)
+    )[0];
 
     expect(await voteService.getBikecheckRank(client, billyBikecheck.id)).toBe(
       null,
@@ -121,12 +141,12 @@ describe('Test BikecheckVoteService', () => {
       null,
     );
 
-    await voteService.create(client, billyBikecheck.id, VAN_ID, 1);
-    await voteService.create(client, billyBikecheck.id, MARK_ID, 1);
-    await voteService.create(client, billyBikecheck.id, STEVE_ID, 1);
+    await voteService.create(client, billyBikecheck.id, USER_IDS.VAN, 1);
+    await voteService.create(client, billyBikecheck.id, USER_IDS.MARK, 1);
+    await voteService.create(client, billyBikecheck.id, USER_IDS.STEVE, 1);
 
-    await voteService.create(client, vanBikecheck.id, MARK_ID, 1);
-    await voteService.create(client, vanBikecheck.id, STEVE_ID, 1);
+    await voteService.create(client, vanBikecheck.id, USER_IDS.MARK, 1);
+    await voteService.create(client, vanBikecheck.id, USER_IDS.STEVE, 1);
 
     expect(await voteService.getBikecheckRank(client, billyBikecheck.id)).toBe(
       1,
@@ -136,18 +156,20 @@ describe('Test BikecheckVoteService', () => {
 
   test('getBikechecksTopData() returns top data', async () => {
     const billyBikecheck = (
-      await bikecheckService.findActive(client, BILLY_ID)
+      await bikecheckService.findActive(client, USER_IDS.BILLY)
     )[0];
-    const vanBikecheck = (await bikecheckService.findActive(client, VAN_ID))[0];
+    const vanBikecheck = (
+      await bikecheckService.findActive(client, USER_IDS.VAN)
+    )[0];
 
     expect(await voteService.getBikechecksTopData(client)).toHaveLength(0);
 
-    await voteService.create(client, billyBikecheck.id, VAN_ID, 1);
-    await voteService.create(client, billyBikecheck.id, MARK_ID, 1);
-    await voteService.create(client, billyBikecheck.id, STEVE_ID, 1);
+    await voteService.create(client, billyBikecheck.id, USER_IDS.VAN, 1);
+    await voteService.create(client, billyBikecheck.id, USER_IDS.MARK, 1);
+    await voteService.create(client, billyBikecheck.id, USER_IDS.STEVE, 1);
 
-    await voteService.create(client, vanBikecheck.id, MARK_ID, 1);
-    await voteService.create(client, vanBikecheck.id, STEVE_ID, 1);
+    await voteService.create(client, vanBikecheck.id, USER_IDS.MARK, 1);
+    await voteService.create(client, vanBikecheck.id, USER_IDS.STEVE, 1);
 
     const top = await voteService.getBikechecksTopData(client);
 

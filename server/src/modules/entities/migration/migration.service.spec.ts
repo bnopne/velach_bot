@@ -17,7 +17,7 @@ describe('Test MigrationService', () => {
   beforeEach(async () => {
     const module: TestingModule = await getTestingModule([MigrationService]);
     service = module.get<MigrationService>(MigrationService);
-    client = await getTestConnection(module);
+    client = await getTestConnection();
     await client.query('START TRANSACTION');
   });
 
