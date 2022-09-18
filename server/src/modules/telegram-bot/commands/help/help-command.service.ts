@@ -1,0 +1,45 @@
+import { join } from 'path';
+
+import { Injectable } from '@nestjs/common';
+
+import { Context, Middleware } from 'src/common/types/bot';
+import { getContextChatOrFail } from 'src/common/utils/context';
+import { composeMiddlewares } from 'src/common/utils/middlewares';
+import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.service';
+import { DbMiddlewareService } from 'src/modules/telegram-bot/middlewares/db-middleware.service';
+import { PreliminaryDataSaveService } from 'src/modules/telegram-bot/middlewares/preliminary-data-save-middleware.service';
+import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
+import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
+
+@Injectable()
+export class HelpCommandService {
+  constructor(
+    private templatesService: TemplatesService,
+    private dbMiddlewareService: DbMiddlewareService,
+    private preliminaryDataSaveService: PreliminaryDataSaveService,
+    private featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
+    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
+  ) {}
+
+  private async processMessage(ctx: Context): Promise<void> {
+    const messageText = await this.templatesService.renderTemplate(
+      join(__dirname, 'templates', 'help-message.mustache'),
+      {},
+    );
+
+    ctx.tg.sendMessage(getContextChatOrFail(ctx).id, messageText, {
+      parse_mode: 'MarkdownV2',
+      disable_web_page_preview: true,
+    });
+  }
+
+  getMessageMiddleware(): Middleware {
+    return composeMiddlewares([
+      this.dbMiddlewareService.getMiddleware(),
+      this.preliminaryDataSaveService.getMiddleware(),
+      this.featureAnalyticsMiddlewareService.getMiddleware('help-command'),
+      this.messageAgeMiddlewareService.getMiddleware(),
+      this.processMessage.bind(this),
+    ]);
+  }
+}
