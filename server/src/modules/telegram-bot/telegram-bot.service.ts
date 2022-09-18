@@ -8,9 +8,9 @@ import { ConfigService } from '@nestjs/config';
 import { Telegraf } from 'telegraf';
 
 import { Context } from 'src/common/types/bot';
-import { CommandRouterService } from 'src/modules/command-router/command-router.service';
-import { CallbackQueryRouterService } from 'src/modules/callback-query-router/callback-query-router.service';
-import { BikecheckCommandService } from 'src/modules/commands/bikecheck/bikecheck-command.service';
+import { CommandRouterService } from 'src/modules/telegram-bot/command-router/command-router.service';
+import { CallbackQueryRouterService } from 'src/modules/telegram-bot/callback-query-router/callback-query-router.service';
+import { BikecheckCommandService } from 'src/modules/telegram-bot/commands/bikecheck/bikecheck-command.service';
 import { handleError } from 'src/modules/telegram-bot/error-handler';
 
 @Injectable()
