@@ -7,8 +7,8 @@ import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.s
 import {
   getMessageChatOrFail,
   getContextMessageOrFail,
-} from 'src/common/utils/context';
-import { composeMiddlewares } from 'src/common/utils/middlewares';
+} from 'src/common/utils/telegram-context';
+import { composeMiddlewares } from 'src/common/utils/telegram-middlewares';
 import { DbMiddlewareService } from 'src/modules/telegram-bot/middlewares/db-middleware.service';
 import { PreliminaryDataSaveService } from 'src/modules/telegram-bot/middlewares/preliminary-data-save-middleware.service';
 import { PrivateChatsOnlyMiddlewareService } from 'src/modules/telegram-bot/middlewares/private-chats-only-middleware.service';

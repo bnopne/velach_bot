@@ -24,6 +24,8 @@ jobs:
       VELACH_BOT_DB_DATABASE: 'velach_bot'
       VELACH_BOT_DB_USER: 'velach_bot'
       VELACH_BOT_DB_PASSWORD: 'pass'
+      VELACH_BOT_TELEGRAM_TOKEN: 'telegram_token'
+      VELACH_BOT_JWT_SECRET: 'secret'
 
     steps:
     - name: Fetch Repo

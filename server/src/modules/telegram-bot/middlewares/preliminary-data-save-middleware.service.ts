@@ -8,7 +8,7 @@ import {
   getMessageChatOrFail,
   getMessageFromOrFail,
   getMessageReplyTo,
-} from 'src/common/utils/context';
+} from 'src/common/utils/telegram-context';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { ChatService } from 'src/modules/entities/chat/chat.service';
 import { Chat } from 'src/modules/entities/chat/chat.entity';

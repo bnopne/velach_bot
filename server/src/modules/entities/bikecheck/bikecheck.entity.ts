@@ -12,7 +12,7 @@ export interface IBikecheckConstructorParams {
   saleRank: Optional<number>;
 }
 
-export interface ITableRow {
+export interface IBikecheckTableRow {
   createdAt: Date;
   id: string;
   isActive: boolean;
@@ -33,7 +33,7 @@ export class Bikecheck extends BaseEntity {
   onSale: Optional<boolean>;
   saleRank: Optional<number>;
 
-  static fromTableRow(row: ITableRow): Bikecheck {
+  static fromTableRow(row: IBikecheckTableRow): Bikecheck {
     return new Bikecheck(row);
   }
 

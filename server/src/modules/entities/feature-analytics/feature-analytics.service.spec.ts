@@ -18,7 +18,7 @@ describe('Test FeatureAnalyticsService', () => {
       FeatureAnalyticsService,
     ]);
     service = module.get<FeatureAnalyticsService>(FeatureAnalyticsService);
-    client = await getTestConnection(module);
+    client = await getTestConnection();
     await client.query('START TRANSACTION');
   });
 

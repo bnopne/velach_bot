@@ -1,33 +1,38 @@
 import { Provider } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PoolClient } from 'pg';
-
-import { getConnection } from 'src/common/database/connection';
-import { getConfigModule } from 'src/common/utils/config';
 import { Telegram } from 'telegraf';
 import { UserFromGetMe } from 'typegram';
+import { config } from 'dotenv';
+
+import { getConnection } from 'src/common/database/connection';
+import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 export async function getTestingModule(
   providers: Provider<any>[],
   imports: any[] = [],
 ): Promise<TestingModule> {
+  config();
+
   return Test.createTestingModule({
-    imports: [getConfigModule(), ...imports],
+    imports: [...imports],
     providers,
   }).compile();
 }
 
-export async function getTestConfigService(
-  testingModule: TestingModule,
-): Promise<ConfigService> {
-  return testingModule.get<ConfigService>(ConfigService);
+let configurationService: ConfigurationService;
+
+export function getTestConfigService(): ConfigurationService {
+  if (!configurationService) {
+    config();
+    configurationService = new ConfigurationService();
+  }
+
+  return configurationService;
 }
 
-export function getTestConnection(
-  testingModule: TestingModule,
-): Promise<PoolClient> {
-  return getConnection(testingModule.get<ConfigService>(ConfigService));
+export function getTestConnection(): Promise<PoolClient> {
+  return getConnection(getTestConfigService().poolConfig);
 }
 
 export function getTestTelegram(): Telegram {

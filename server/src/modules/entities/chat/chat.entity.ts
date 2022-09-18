@@ -9,7 +9,7 @@ export interface IChatConstructorParams {
   type: Optional<string>;
 }
 
-export interface ITableRow {
+export interface IChatTableRow {
   id: string;
   title: string | null;
   type: string | null;
@@ -20,7 +20,7 @@ export class Chat extends BaseEntity {
   title: Optional<string>;
   type: Optional<string>;
 
-  static fromTableRow(row: ITableRow): Chat {
+  static fromTableRow(row: IChatTableRow): Chat {
     return new Chat(row);
   }
 

@@ -4,7 +4,6 @@ import {
   OnModuleDestroy,
   Logger,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Telegraf } from 'telegraf';
 
 import { Context } from 'src/common/types/bot';
@@ -12,36 +11,33 @@ import { CommandRouterService } from 'src/modules/telegram-bot/command-router/co
 import { CallbackQueryRouterService } from 'src/modules/telegram-bot/callback-query-router/callback-query-router.service';
 import { BikecheckCommandService } from 'src/modules/telegram-bot/commands/bikecheck/bikecheck-command.service';
 import { handleError } from 'src/modules/telegram-bot/error-handler';
+import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 @Injectable()
 export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
   private bot: Telegraf;
   private logger: Logger;
-  private configService: ConfigService;
+  private configurationService: ConfigurationService;
   private commandRouterService: CommandRouterService;
   private callbackQueriesService: CallbackQueryRouterService;
   private bikecheckCommandService: BikecheckCommandService;
 
   constructor(
-    configService: ConfigService,
+    configService: ConfigurationService,
     commandRouterService: CommandRouterService,
     callbackQueriesService: CallbackQueryRouterService,
     bikecheckCommandService: BikecheckCommandService,
   ) {
-    this.configService = configService;
+    this.configurationService = configService;
     this.commandRouterService = commandRouterService;
     this.callbackQueriesService = callbackQueriesService;
     this.bikecheckCommandService = bikecheckCommandService;
 
     this.logger = new Logger('Telegram Bot Service');
 
-    const token = this.configService.get<string>('VELACH_BOT_TELEGRAM_TOKEN');
-
-    if (!token) {
-      throw new Error('No telegram token configured');
-    }
-
-    this.bot = new Telegraf<Context>(token);
+    this.bot = new Telegraf<Context>(
+      this.configurationService.telegramBotToken,
+    );
 
     this.bot
       .on('message', this.commandRouterService.getMiddleware())

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 
 import { PgPoolModule } from 'src/modules/pg-pool/pg-pool.module';
 import { EntitiesModule } from 'src/modules/entities/entities.module';
+import { ConfigurationModule } from 'src/modules/configuration/configuration.module';
 
 import { DbMiddlewareService } from './db-middleware.service';
 import { MessageAgeMiddlewareService } from './message-age-middleware.service';
@@ -12,7 +12,7 @@ import { FeatureAnalyticsMiddlewareService } from './feature-analytics-middlewar
 import { AdminOnlyMiddlewareService } from './admin-only-middleware.service';
 
 @Module({
-  imports: [PgPoolModule, EntitiesModule, ConfigModule],
+  imports: [PgPoolModule, EntitiesModule, ConfigurationModule],
   providers: [
     DbMiddlewareService,
     PreliminaryDataSaveService,

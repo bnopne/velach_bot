@@ -12,7 +12,7 @@ export interface IUserConstructorParams {
   username: Optional<string>;
 }
 
-export interface ITableRow {
+export interface IUserTableRow {
   firstName: string | null;
   id: string;
   isBot: boolean | null;
@@ -29,7 +29,7 @@ export class User extends BaseEntity {
   stravaLink: Optional<string>;
   username: Optional<string>;
 
-  static fromTableRow(row: ITableRow): User {
+  static fromTableRow(row: IUserTableRow): User {
     return new User(row);
   }
 

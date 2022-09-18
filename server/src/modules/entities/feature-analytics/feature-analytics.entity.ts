@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/common/database/base-entity';
 
-export interface ITableRow {
+export interface IFeatureAnalyticsTableRow {
   chatId: string;
   createdAt: Date;
   feature: string;
@@ -15,7 +15,7 @@ export class FeatureAnalytics extends BaseEntity {
   userId: string;
   createdAt: Date;
 
-  static fromTableRow(row: ITableRow): FeatureAnalytics {
+  static fromTableRow(row: IFeatureAnalyticsTableRow): FeatureAnalytics {
     return new FeatureAnalytics(
       row.id,
       row.feature,

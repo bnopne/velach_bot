@@ -7,7 +7,7 @@ import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.s
 import { DbMiddlewareService } from 'src/modules/telegram-bot/middlewares/db-middleware.service';
 import { PreliminaryDataSaveService } from 'src/modules/telegram-bot/middlewares/preliminary-data-save-middleware.service';
 import { PrivateChatsOnlyMiddlewareService } from 'src/modules/telegram-bot/middlewares/private-chats-only-middleware.service';
-import { composeMiddlewares } from 'src/common/utils/middlewares';
+import { composeMiddlewares } from 'src/common/utils/telegram-middlewares';
 import {
   getCallbackQueryDataOrFail,
   getCallbackQueryMessageOrFail,
@@ -18,7 +18,7 @@ import {
   getMessageFromOrFail,
   getContextMessageOrFail,
   getMessageReplyTo,
-} from 'src/common/utils/context';
+} from 'src/common/utils/telegram-context';
 import { getNextIndex, getPreviousIndex } from 'src/common/utils/misc';
 import { Context, Middleware } from 'src/common/types/bot';
 import { UserService } from 'src/modules/entities/user/user.service';
@@ -26,7 +26,7 @@ import { ChatService } from 'src/modules/entities/chat/chat.service';
 import { Bikecheck } from 'src/modules/entities/bikecheck/bikecheck.entity';
 import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
 import { BikecheckVoteService } from 'src/modules/entities/bikecheck-vote/bikecheck-vote.service';
-import { parseCallbackData } from 'src/common/utils/keyboard';
+import { parseCallbackData } from 'src/common/utils/telegram-keyboard';
 import { IBikecheckCommandData } from 'src/modules/telegram-bot/commands/types';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
+import { PoolClient } from 'pg';
 
 import { PgPoolService } from 'src/modules/pg-pool/pg-pool.service';
 import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
@@ -19,7 +20,7 @@ export class DbMiddlewareService {
     context: Context,
     next: MiddlewareNext,
   ): Promise<void> {
-    let connection;
+    let connection: PoolClient;
 
     try {
       connection = await this.poolService.getConnection();

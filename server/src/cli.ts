@@ -8,6 +8,7 @@ import {
 import { join, parse } from 'path';
 import { execSync } from 'child_process';
 
+import { config } from 'dotenv';
 import fetch from 'node-fetch';
 import { createCommand } from 'commander';
 import { format } from 'date-fns';
@@ -15,8 +16,8 @@ import { Dropbox } from 'dropbox';
 
 import { getConnection, disconnect } from 'src/common/database/connection';
 import { seedTestDatabase } from 'src/common/database/test-database';
-import { getConfigService } from 'src/common/utils/config';
 import { MigrationService } from 'src/modules/entities/migration/migration.service';
+import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 interface ICliCommand {
   (): Promise<void>;
@@ -32,8 +33,8 @@ async function execute(command: ICliCommand): Promise<void> {
 }
 
 async function createTables(): Promise<void> {
-  const configService = await getConfigService();
-  const connection = await getConnection(configService);
+  const configService = new ConfigurationService();
+  const connection = await getConnection(configService.poolConfig);
 
   const script = readFileSync('./src/common/database/create-tables.sql');
 
@@ -48,8 +49,8 @@ async function createTables(): Promise<void> {
 }
 
 async function seedDatabase(): Promise<void> {
-  const configService = await getConfigService();
-  const connection = await getConnection(configService);
+  const configService = new ConfigurationService();
+  const connection = await getConnection(configService.poolConfig);
 
   try {
     await seedTestDatabase(connection);
@@ -62,7 +63,7 @@ async function seedDatabase(): Promise<void> {
 }
 
 async function backupDatabase(filename?: string): Promise<void> {
-  const configService = await getConfigService();
+  const configService = new ConfigurationService();
 
   const dumpFilename = filename
     ? `${filename}.sql`
@@ -74,22 +75,24 @@ async function backupDatabase(filename?: string): Promise<void> {
   const dumpFullname = join('/tmp', dumpFilename);
 
   execSync(
-    `pg_dump ${configService.get<string>(
+    `pg_dump ${configService.getStringValueOrFail(
       'VELACH_BOT_DB_DATABASE',
     )} > ${dumpFullname}`,
     {
       env: {
-        PGHOST: configService.get<string>('VELACH_BOT_DB_HOST'),
-        PGPORT: configService.get<string>('VELACH_BOT_DB_PORT'),
-        PGUSER: configService.get<string>('VELACH_BOT_DB_USER'),
-        PGPASSWORD: configService.get<string>('VELACH_BOT_DB_PASSWORD'),
+        PGHOST: configService.getStringValueOrFail('VELACH_BOT_DB_HOST'),
+        PGPORT: configService.getStringValue('VELACH_BOT_DB_PORT'),
+        PGUSER: configService.getStringValueOrFail('VELACH_BOT_DB_USER'),
+        PGPASSWORD: configService.getStringValueOrFail(
+          'VELACH_BOT_DB_PASSWORD',
+        ),
       },
     },
   );
 
   const dropbox = new Dropbox({
     fetch,
-    accessToken: configService.get<string>('VELACH_BOT_DROPBOX_TOKEN'),
+    accessToken: configService.getStringValueOrFail('VELACH_BOT_DROPBOX_TOKEN'),
   });
 
   const dump = readFileSync(dumpFullname);
@@ -129,9 +132,9 @@ async function applyMigrations(): Promise<void> {
     return;
   }
 
-  const configService = await getConfigService();
+  const configService = new ConfigurationService();
+  const client = await getConnection(configService.poolConfig);
   const migrationService = new MigrationService();
-  const client = await getConnection(configService);
 
   const appliedMigrations = (await migrationService.getAll(client)).map(
     (m) => m.name,
@@ -174,17 +177,16 @@ async function applyMigrations(): Promise<void> {
   }
 }
 
-const program = createCommand();
+config();
 
-program
+const program = createCommand()
   .version('1.0.0')
   .option('--create-tables', 'Creates tables and corresponding stuff in DB')
   .option('--seed-test-db', 'Fills DB with test data')
   .option('--backup-db', 'Creates DB dump and uploads it to Dropbox')
   .option('--create-migration', 'Creates empty migration file')
-  .option('--apply-migrations', 'Applies all pending migrations');
-
-program.parse(process.argv);
+  .option('--apply-migrations', 'Applies all pending migrations')
+  .parse(process.argv);
 
 let command: ICliCommand = () => Promise.resolve();
 

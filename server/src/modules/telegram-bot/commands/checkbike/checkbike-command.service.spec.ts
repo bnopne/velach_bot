@@ -2,7 +2,7 @@ import { join } from 'path';
 
 import { PoolClient } from 'pg';
 
-import { BILLY_ID, VAN_ID } from 'src/common/database/test-database';
+import { USER_IDS } from 'src/common/database/test-database';
 import { disconnect } from 'src/common/database/connection';
 import { Context } from 'src/common/types/bot';
 import {
@@ -36,7 +36,7 @@ describe('Test CheckbikeCommandService', () => {
     templatesService = module.get(TemplatesService);
     bikecheckService = module.get(BikecheckService);
 
-    connection = await getTestConnection(module);
+    connection = await getTestConnection();
     await connection.query('START TRANSACTION');
   });
 
@@ -110,7 +110,7 @@ describe('Test CheckbikeCommandService', () => {
         message: {
           message_id: 2,
           from: {
-            id: Number(VAN_ID),
+            id: Number(USER_IDS.VAN),
             first_name: 'Van',
             is_bot: false,
           },
@@ -124,7 +124,7 @@ describe('Test CheckbikeCommandService', () => {
           reply_to_message: {
             message_id: 1,
             from: {
-              id: Number(BILLY_ID),
+              id: Number(USER_IDS.BILLY),
               first_name: 'Billy',
               is_bot: false,
             },
@@ -176,7 +176,7 @@ describe('Test CheckbikeCommandService', () => {
         message: {
           message_id: 2,
           from: {
-            id: Number(VAN_ID),
+            id: Number(USER_IDS.VAN),
             first_name: 'Van',
             is_bot: false,
           },
@@ -190,7 +190,7 @@ describe('Test CheckbikeCommandService', () => {
           reply_to_message: {
             message_id: 1,
             from: {
-              id: Number(VAN_ID),
+              id: Number(USER_IDS.VAN),
               first_name: 'Van',
               is_bot: false,
             },
@@ -235,7 +235,7 @@ describe('Test CheckbikeCommandService', () => {
         message: {
           message_id: 2,
           from: {
-            id: Number(BILLY_ID),
+            id: Number(USER_IDS.BILLY),
             first_name: 'Billy',
             is_bot: false,
           },
@@ -249,7 +249,7 @@ describe('Test CheckbikeCommandService', () => {
           reply_to_message: {
             message_id: 1,
             from: {
-              id: Number(BILLY_ID),
+              id: Number(USER_IDS.BILLY),
               first_name: 'Billy',
               is_bot: false,
             },
@@ -286,7 +286,10 @@ describe('Test CheckbikeCommandService', () => {
       parse_mode: 'MarkdownV2',
     });
 
-    const bikechecks = await bikecheckService.findActive(connection, BILLY_ID);
+    const bikechecks = await bikecheckService.findActive(
+      connection,
+      USER_IDS.BILLY,
+    );
     expect(bikechecks[0].telegramImageId).toBe('photo-id');
   });
 });

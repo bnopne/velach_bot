@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/common/database/base-entity';
 
-export interface ITableRow {
+export interface IMigrationTableRow {
   id: string;
   name: string;
   createdAt: Date;
@@ -17,7 +17,7 @@ export class Migration extends BaseEntity {
   name: string;
   createdAt: Date;
 
-  static fromTableRow(row: ITableRow): Migration {
+  static fromTableRow(row: IMigrationTableRow): Migration {
     return new Migration({
       id: row.id,
       name: row.name,

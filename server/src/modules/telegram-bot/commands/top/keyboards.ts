@@ -1,7 +1,7 @@
 import { InlineKeyboardMarkup } from 'typegram';
 
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
-import { getCommandButton } from 'src/common/utils/keyboard';
+import { getCommandButton } from 'src/common/utils/telegram-keyboard';
 
 export function getTopKeyboard(
   currentPosition: number,

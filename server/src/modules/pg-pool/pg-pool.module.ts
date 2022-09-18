@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 
 import { PgPoolService } from 'src/modules/pg-pool/pg-pool.service';
+import { ConfigurationModule } from 'src/modules/configuration/configuration.module';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigurationModule],
   providers: [PgPoolService],
   exports: [PgPoolService],
 })

@@ -6,7 +6,7 @@ export interface IBikecheckChatMtmConstructorParams {
   isBanned: boolean;
 }
 
-export interface ITableRow {
+export interface IBikecheckChatMtmTableRow {
   bikecheckId: string;
   chatId: string;
   isBanned: boolean;
@@ -17,7 +17,7 @@ export class BikecheckChatMtm extends BaseEntity {
   chatId: string;
   isBanned: boolean;
 
-  static fromTableRow(row: ITableRow): BikecheckChatMtm {
+  static fromTableRow(row: IBikecheckChatMtmTableRow): BikecheckChatMtm {
     return new BikecheckChatMtm(row);
   }
 

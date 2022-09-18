@@ -4,18 +4,19 @@ import {
   OnModuleDestroy,
   Logger,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Pool, PoolClient } from 'pg';
+
+import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 const logger = new Logger('PG Pool Service');
 
 @Injectable()
 export class PgPoolService implements OnModuleInit, OnModuleDestroy {
   private pool: Pool;
-  private configService: ConfigService;
+  private configurationService: ConfigurationService;
 
-  constructor(configService: ConfigService) {
-    this.configService = configService;
+  constructor(configService: ConfigurationService) {
+    this.configurationService = configService;
   }
 
   getConnection(): Promise<PoolClient> {
@@ -26,16 +27,7 @@ export class PgPoolService implements OnModuleInit, OnModuleDestroy {
     logger.log('Connecting to Postgres...');
 
     try {
-      this.pool = new Pool({
-        host: this.configService.get<string>('VELACH_BOT_DB_HOST'),
-        port: this.configService.get<number>('VELACH_BOT_DB_PORT'),
-        database: this.configService.get<string>('VELACH_BOT_DB_DATABASE'),
-        user: this.configService.get<string>('VELACH_BOT_DB_USER'),
-        password: this.configService.get<string>('VELACH_BOT_DB_PASSWORD'),
-        min: 1,
-        max: 10,
-      });
-
+      this.pool = new Pool(this.configurationService.poolConfig);
       logger.log('Connected to Postgres');
     } catch (err) {
       logger.error(err);

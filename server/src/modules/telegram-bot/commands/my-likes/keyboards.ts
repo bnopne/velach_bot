@@ -2,7 +2,7 @@ import { InlineKeyboardMarkup } from 'typegram';
 
 import { Bikecheck } from 'src/modules/entities/bikecheck/bikecheck.entity';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
-import { getCommandButton } from 'src/common/utils/keyboard';
+import { getCommandButton } from 'src/common/utils/telegram-keyboard';
 
 export function getMyLikesKeyboard(bikecheck: Bikecheck): InlineKeyboardMarkup {
   return {

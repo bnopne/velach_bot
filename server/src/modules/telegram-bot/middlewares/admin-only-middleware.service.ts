@@ -1,21 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
-import { getContextMessage, getMessageFrom } from 'src/common/utils/context';
+import {
+  getContextMessage,
+  getMessageFrom,
+} from 'src/common/utils/telegram-context';
+import { getContextConnectionOrFail } from 'src/common/utils/telegram-context';
+import { AdminSiteAccessService } from 'src/modules/entities/admin-site-access/admin-site-access.service';
 
 @Injectable()
 export class AdminOnlyMiddlewareService {
-  constructor(private configService: ConfigService) {}
+  constructor(private adminSiteAccessService: AdminSiteAccessService) {}
 
-  private async middleware(ctx: Context, next: MiddlewareNext): Promise<void> {
-    const adminId = this.configService.get<string>('VELACH_BOT_ADMIN_ID');
-
-    if (!adminId) {
-      return;
-    }
-
-    const message = getContextMessage(ctx);
+  private async middleware(
+    context: Context,
+    next: MiddlewareNext,
+  ): Promise<void> {
+    const message = getContextMessage(context);
+    const client = getContextConnectionOrFail(context);
 
     if (!message) {
       return;
@@ -27,7 +29,12 @@ export class AdminOnlyMiddlewareService {
       return;
     }
 
-    if (from.id.toString() !== adminId) {
+    const accessRecord = await this.adminSiteAccessService.findByUserId(
+      client,
+      from.id.toString(),
+    );
+
+    if (!accessRecord) {
       return;
     }
 

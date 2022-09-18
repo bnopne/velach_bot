@@ -11,9 +11,9 @@ import {
 import {
   getContextCallbackQueryOrFail,
   getCallbackQueryDataOrFail,
-} from 'src/common/utils/context';
+} from 'src/common/utils/telegram-context';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
-import { parseCallbackData } from 'src/common/utils/keyboard';
+import { parseCallbackData } from 'src/common/utils/telegram-keyboard';
 import { BikecheckCommandService } from 'src/modules/telegram-bot/commands/bikecheck/bikecheck-command.service';
 import { DeletedCommandService } from 'src/modules/telegram-bot/commands/deleted/deleted-command.service';
 import { OnSaleCommandService } from 'src/modules/telegram-bot/commands/on-sale/on-sale-command.service';

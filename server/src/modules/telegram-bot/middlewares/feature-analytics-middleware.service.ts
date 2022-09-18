@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 
 import { FeatureAnalyticsService } from 'src/modules/entities/feature-analytics/feature-analytics.service';
 import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
-import { getContextConnectionOrFail } from 'src/common/utils/context';
+import { getContextConnectionOrFail } from 'src/common/utils/telegram-context';
 
 const logger = new Logger('Feature Analytics Middleware Service');
 

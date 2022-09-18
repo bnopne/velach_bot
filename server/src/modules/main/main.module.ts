@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 
 import { TelegramBotModule } from 'src/modules/telegram-bot/telegram-bot.module';
+import { AdminSiteModule } from 'src/modules/admin-site/admin-site.module';
 
 @Module({
-  imports: [TelegramBotModule, ConfigModule.forRoot()],
+  imports: [TelegramBotModule, AdminSiteModule],
   controllers: [],
   providers: [],
 })
