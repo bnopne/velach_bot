@@ -3,11 +3,11 @@ name: Server Tests Workflow
 on:
   push:
     branches:
-    - 'feature/*'
-    - 'fix/*'
+      - 'feature/*'
+      - 'fix/*'
     paths:
-    - 'server/*'
-    - '.github/workflows/**'
+      - 'server/*'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
