@@ -19,7 +19,7 @@ import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.s
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
 
-const stravaLinkRegexp = /^(https:\/\/)?(www.)?strava.com\/athletes\/\d+$/;
+const stravaLinkRegexp = /^(https:\/\/)?(www.)?strava.com\/athletes\/[\w-]+$/;
 
 @Injectable()
 export class SetStravaCommandService {
