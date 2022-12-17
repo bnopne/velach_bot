@@ -1,12 +1,13 @@
 name: Server Release Workflow
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - 'master'
+    - master
     paths:
-      - 'server/*'
-      - '.github/workflows/server-release.yml'
+    - server/**
+    - .github/workflows/server-release.yml
 
 jobs:
   release:
