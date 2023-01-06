@@ -1,4 +1,5 @@
 # Velach Bot
+![server tests badge](https://github.com/bnopne/velach_bot/actions/workflows/server-tests.yml/badge.svg?branch=master)
 
 [Telegram-бот](https://t.me/velach_bot).
 Умеет запоминать и показывать другим пользователям Telegram ваши велосипеды.
