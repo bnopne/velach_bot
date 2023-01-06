@@ -82,12 +82,10 @@ async function backupDatabase(filename?: string): Promise<void> {
     )} > ${dumpFullname}`,
     {
       env: {
-        PGHOST: configService.getStringValueOrFail('VELACH_BOT_DB_HOST'),
-        PGPORT: configService.getStringValue('VELACH_BOT_DB_PORT'),
-        PGUSER: configService.getStringValueOrFail('VELACH_BOT_DB_USER'),
-        PGPASSWORD: configService.getStringValueOrFail(
-          'VELACH_BOT_DB_PASSWORD',
-        ),
+        PGHOST: configService.poolConfig.host,
+        PGPORT: configService.poolConfig.port?.toString(),
+        PGUSER: configService.poolConfig.user,
+        PGPASSWORD: configService.poolConfig.password?.toString(),
       },
     },
   );
