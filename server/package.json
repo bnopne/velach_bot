@@ -6,7 +6,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "prebuild": "rimraf dist",
+    "prebuild": "rimraf dist dist-binary",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -25,7 +25,10 @@
     "seed-test-db": "npm run execute-ts ./src/cli.ts -- --seed-test-db",
     "backup-db": "npm run execute-ts ./src/cli.ts -- --backup-db",
     "create-migration": "npm run execute-ts ./src/cli.ts -- --create-migration",
-    "apply-migrations": "npm run execute-ts ./src/cli.ts -- --apply-migrations"
+    "apply-migrations": "npm run execute-ts ./src/cli.ts -- --apply-migrations",
+    "build-binary:bot": "pkg --config pkg-bot.config.json dist/main.js",
+    "build-binary:cli": "pkg --config pkg-cli.config.json dist/cli.js",
+    "zip-binaries": "npm run execute-ts ./src/cli.ts -- --zip-binaries"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -70,6 +73,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.2.5",
+    "pkg": "^5.8.0",
     "prettier": "^2.3.2",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",

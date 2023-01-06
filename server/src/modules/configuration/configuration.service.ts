@@ -18,11 +18,11 @@ export class ConfigurationService {
      * DB connection config setup
      */
     this.poolConfig = {
-      host: this.getStringValueOrFail('VELACH_BOT_DB_HOST'),
-      port: this.getNumberValueOrFail('VELACH_BOT_DB_PORT'),
-      database: this.getStringValueOrFail('VELACH_BOT_DB_DATABASE'),
-      user: this.getStringValueOrFail('VELACH_BOT_DB_USER'),
-      password: this.getStringValueOrFail('VELACH_BOT_DB_PASSWORD'),
+      host: this.getStringValue('VELACH_BOT_DB_HOST', '127.0.0.1'),
+      port: this.getNumberValue('VELACH_BOT_DB_PORT', 5432),
+      database: this.getStringValue('VELACH_BOT_DB_DATABASE', 'velach_bot'),
+      user: this.getStringValue('VELACH_BOT_DB_USER', 'velach_bot'),
+      password: this.getStringValue('VELACH_BOT_DB_PASSWORD', 'pass'),
       min: this.getNumberValue('VELACH_BOT_DB_MIN_POOL_SIZE', 1),
       max: this.getNumberValue('VELACH_BOT_DB_MAX_POOL_SIZE', 10),
     };
@@ -30,8 +30,9 @@ export class ConfigurationService {
     /**
      * Telegram config setup
      */
-    this.telegramBotToken = this.getStringValueOrFail(
+    this.telegramBotToken = this.getStringValue(
       'VELACH_BOT_TELEGRAM_TOKEN',
+      'telegram-bot-token',
     );
 
     /**
@@ -46,7 +47,7 @@ export class ConfigurationService {
       'VELACH_BOT_ADMIN_SITE_ACCESS_CODE_TTL',
       60,
     );
-    this.jwtSecret = this.getStringValueOrFail('VELACH_BOT_JWT_SECRET');
+    this.jwtSecret = this.getStringValue('VELACH_BOT_JWT_SECRET', 'jwt-secret');
     this.adminSiteHost = this.getStringValue(
       'VELACH_BOT_ADMIN_SITE_HOST',
       '127.0.0.1',

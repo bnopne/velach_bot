@@ -1,0 +1,12 @@
+{
+  "scripts": [
+    "dist/**/*.js"
+  ],
+  "assets": [
+    "dist/**/*.mustache"
+  ],
+  "targets": [
+    "node14-linux-x64"
+  ],
+  "outputPath": "dist-binary"
+}
