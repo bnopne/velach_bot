@@ -70,7 +70,7 @@ export class AccessAdminSiteCommandService {
       ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.privateChatsOnlyMiddlewareService.getMiddleware(),
-      this.processMessage.bind(this),
+      // this.processMessage.bind(this),
     ]);
   }
 }

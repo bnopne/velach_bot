@@ -4,10 +4,14 @@ import { PoolConfig } from 'pg';
 @Injectable()
 export class ConfigurationService {
   readonly poolConfig: PoolConfig;
+
   readonly telegramBotToken: string;
   readonly maxMessageAge: number; // in seconds
+
   readonly adminSiteAccessCodeTTL: number; // in seconds
   readonly jwtSecret: string;
+  readonly adminSiteHost: string;
+  readonly adminSitePort: number;
 
   constructor() {
     /**
@@ -36,17 +40,21 @@ export class ConfigurationService {
     this.maxMessageAge = this.getNumberValue('VELACH_BOT_MAX_MESSAGE_AGE', 60);
 
     /**
-     * Admin site access code TTL
+     * Admin site
      */
     this.adminSiteAccessCodeTTL = this.getNumberValue(
       'VELACH_BOT_ADMIN_SITE_ACCESS_CODE_TTL',
       60,
     );
-
-    /**
-     * JWT secret
-     */
     this.jwtSecret = this.getStringValueOrFail('VELACH_BOT_JWT_SECRET');
+    this.adminSiteHost = this.getStringValue(
+      'VELACH_BOT_ADMIN_SITE_HOST',
+      '127.0.0.1',
+    );
+    this.adminSitePort = this.getNumberValue(
+      'VELACH_BOT_ADMIN_SITE_PORT',
+      20000,
+    );
   }
 
   getStringValueOrFail(name: string): string {

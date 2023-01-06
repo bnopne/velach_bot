@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Router } from 'telegraf';
 
 import { RouteFn, Context, Middleware } from 'src/common/types/bot';
@@ -17,6 +17,8 @@ import { OnSaleCommandService } from 'src/modules/telegram-bot/commands/on-sale/
 import { TopCommandService } from 'src/modules/telegram-bot/commands/top/top-command.service';
 import { MyLikesCommandService } from 'src/modules/telegram-bot/commands/my-likes/my-likes-command.service';
 import { AccessAdminSiteCommandService } from 'src/modules/telegram-bot/commands/access-admin-site/access-admin-site-command.service';
+
+const logger = new Logger('Command Router Service');
 
 function parseCommand(text: string, botUsername: string): string | null {
   const regexp = new RegExp(`^\/([A-Za-z]+)(?:@${botUsername})?$`);
@@ -106,6 +108,7 @@ export class CommandRouterService {
         this.accessAdminSiteCommandService.getMessageMiddleware(),
       )
       .otherwise((command, next) => {
+        logger.log(`unknown command ${command}`);
         next();
       });
   }
