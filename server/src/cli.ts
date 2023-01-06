@@ -76,19 +76,14 @@ async function backupDatabase(filename?: string): Promise<void> {
 
   const dumpFullname = join('/tmp', dumpFilename);
 
-  execSync(
-    `pg_dump ${configService.getStringValueOrFail(
-      'VELACH_BOT_DB_DATABASE',
-    )} > ${dumpFullname}`,
-    {
-      env: {
-        PGHOST: configService.poolConfig.host,
-        PGPORT: configService.poolConfig.port?.toString(),
-        PGUSER: configService.poolConfig.user,
-        PGPASSWORD: configService.poolConfig.password?.toString(),
-      },
+  execSync(`pg_dump ${configService.poolConfig.database} > ${dumpFullname}`, {
+    env: {
+      PGHOST: configService.poolConfig.host,
+      PGPORT: configService.poolConfig.port?.toString(),
+      PGUSER: configService.poolConfig.user,
+      PGPASSWORD: configService.poolConfig.password?.toString(),
     },
-  );
+  });
 
   const dropbox = new Dropbox({
     fetch,
