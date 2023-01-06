@@ -18,14 +18,6 @@ jobs:
     strategy:
       matrix:
         node-version: [ 14.18.1 ]
-    env:
-      VELACH_BOT_DB_HOST: '127.0.0.1'
-      VELACH_BOT_DB_PORT: '5432'
-      VELACH_BOT_DB_DATABASE: 'velach_bot'
-      VELACH_BOT_DB_USER: 'velach_bot'
-      VELACH_BOT_DB_PASSWORD: 'pass'
-      VELACH_BOT_TELEGRAM_TOKEN: 'telegram_token'
-      VELACH_BOT_JWT_SECRET: 'secret'
 
     steps:
     - name: Fetch Repo
@@ -61,3 +53,7 @@ jobs:
     - name: Run Tests
       working-directory: server
       run: npm run test
+
+    - name: Run Linter
+      working-directory: server
+      run: npm run lint

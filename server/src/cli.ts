@@ -36,7 +36,9 @@ async function createTables(): Promise<void> {
   const configService = new ConfigurationService();
   const connection = await getConnection(configService.poolConfig);
 
-  const script = readFileSync('./src/common/database/create-tables.sql');
+  const script = readFileSync(
+    join(__dirname, 'common/database/create-tables.sql'),
+  );
 
   try {
     await connection.query(script.toString());
@@ -186,6 +188,7 @@ const program = createCommand()
   .option('--backup-db', 'Creates DB dump and uploads it to Dropbox')
   .option('--create-migration', 'Creates empty migration file')
   .option('--apply-migrations', 'Applies all pending migrations')
+  .option('--zip-binaries', 'Zip compiled binaries')
   .parse(process.argv);
 
 let command: ICliCommand = () => Promise.resolve();
