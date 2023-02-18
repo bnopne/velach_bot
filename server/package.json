@@ -24,6 +24,7 @@
     "create-tables": "npm run execute-ts ./src/cli.ts -- --create-tables",
     "seed-test-db": "npm run execute-ts ./src/cli.ts -- --seed-test-db",
     "backup-db": "npm run execute-ts ./src/cli.ts -- --backup-db",
+    "download-latest-dump": "npm run execute-ts ./src/cli.ts -- --download-latest-dump",
     "create-migration": "npm run execute-ts ./src/cli.ts -- --create-migration",
     "apply-migrations": "npm run execute-ts ./src/cli.ts -- --apply-migrations",
     "build-binary:bot": "pkg --config pkg-bot.config.json dist/main.js",
