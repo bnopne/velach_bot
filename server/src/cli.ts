@@ -13,6 +13,7 @@ import fetch from 'node-fetch';
 import { createCommand } from 'commander';
 import { format } from 'date-fns';
 import { Dropbox } from 'dropbox';
+import type { files } from 'dropbox';
 
 import { getConnection, disconnect } from 'src/common/database/connection';
 import { seedTestDatabase } from 'src/common/database/test-database';
@@ -100,6 +101,62 @@ async function backupDatabase(filename?: string): Promise<void> {
   unlinkSync(dumpFullname);
 }
 
+async function donwloadLatestDump(): Promise<void> {
+  const configService = new ConfigurationService();
+
+  const dropbox = new Dropbox({
+    fetch,
+    accessToken: configService.getStringValueOrFail('VELACH_BOT_DROPBOX_TOKEN'),
+  });
+
+  const fileInfos: Array<
+    files.FileMetadata | files.FolderMetadata | files.DeletedMetadata
+  > = [];
+
+  let listResponse = await dropbox.filesListFolder({
+    path: '',
+    include_deleted: false,
+    recursive: false,
+    limit: 100,
+  });
+
+  if (listResponse.result.entries.length === 0) {
+    console.log('No dumps available for download');
+    return;
+  }
+
+  fileInfos.push(
+    ...listResponse.result.entries.filter((e) => e.name.endsWith('.sql')),
+  );
+
+  while (listResponse.result.has_more) {
+    listResponse = await dropbox.filesListFolderContinue({
+      cursor: listResponse.result.cursor,
+    });
+    fileInfos.push(
+      ...listResponse.result.entries.filter((e) => e.name.endsWith('.sql')),
+    );
+  }
+
+  fileInfos.sort(
+    (a, b) =>
+      new Date((b as files.FileMetadata).client_modified).getTime() -
+      new Date((a as files.FileMetadata).client_modified).getTime(),
+  );
+
+  const latestFileInfo = fileInfos[0];
+
+  console.log(`download ${latestFileInfo.name}`);
+
+  const file = await dropbox.filesDownload({
+    path: (latestFileInfo as files.FileMetadata).id,
+  });
+
+  writeFileSync('velach-bot-latest.sql', (<any>file.result).fileBinary, {
+    encoding: 'binary',
+  });
+}
+
 async function createMigrationFile(name: string): Promise<void> {
   const path = join(
     __dirname,
@@ -179,6 +236,10 @@ const program = createCommand()
   .option('--create-tables', 'Creates tables and corresponding stuff in DB')
   .option('--seed-test-db', 'Fills DB with test data')
   .option('--backup-db', 'Creates DB dump and uploads it to Dropbox')
+  .option(
+    '--download-latest-dump',
+    'Tries download latest dump file and save it as velach-bot-latest.sql',
+  )
   .option('--create-migration', 'Creates empty migration file')
   .option('--apply-migrations', 'Applies all pending migrations')
   .option('--zip-binaries', 'Zip compiled binaries')
@@ -195,6 +256,9 @@ if (program.opts().createTables) {
 } else if (program.opts().backupDb) {
   console.log('execute BACKUP DATABASE');
   command = () => backupDatabase(program.args[0]);
+} else if (program.opts().downloadLatestDump) {
+  console.log('execute DOWNLOAD LATEST DUMP');
+  command = () => donwloadLatestDump();
 } else if (program.opts().createMigration) {
   console.log('execute CREATE MIGRATION FILE');
   command = () => createMigrationFile(program.args[0]);
