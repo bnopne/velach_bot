@@ -69,15 +69,14 @@ jobs:
             [all]
             production-server ansible_host=${{secrets.PRODUCTION_SERVER_HOST}} ansible_port=${{secrets.PRODUCTION_SERVER_PORT}} ansible_user=${{secrets.PRODUCTION_SERVER_ADMIN_USER}} ansible_password=${{secrets.PRODUCTION_SERVER_ADMIN_PASSWORD}}
           options: |
-            --extra-vars \
-              OS_USER=${{secrets.PRODUCTUION_SERVER_USER}} \
-              OS_PASSWORD=${{secrets.PRODUCTUION_SERVER_PASSWORD}} \
-              SSH_KEY_PUBLIC=${{secrets.PRODUCTUION_SERVER_SSH_KEY_PUBLIC}} \
-              DB_NAME=${{secrets.DB_NAME}} \
-              DB_USER=${{secrets.DB_USER}} \
-              DB_PASSWORD=${{secrets.DB_PASSWORD}} \
-              APP_DIR=${{secrets.APP_DIR}} \
-              DROPBOX_TOKEN=${{secrets.DROPBOX_TOKEN}} \
-              TELEGRAM_TOKEN=${{secrets.TELEGRAM_TOKEN}} \
-              JWT_SECRET=${{secrets.JWT_SECRET}} \
+            --extra-vars OS_USER="${{secrets.PRODUCTUION_SERVER_USER}}"
+            --extra-vars OS_PASSWORD="${{secrets.PRODUCTUION_SERVER_PASSWORD}}"
+            --extra-vars SSH_KEY_PUBLIC="${{secrets.PRODUCTUION_SERVER_SSH_KEY_PUBLIC}}"
+            --extra-vars DB_NAME="${{secrets.DB_NAME}}"
+            --extra-vars DB_USER="${{secrets.DB_USER}}"
+            --extra-vars DB_PASSWORD="${{secrets.DB_PASSWORD}}"
+            --extra-vars APP_DIR="${{secrets.APP_DIR}}"
+            --extra-vars DROPBOX_TOKEN="${{secrets.DROPBOX_TOKEN}}"
+            --extra-vars TELEGRAM_TOKEN="${{secrets.TELEGRAM_TOKEN}}"
+            --extra-vars JWT_SECRET="${{secrets.JWT_SECRET}}"
             --verbose
