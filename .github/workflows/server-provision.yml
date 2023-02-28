@@ -1,19 +1,9 @@
-name: Server Tests
-
+name: Server Provision
 on:
-  # push:
-  #   branches:
-  #   - feature/**
-  #   - fix/**
-  #   - master
-  #   paths:
-  #   - server/**
-  #   - .github/workflows/**
   workflow_dispatch:
-
 jobs:
-  run_tests:
-    name: Run Tests
+  server_provision:
+    name: Server Provision
     runs-on: ubuntu-20.04
     strategy:
       matrix:
@@ -42,6 +32,10 @@ jobs:
         working-directory: server
         run: npm ci
 
+      - name: Run Linter
+        working-directory: server
+        run: npm run lint
+
       - name: Create DB Tables
         working-directory: server
         run: npm run create-tables
@@ -54,6 +48,21 @@ jobs:
         working-directory: server
         run: npm run test
 
-      - name: Run Linter
+      - name: Build Javascript
         working-directory: server
-        run: npm run lint
+        run: npm run build
+
+      - name: Build Binaries
+        working-directory: server
+        run: |
+          npm run build-binary:cli
+          npm run build-binary:bot
+
+      - name: Run Provision Playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: server/.ansible/provision.yml
+          vault_password: ${{secrets.VAULT_PASSWORD}}
+          options: |
+            --inventory "server/.ansible/inventory.yml"
+            --verbose

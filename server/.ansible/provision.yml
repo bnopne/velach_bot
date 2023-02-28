@@ -1,0 +1,153 @@
+- name: Velach Bot Server Provision
+  hosts: admin-access
+  vars:
+    DIST_BINARY_DIR: "{{lookup('ansible.builtin.env', 'GITHUB_WORKSPACE')}}/server/dist-binary"
+  tasks:
+    - name: Install and configure basic software
+      block:
+        - name: Update all packages to their latest version
+          ansible.builtin.apt:
+            name: "*"
+            state: latest
+
+        - name: "Add Node.js apt key"
+          apt_key:
+            url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+            state: present
+
+        - name: "Add Node.js PPA for apt"
+          apt_repository:
+            repo: deb https://deb.nodesource.com/node_14.x bionic main
+            update_cache: yes
+
+        - name: Install packages
+          ansible.builtin.apt:
+            update_cache: yes
+            name:
+              - postgresql
+              - nodejs
+              - python3-pip
+            state: present
+
+        - name: Install PM2
+          community.general.npm:
+            name: pm2
+            global: true
+
+        - name: Toggle PM2 autorun
+          ansible.builtin.command:
+            cmd: pm2 startup
+
+        - name: Install Psycopg2
+          ansible.builtin.pip:
+            name: psycopg2-binary
+
+    - name: Create and configure OS user
+      block:
+        - name: Create bot OS user
+          ansible.builtin.user:
+            name: "{{OS_USER}}"
+            password: "{{OS_PASSWORD}}"
+            state: present
+
+        - name: Add remote access SSH key
+          ansible.posix.authorized_key:
+            user: "{{OS_USER}}"
+            key: "{{SSH_KEY_PUBLIC}}"
+            state: present
+
+    - name: Create and configure database
+      become: true
+      become_user: postgres
+      block:
+        - name: Create bot database
+          community.postgresql.postgresql_db:
+            name: "{{DB_NAME}}"
+
+        - name: Create bot database user
+          community.postgresql.postgresql_user:
+            name: "{{DB_USER}}"
+            password: "{{DB_PASSWORD}}"
+            encrypted: true
+
+        - name: Grant database privileges to bot user
+          community.postgresql.postgresql_privs:
+            database: "{{DB_NAME}}"
+            type: database
+            roles: "{{DB_USER}}"
+            privs: ALL
+            state: present
+
+    - name: Copy executables
+      become: true
+      become_user: "{{OS_USER}}"
+      block:
+        - name: Create app directory
+          ansible.builtin.file:
+            path: "{{APP_DIR}}"
+            state: directory
+            recurse: true
+
+        - name: Copy server executable
+          ansible.builtin.copy:
+            src: "{{DIST_BINARY_DIR}}/main"
+            dest: "{{APP_DIR}}"
+            owner: "{{OS_USER}}"
+            mode: "755"
+
+        - name: Copy CLI executable
+          ansible.builtin.copy:
+            src: "{{DIST_BINARY_DIR}}/cli"
+            dest: "{{APP_DIR}}"
+            owner: "{{OS_USER}}"
+            mode: "755"
+
+    - name: Prepare DB
+      become: true
+      become_user: "{{OS_USER}}"
+      environment:
+        VELACH_BOT_DROPBOX_TOKEN: "{{DROPBOX_TOKEN}}"
+        VELACH_BOT_DB_DATABASE: "{{DB_NAME}}"
+        VELACH_BOT_DB_USER: "{{DB_USER}}"
+        VELACH_BOT_DB_PASSWORD: "{{DB_PASSWORD}}"
+      block:
+        - name: Fetch latest DB dump
+          ansible.builtin.command:
+            chdir: "{{APP_DIR}}"
+            cmd: "./cli --download-latest-dump"
+
+        - name: Get stat of a dump file
+          ansible.builtin.stat:
+            path: "{{APP_DIR}}/velach-bot-latest.sql"
+          register: dump
+
+        - name: Restore DB from dump
+          when: dump.stat.exists
+          block:
+            - name: Restore dump
+              community.postgresql.postgresql_db:
+                name: "{{DB_NAME}}"
+                login_user: "{{DB_USER}}"
+                login_password: "{{DB_PASSWORD}}"
+                target: "{{APP_DIR}}/velach-bot-latest.sql"
+                state: "restore"
+
+            - name: Delete dump file
+              ansible.builtin.file:
+                path: "{{APP_DIR}}/velach-bot-latest.sql"
+                state: absent
+
+        - name: Create empty DB
+          when: not dump.stat.exists
+          ansible.builtin.command:
+            chdir: "{{APP_DIR}}"
+            cmd: "./cli --create-tables"
+
+    - name: Setup PM2 config
+      become: true
+      become_user: "{{OS_USER}}"
+      ansible.builtin.template:
+        src: ecosystem.config.j2
+        dest: "{{APP_DIR}}/ecosystem.config.js"
+        owner: "{{OS_USER}}"
+        mode: "644"

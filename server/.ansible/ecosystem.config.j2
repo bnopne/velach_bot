@@ -1,0 +1,30 @@
+module.exports = {
+  apps: [
+    {
+      name: "server",
+      script: "./main",
+      env: {
+        NODE_ENV: "production",
+        VELACH_BOT_DB_DATABASE: "{{DB_NAME}}",
+        VELACH_BOT_DB_USER: "{{DB_USER}}",
+        VELACH_BOT_DB_PASSWORD: "{{DB_PASSWORD}}",
+        VELACH_BOT_TELEGRAM_TOKEN: "{{TELEGRAM_TOKEN}}",
+        VELACH_BOT_JWT_SECRET: "{{JWT_SECRET}}",
+      },
+    },
+    {
+      name: 'database backup',
+      script: './cli',
+      args: '--backup-db',
+      autorestart: false,
+      cron_restart: '0 0 * * *',
+      env: {
+        NODE_ENV: "production",
+        VELACH_BOT_DB_DATABASE: "{{DB_NAME}}",
+        VELACH_BOT_DB_USER: "{{DB_USER}}",
+        VELACH_BOT_DB_PASSWORD: "{{DB_PASSWORD}}",
+        VELACH_BOT_DROPBOX_TOKEN: "{{DROPBOX_TOKEN}}",
+      },
+    }
+  ],
+};
