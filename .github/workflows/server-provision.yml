@@ -1,0 +1,83 @@
+name: Server Provision
+
+on:
+  workflow_dispatch:
+
+jobs:
+  server_provision:
+    name: Server Provision
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [14.18.1]
+
+    steps:
+      - name: Fetch Repo
+        uses: actions/checkout@v2
+
+      - name: Install Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: server/package-lock.json
+
+      - name: Setup PostgreSQL
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: "12"
+          postgresql db: "velach_bot"
+          postgresql user: "velach_bot"
+          postgresql password: "pass"
+
+      - name: Install Dependencies
+        working-directory: server
+        run: npm ci
+        
+      - name: Run Linter
+        working-directory: server
+        run: npm run lint
+
+      - name: Create DB Tables
+        working-directory: server
+        run: npm run create-tables
+
+      - name: Seed Test DB
+        working-directory: server
+        run: npm run seed-test-db
+
+      - name: Run Tests
+        working-directory: server
+        run: npm run test
+
+      - name: Build Javascript
+        working-directory: server
+        run: npm run build
+        
+      - name: Build Binaries
+        working-directory: server
+        run: |
+          npm run build-binary:cli
+          npm run build-binary:bot
+        
+      - name: Run Provision Playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: server/.ansible/provision.yml
+          directory: server/.ansible
+          inventory: |
+            [all]
+            production-server ansible_host=${{secrets.PRODUCTION_SERVER_HOST}} ansible_port=${{secrets.PRODUCTION_SERVER_PORT}} ansible_user=${{secrets.PRODUCTION_SERVER_ADMIN_USER}} ansible_password=${{secrets.PRODUCTION_SERVER_ADMIN_PASSWORD}}
+          options: |
+            --extra-vars \
+              OS_USER=${{secrets.PRODUCTUION_SERVER_USER}} \
+              OS_PASSWORD=${{secrets.PRODUCTUION_SERVER_PASSWORD}} \
+              SSH_KEY_PUBLIC=${{secrets.PRODUCTUION_SERVER_SSH_KEY_PUBLIC}} \
+              DB_NAME=${{secrets.DB_NAME}} \
+              DB_USER=${{secrets.DB_USER}} \
+              DB_PASSWORD=${{secrets.DB_PASSWORD}} \
+              APP_DIR=${{secrets.APP_DIR}} \
+              DROPBOX_TOKEN=${{secrets.DROPBOX_TOKEN}} \
+              TELEGRAM_TOKEN=${{secrets.TELEGRAM_TOKEN}} \
+              JWT_SECRET=${{secrets.JWT_SECRET}} \
+            --verbose
