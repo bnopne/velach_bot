@@ -1,9 +1,15 @@
 - name: Velach Bot Server Provision
-  hosts: all
-
+  hosts: admin-access
+  vars:
+    DIST_BINARY_DIR: "{{lookup('ansible.builtin.env', 'GITHUB_WORKSPACE')}}/server/dist-binary"
   tasks:
     - name: Install and configure basic software
       block:
+        - name: Update all packages to their latest version
+          ansible.builtin.apt:
+            name: "*"
+            state: latest
+
         - name: "Add Node.js apt key"
           apt_key:
             url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
@@ -84,14 +90,14 @@
 
         - name: Copy server executable
           ansible.builtin.copy:
-            src: ../dist-binary/main
+            src: "{{DIST_BINARY_DIR}}/main"
             dest: "{{APP_DIR}}"
             owner: "{{OS_USER}}"
             mode: "755"
 
         - name: Copy CLI executable
           ansible.builtin.copy:
-            src: ../dist-binary/cli
+            src: "{{DIST_BINARY_DIR}}/cli"
             dest: "{{APP_DIR}}"
             owner: "{{OS_USER}}"
             mode: "755"
@@ -140,13 +146,6 @@
     - name: Setup PM2 config
       become: true
       become_user: "{{OS_USER}}"
-      vars:
-        DB_DATABASE: "{{DB_NAME}}"
-        DB_USER: "{{DB_USER}}"
-        DB_PASSWORD: "{{DB_PASSWORD}}"
-        JWT_SECRET: "{{JWT_SECRET}}"
-        TELEGRAM_TOKEN: "{{TELEGRAM_TOKEN}}"
-        DROPBOX_TOKEN: "{{DROPBOX_TOKEN}}"
       ansible.builtin.template:
         src: ecosystem.config.j2
         dest: "{{APP_DIR}}/ecosystem.config.js"

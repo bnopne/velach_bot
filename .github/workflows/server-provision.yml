@@ -1,8 +1,6 @@
 name: Server Provision
-
 on:
   workflow_dispatch:
-
 jobs:
   server_provision:
     name: Server Provision
@@ -33,7 +31,7 @@ jobs:
       - name: Install Dependencies
         working-directory: server
         run: npm ci
-        
+
       - name: Run Linter
         working-directory: server
         run: npm run lint
@@ -53,28 +51,18 @@ jobs:
       - name: Build Javascript
         working-directory: server
         run: npm run build
-        
+
       - name: Build Binaries
         working-directory: server
         run: |
           npm run build-binary:cli
           npm run build-binary:bot
-        
+
       - name: Run Provision Playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: server/.ansible/provision.yml
-          inventory: server/.ansible/inventory.yml
           vault_password: ${{secrets.VAULT_PASSWORD}}
           options: |
-            --extra-vars OS_USER="${{secrets.PRODUCTUION_SERVER_USER}}"
-            --extra-vars OS_PASSWORD="${{secrets.PRODUCTUION_SERVER_PASSWORD}}"
-            --extra-vars SSH_KEY_PUBLIC="${{secrets.PRODUCTUION_SERVER_SSH_KEY_PUBLIC}}"
-            --extra-vars DB_NAME="${{secrets.DB_NAME}}"
-            --extra-vars DB_USER="${{secrets.DB_USER}}"
-            --extra-vars DB_PASSWORD="${{secrets.DB_PASSWORD}}"
-            --extra-vars APP_DIR="${{secrets.APP_DIR}}"
-            --extra-vars DROPBOX_TOKEN="${{secrets.DROPBOX_TOKEN}}"
-            --extra-vars TELEGRAM_TOKEN="${{secrets.TELEGRAM_TOKEN}}"
-            --extra-vars JWT_SECRET="${{secrets.JWT_SECRET}}"
+            --inventory "server/.ansible/inventory.yml"
             --verbose
