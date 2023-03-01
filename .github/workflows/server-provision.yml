@@ -64,7 +64,6 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: server/.ansible/provision.yml
-          directory: server/.ansible
           inventory: |
             [all]
             production-server ansible_host=${{secrets.PRODUCTION_SERVER_HOST}} ansible_port=${{secrets.PRODUCTION_SERVER_PORT}} ansible_user=${{secrets.PRODUCTION_SERVER_ADMIN_USER}} ansible_password=${{secrets.PRODUCTION_SERVER_ADMIN_PASSWORD}}
