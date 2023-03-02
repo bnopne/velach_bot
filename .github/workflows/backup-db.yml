@@ -1,0 +1,16 @@
+name: Backup DB
+on:
+  workflow_dispatch:
+jobs:
+  backup_db:
+    name: Backup DB
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Run Playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: server/.ansible/backup-db.yml
+          vault_password: ${{secrets.VAULT_PASSWORD}}
+          options: |
+            --inventory "server/.ansible/inventory.yml"
+            --verbose

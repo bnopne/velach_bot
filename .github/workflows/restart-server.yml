@@ -1,0 +1,14 @@
+name: Restart Server
+on:
+  workflow_dispatch:
+jobs:
+  server_provision:
+    steps:
+      - name: Run Playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: server/.ansible/restart-server.yml
+          vault_password: ${{secrets.VAULT_PASSWORD}}
+          options: |
+            --inventory "server/.ansible/inventory.yml"
+            --verbose
