@@ -1,0 +1,16 @@
+name: Clean Old Dumps
+on:
+  workflow_dispatch:
+jobs:
+  backup_db:
+    name: Clean Old Dumps
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Run Playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: server/.ansible/clean-old-dumps.yml
+          vault_password: ${{secrets.VAULT_PASSWORD}}
+          options: |
+            --inventory "server/.ansible/inventory.yml"
+            --verbose

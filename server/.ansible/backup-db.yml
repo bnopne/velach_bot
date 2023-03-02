@@ -1,0 +1,24 @@
+- name: Velach Bot Database Backup
+  hosts: application-access
+  vars:
+    DUMP_TIMESTAMP: "{{ lookup('pipe', 'date +%d.%M.%Y-%H:%M:%S') }}"
+  tasks:
+    - name: Stop server application
+      ansible.builtin.command:
+        chdir: "{{ APP_DIR }}"
+        cmd: pm2 stop server
+
+    - name: Backup DB
+      environment:
+        VELACH_BOT_DROPBOX_TOKEN: "{{ DROPBOX_TOKEN }}"
+        VELACH_BOT_DB_DATABASE: "{{ DB_NAME }}"
+        VELACH_BOT_DB_USER: "{{ DB_USER }}"
+        VELACH_BOT_DB_PASSWORD: "{{ DB_PASSWORD }}"
+      ansible.builtin.command:
+        chdir: "{{ APP_DIR }}"
+        cmd: "./cli --backup-db velach_bot_db-{{ DUMP_TIMESTAMP }}"
+
+    - name: Start server application
+        ansible.builtin.command:
+          chdir: "{{ APP_DIR }}"
+          cmd: pm2 start server
