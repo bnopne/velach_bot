@@ -1,14 +1,14 @@
 name: Server Tests
 
 on:
-  # push:
-  #   branches:
-  #   - feature/**
-  #   - fix/**
-  #   - master
-  #   paths:
-  #   - server/**
-  #   - .github/workflows/**
+  push:
+    branches:
+    - feature/**
+    - fix/**
+    - master
+    paths:
+    - server/**
+    - .github/workflows/**
   workflow_dispatch:
 
 jobs:
