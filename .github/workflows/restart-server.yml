@@ -3,7 +3,12 @@ on:
   workflow_dispatch:
 jobs:
   server_provision:
+    name: Restart Server
+    runs-on: ubuntu-20.04
     steps:
+      - name: Fetch Repo
+        uses: actions/checkout@v3
+
       - name: Run Playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:

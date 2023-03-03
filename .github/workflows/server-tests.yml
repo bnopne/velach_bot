@@ -13,7 +13,6 @@ jobs:
   run_tests:
     name: Run Tests
     runs-on: ubuntu-20.04
-
     steps:
       - name: Fetch Repo
         uses: actions/checkout@v3

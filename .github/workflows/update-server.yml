@@ -1,4 +1,4 @@
-name: Server Provision
+name: Update Server
 on:
   workflow_dispatch:
 jobs:
@@ -58,8 +58,8 @@ jobs:
       - name: Run Playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: server/.ansible/provision.yml
+          playbook: server/.ansible/update-server.yml
           vault_password: ${{secrets.VAULT_PASSWORD}}
           options: |
-            --inventory "server/.ansible/update-server.yml"
+            --inventory "server/.ansible/inventory.yml"
             --verbose
