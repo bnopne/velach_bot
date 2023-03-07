@@ -10,33 +10,13 @@
             name: "*"
             state: latest
 
-        - name: "Add Node.js apt key"
-          apt_key:
-            url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-            state: present
-
-        - name: "Add Node.js PPA for apt"
-          apt_repository:
-            repo: deb https://deb.nodesource.com/node_14.x bionic main
-            update_cache: true
-
         - name: Install packages
           ansible.builtin.apt:
             update_cache: true
             name:
               - postgresql
-              - nodejs
               - python3-pip
             state: present
-
-        - name: Install PM2
-          community.general.npm:
-            name: pm2
-            global: true
-
-        - name: Toggle PM2 autorun
-          ansible.builtin.command:
-            cmd: pm2 startup
 
         - name: Install Psycopg2
           ansible.builtin.pip:
@@ -46,18 +26,17 @@
           ansible.builtin.reboot:
             reboot_timeout: 3600
 
-    - name: Create and configure OS user
+    - name: Setup OS user
       block:
-        - name: Create bot OS user
+        - name: Create user group
+          ansible.builtin.group:
+            name: "{{ OS_GROUP }}"
+            state: present
+
+        - name: Create user
           ansible.builtin.user:
             name: "{{ OS_USER }}"
             password: "{{ OS_PASSWORD }}"
-            state: present
-
-        - name: Add remote access SSH key
-          ansible.posix.authorized_key:
-            user: "{{ OS_USER }}"
-            key: "{{ SSH_KEY_PUBLIC }}"
             state: present
 
     - name: Create and configure database
@@ -83,12 +62,12 @@
             state: present
 
     - name: Copy executables
-      become: true
-      become_user: "{{ OS_USER }}"
       block:
-        - name: Create app directory
+        - name: Create bot directory
           ansible.builtin.file:
             path: "{{ APP_DIR }}"
+            owner: "{{ OS_USER }}"
+            group: "{{ OS_GROUP }}"
             state: directory
             recurse: true
 
@@ -97,6 +76,7 @@
             src: "{{ DIST_BINARY_DIR }}/main"
             dest: "{{ APP_DIR }}"
             owner: "{{ OS_USER }}"
+            group: "{{ OS_GROUP }}"
             mode: "755"
 
         - name: Copy CLI executable
@@ -104,13 +84,14 @@
             src: "{{ DIST_BINARY_DIR }}/cli"
             dest: "{{ APP_DIR }}"
             owner: "{{ OS_USER }}"
+            group: "{{ OS_GROUP }}"
             mode: "755"
 
     - name: Prepare DB
       become: true
       become_user: "{{ OS_USER }}"
       environment:
-        VELACH_BOT_DROPBOX_TOKEN: "{{DROPBOX_TOKEN}}"
+        VELACH_BOT_DROPBOX_TOKEN: "{{ DROPBOX_TOKEN }}"
         VELACH_BOT_DB_DATABASE: "{{ DB_NAME }}"
         VELACH_BOT_DB_USER: "{{ DB_USER }}"
         VELACH_BOT_DB_PASSWORD: "{{ DB_PASSWORD }}"
@@ -147,11 +128,23 @@
             chdir: "{{ APP_DIR }}"
             cmd: "./cli --create-tables"
 
-    - name: Setup PM2 config
-      become: true
-      become_user: "{{ OS_USER }}"
-      ansible.builtin.template:
-        src: ecosystem.config.j2
-        dest: "{{ APP_DIR }}/ecosystem.config.js"
-        owner: "{{ OS_USER }}"
-        mode: "644"
+    - name: Setup systemd
+      block:
+        - name: Emit server unit
+          ansible.builtin.template:
+            src: units/velach_bot_server.service.j2
+            dest: /lib/systemd/system/velach_bot_server.service
+
+        - name: Emit DB backup unit
+          ansible.builtin.template:
+            src: units/velach_bot_backup_db.service.j2
+            dest: /lib/systemd/system/velach_bot_backup_db.service
+
+        - name: Emit DB backup timer
+          ansible.builtin.template:
+            src: units/velach_bot_backup_db.timer.j2
+            dest: /lib/systemd/system/velach_bot_backup_db.timer
+
+        - name: Reload units
+          ansible.builtin.systemd:
+            daemon_reload: true

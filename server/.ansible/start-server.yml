@@ -1,7 +1,7 @@
-- name: Restart Server
+- name: Start Server
   hosts: admin-access
   tasks:
-    - name: Restart service unit
+    - name: Make sure a service unit is running
       ansible.builtin.systemd:
         name: velach_bot_server.service
-        state: restarted
+        state: started

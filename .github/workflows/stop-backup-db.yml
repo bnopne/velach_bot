@@ -1,10 +1,10 @@
-name: Start PM2 Ecosystem
+name: Stop DB Backup
 on:
   workflow_dispatch:
 jobs:
   server_provision:
-    name: Start PM2 Ecosystem
-    runs-on: ubuntu-20.04
+    name: Stop DB backup
+    runs-on: ubuntu-22.04
     steps:
       - name: Fetch Repo
         uses: actions/checkout@v3
@@ -12,8 +12,7 @@ jobs:
       - name: Run Playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: server/.ansible/start-ecosystem.yml
-          vault_password: ${{secrets.VAULT_PASSWORD}}
+          playbook: server/.ansible/stop-backup-db.yml
+          vault_password: ${{ secrets.VAULT_PASSWORD }}
           options: |
             --inventory "server/.ansible/inventory.yml"
-            --verbose

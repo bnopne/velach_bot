@@ -1,0 +1,10 @@
+[Unit]
+Description=velach_bot database backup timer
+Requires=velach_bot_backup_db.service
+
+[Timer]
+Unit=velach_bot_backup_db.service
+OnCalendar=*-*-* 00:00:00
+
+[Install]
+WantedBy=timers.target

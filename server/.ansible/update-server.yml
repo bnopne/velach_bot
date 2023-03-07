@@ -1,13 +1,13 @@
 - name: Velach Bot Server Update
-  hosts: application-access
+  hosts: admin-access
   vars:
     DIST_BINARY_DIR: "{{ lookup('ansible.builtin.env', 'GITHUB_WORKSPACE') }}/server/dist-binary"
     COMMIT_HASH: "{{ lookup('ansible.builtin.env', 'GITHUB_SHA') }}"
   tasks:
-    - name: Stop server application
-      ansible.builtin.command:
-        chdir: "{{ APP_DIR }}"
-        cmd: pm2 stop server
+    - name: Stop server
+      ansible.builtin.systemd:
+        name: velach_bot_server.service
+        state: stopped
 
     - name: Backup DB
       environment:
@@ -20,12 +20,12 @@
         cmd: "./cli --backup-db pre-deploy-dump-{{ COMMIT_HASH }}"
 
     - name: Copy executables
-      become: true
-      become_user: "{{ OS_USER }}"
       block:
-        - name: Create app directory
+        - name: Create bot directory
           ansible.builtin.file:
             path: "{{ APP_DIR }}"
+            owner: "{{ OS_USER }}"
+            group: "{{ OS_GROUP }}"
             state: directory
             recurse: true
 
@@ -34,6 +34,7 @@
             src: "{{ DIST_BINARY_DIR }}/main"
             dest: "{{ APP_DIR }}"
             owner: "{{ OS_USER }}"
+            group: "{{ OS_GROUP }}"
             mode: "755"
 
         - name: Copy CLI executable
@@ -41,6 +42,7 @@
             src: "{{ DIST_BINARY_DIR }}/cli"
             dest: "{{ APP_DIR }}"
             owner: "{{ OS_USER }}"
+            group: "{{ OS_GROUP }}"
             mode: "755"
 
       - name: Apply DB migrations
@@ -52,7 +54,7 @@
           chdir: "{{ APP_DIR }}"
           cmd: "./cli --apply-migrations"
 
-      - name: Start server application
-        ansible.builtin.command:
-          chdir: "{{ APP_DIR }}"
-          cmd: pm2 start server
+      - name: Start server
+        ansible.builtin.systemd:
+          name: velach_bot_server.service
+          state: started

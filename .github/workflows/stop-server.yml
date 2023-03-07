@@ -1,9 +1,9 @@
-name: Backup DB
+name: Stop Server
 on:
   workflow_dispatch:
 jobs:
-  backup_db:
-    name: Backup DB
+  server_provision:
+    name: Stop server
     runs-on: ubuntu-22.04
     steps:
       - name: Fetch Repo
@@ -12,7 +12,7 @@ jobs:
       - name: Run Playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: server/.ansible/backup-db.yml
+          playbook: server/.ansible/stop-server.yml
           vault_password: ${{ secrets.VAULT_PASSWORD }}
           options: |
             --inventory "server/.ansible/inventory.yml"
