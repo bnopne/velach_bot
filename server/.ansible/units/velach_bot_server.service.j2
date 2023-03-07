@@ -1,0 +1,19 @@
+[Unit]
+Description=velach_bot server
+Documentation=https://github.com/bnopne/velach_bot
+After=network.target
+
+[Service]
+Environment=NODE_ENV=production
+Environment=VELACH_BOT_DB_DATABASE={{ DB_NAME }}
+Environment=VELACH_BOT_DB_USER={{ DB_USER }}
+Environment=VELACH_BOT_DB_PASSWORD={{ DB_PASSWORD }}
+Environment=VELACH_BOT_TELEGRAM_TOKEN={{ TELEGRAM_TOKEN }}
+Environment=VELACH_BOT_JWT_SECRET={{ JWT_SECRET }}
+Type=simple
+User={{ OS_USER }}
+ExecStart={{ APP_DIR }}/main
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

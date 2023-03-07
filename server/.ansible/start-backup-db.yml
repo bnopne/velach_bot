@@ -1,0 +1,7 @@
+- name: Start DB Backup Timer
+  hosts: admin-access
+  tasks:
+    - name: Make sure a timer unit is running
+      ansible.builtin.systemd:
+        name: velach_bot_backup_db.timer
+        state: started

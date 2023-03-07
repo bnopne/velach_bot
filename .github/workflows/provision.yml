@@ -4,7 +4,7 @@ on:
 jobs:
   server_provision:
     name: Server Provision
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Fetch Repo
         uses: actions/checkout@v2
@@ -58,7 +58,6 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: server/.ansible/provision.yml
-          vault_password: ${{secrets.VAULT_PASSWORD}}
+          vault_password: ${{ secrets.VAULT_PASSWORD }}
           options: |
             --inventory "server/.ansible/inventory.yml"
-            --verbose
