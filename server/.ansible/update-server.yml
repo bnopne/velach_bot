@@ -4,10 +4,22 @@
     DIST_BINARY_DIR: "{{ lookup('ansible.builtin.env', 'GITHUB_WORKSPACE') }}/server/dist-binary"
     COMMIT_HASH: "{{ lookup('ansible.builtin.env', 'GITHUB_SHA') }}"
   tasks:
-    - name: Stop server
-      ansible.builtin.systemd:
-        name: velach_bot_server.service
-        state: stopped
+    - name: Stop bot
+      block:
+        - name: Stop server
+          ansible.builtin.systemd:
+            name: velach_bot_server.service
+            state: stopped
+
+        - name: Stop DB backup service
+          ansible.builtin.systemd:
+            name: velach_bot_backup_db.service
+            state: stopped
+
+        - name: Stop DB backup timer
+          ansible.builtin.systemd:
+            name: velach_bot_backup_db.timer
+            state: stopped
 
     - name: Backup DB
       environment:
@@ -45,16 +57,44 @@
             group: "{{ OS_GROUP }}"
             mode: "755"
 
-      - name: Apply DB migrations
-        environment:
-          VELACH_BOT_DB_DATABASE: "{{ DB_NAME }}"
-          VELACH_BOT_DB_USER: "{{ DB_USER }}"
-          VELACH_BOT_DB_PASSWORD: "{{ DB_PASSWORD }}"
-        ansible.builtin.command:
-          chdir: "{{ APP_DIR }}"
-          cmd: "./cli --apply-migrations"
+    - name: Apply DB migrations
+      environment:
+        VELACH_BOT_DB_DATABASE: "{{ DB_NAME }}"
+        VELACH_BOT_DB_USER: "{{ DB_USER }}"
+        VELACH_BOT_DB_PASSWORD: "{{ DB_PASSWORD }}"
+      ansible.builtin.command:
+        chdir: "{{ APP_DIR }}"
+        cmd: "./cli --apply-migrations"
 
-      - name: Start server
-        ansible.builtin.systemd:
-          name: velach_bot_server.service
-          state: started
+    - name: Update systemd units
+      block:
+        - name: Emit server unit
+          ansible.builtin.template:
+            src: units/velach_bot_server.service.j2
+            dest: /lib/systemd/system/velach_bot_server.service
+
+        - name: Emit DB backup unit
+          ansible.builtin.template:
+            src: units/velach_bot_backup_db.service.j2
+            dest: /lib/systemd/system/velach_bot_backup_db.service
+
+        - name: Emit DB backup timer
+          ansible.builtin.template:
+            src: units/velach_bot_backup_db.timer.j2
+            dest: /lib/systemd/system/velach_bot_backup_db.timer
+
+        - name: Reload units
+          ansible.builtin.systemd:
+            daemon_reload: true
+
+    - name: Start bot
+      block:
+        - name: Start server
+          ansible.builtin.systemd:
+            name: velach_bot_server.service
+            state: started
+
+        - name: Start DB backup
+          ansible.builtin.systemd:
+            name: velach_bot_backup_db.timer
+            state: started
