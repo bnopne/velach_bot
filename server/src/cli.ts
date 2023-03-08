@@ -157,7 +157,13 @@ async function donwloadLatestDump(): Promise<void> {
   });
 }
 
-async function cleanDropboxDumps(): Promise<void> {
+async function cleanDropboxDumps(keepDumps = 1): Promise<void> {
+  if (typeof keepDumps !== 'number' || keepDumps < 0) {
+    throw new Error(
+      `Invalid --keep-dumps option, expected non-negative number, received ${keepDumps}`,
+    );
+  }
+
   const configService = new ConfigurationService();
 
   const dropbox = new Dropbox({
@@ -202,7 +208,7 @@ async function cleanDropboxDumps(): Promise<void> {
 
   const filesToDelete: files.DeleteArg[] = [];
 
-  fileInfos.slice(1).forEach((f) => {
+  fileInfos.slice(keepDumps).forEach((f) => {
     if (f.path_lower) {
       filesToDelete.push({ path: f.path_lower });
     }
@@ -300,6 +306,10 @@ const program = createCommand()
     '--clean-dropbox-dumps',
     'Removes all stored dumps except the latest one',
   )
+  .option(
+    '--keep-dumps <keepDumps>',
+    'Adjusts how many dumps should be kept after cleaning',
+  )
   .option('--create-migration', 'Creates empty migration file')
   .option('--apply-migrations', 'Applies all pending migrations')
   .option('--zip-binaries', 'Zip compiled binaries')
@@ -321,7 +331,7 @@ if (program.opts().createTables) {
   command = () => donwloadLatestDump();
 } else if (program.opts().cleanDropboxDumps) {
   console.log('execute CLEAN DROPBOX DUMPS');
-  command = () => cleanDropboxDumps();
+  command = () => cleanDropboxDumps(parseInt(program.opts().keepDumps, 10));
 } else if (program.opts().createMigration) {
   console.log('execute CREATE MIGRATION FILE');
   command = () => createMigrationFile(program.args[0]);

@@ -1,0 +1,27 @@
+name: Clean Old DB Dumps
+on:
+  workflow_dispatch:
+jobs:
+  server_provision:
+    name: Clean Old DB Dumps
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Fetch Repo
+        uses: actions/checkout@v3
+
+      - name: Install Node JS
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.18.1
+          cache: "npm"
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: Run CLI command
+        env:
+          VELACH_BOT_DROPBOX_TOKEN: "${{ secrets.DROPBOX_TOKEN }}"
+        working-directory: server
+        run: npm run clean-dropbox-dumps -- --keep-dumps 2
