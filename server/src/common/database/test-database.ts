@@ -6,7 +6,6 @@ import { ChatService } from 'src/modules/entities/chat/chat.service';
 import { Chat } from 'src/modules/entities/chat/chat.entity';
 import { UserChatMtmService } from 'src/modules/entities/user-chat-mtm/user-chat-mtm.service';
 import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
-import { AdminSiteAccessService } from 'src/modules/entities/admin-site-access/admin-site-access.service';
 
 export const USER_IDS = {
   BILLY: '1',
@@ -25,7 +24,6 @@ export async function seedTestDatabase(client: PoolClient): Promise<void> {
   const chatService = new ChatService();
   const userChatMtmService = new UserChatMtmService();
   const bikecheckService = new BikecheckService();
-  const adminAccessService = new AdminSiteAccessService();
 
   /**
    * Create users
@@ -70,11 +68,6 @@ export async function seedTestDatabase(client: PoolClient): Promise<void> {
   vanDarkholme = await userService.createUser(client, vanDarkholme);
   markWolff = await userService.createUser(client, markWolff);
   steveRambo = await userService.createUser(client, steveRambo);
-
-  /**
-   * Grant admin site access
-   */
-  await adminAccessService.create(client, billyHerrington.id);
 
   /**
    * Create chats

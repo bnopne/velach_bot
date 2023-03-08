@@ -9,9 +9,8 @@ export class ConfigurationService {
   readonly maxMessageAge: number; // in seconds
 
   readonly adminSiteAccessCodeTTL: number; // in seconds
-  readonly jwtSecret: string;
-  readonly adminSiteHost: string;
-  readonly adminSitePort: number;
+  readonly host: string;
+  readonly port: number;
 
   constructor() {
     /**
@@ -41,21 +40,10 @@ export class ConfigurationService {
     this.maxMessageAge = this.getNumberValue('VELACH_BOT_MAX_MESSAGE_AGE', 60);
 
     /**
-     * Admin site
+     * Listen configuration
      */
-    this.adminSiteAccessCodeTTL = this.getNumberValue(
-      'VELACH_BOT_ADMIN_SITE_ACCESS_CODE_TTL',
-      60,
-    );
-    this.jwtSecret = this.getStringValue('VELACH_BOT_JWT_SECRET', 'jwt-secret');
-    this.adminSiteHost = this.getStringValue(
-      'VELACH_BOT_ADMIN_SITE_HOST',
-      '127.0.0.1',
-    );
-    this.adminSitePort = this.getNumberValue(
-      'VELACH_BOT_ADMIN_SITE_PORT',
-      20000,
-    );
+    this.host = this.getStringValue('VELACH_BOT_HOST', '127.0.0.1');
+    this.port = this.getNumberValue('VELACH_BOT_PORT', 20000);
   }
 
   getStringValueOrFail(name: string): string {

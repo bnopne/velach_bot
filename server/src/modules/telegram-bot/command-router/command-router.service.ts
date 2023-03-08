@@ -5,6 +5,7 @@ import { RouteFn, Context, Middleware } from 'src/common/types/bot';
 import {
   getContextMessageOrFail,
   getMessageText,
+  getContextMessage,
 } from 'src/common/utils/telegram-context';
 import { COMMANDS } from 'src/common/constants';
 import { HelpCommandService } from 'src/modules/telegram-bot/commands/help/help-command.service';
@@ -16,7 +17,6 @@ import { StartCommandService } from 'src/modules/telegram-bot/commands/start/sta
 import { OnSaleCommandService } from 'src/modules/telegram-bot/commands/on-sale/on-sale-command.service';
 import { TopCommandService } from 'src/modules/telegram-bot/commands/top/top-command.service';
 import { MyLikesCommandService } from 'src/modules/telegram-bot/commands/my-likes/my-likes-command.service';
-import { AccessAdminSiteCommandService } from 'src/modules/telegram-bot/commands/access-admin-site/access-admin-site-command.service';
 
 const logger = new Logger('Command Router Service');
 
@@ -43,7 +43,6 @@ export class CommandRouterService {
   private onSaleCommandService: OnSaleCommandService;
   private topCommandService: TopCommandService;
   private myLikesCommandService: MyLikesCommandService;
-  private accessAdminSiteCommandService: AccessAdminSiteCommandService;
 
   constructor(
     helpCommandService: HelpCommandService,
@@ -55,7 +54,6 @@ export class CommandRouterService {
     onSaleCommandService: OnSaleCommandService,
     topCommandService: TopCommandService,
     myLikesCommandService: MyLikesCommandService,
-    accessAdminSiteCommandService: AccessAdminSiteCommandService,
   ) {
     this.helpCommandService = helpCommandService;
     this.bikecheckCommandService = bikecheckCommandService;
@@ -66,7 +64,6 @@ export class CommandRouterService {
     this.onSaleCommandService = onSaleCommandService;
     this.topCommandService = topCommandService;
     this.myLikesCommandService = myLikesCommandService;
-    this.accessAdminSiteCommandService = accessAdminSiteCommandService;
 
     const routeFn: RouteFn = (ctx) => {
       const command = parseCommand(
@@ -103,12 +100,9 @@ export class CommandRouterService {
       .on(COMMANDS.ON_SALE, this.onSaleCommandService.getMessageMiddleware())
       .on(COMMANDS.TOP, this.topCommandService.getMessageMiddleware())
       .on(COMMANDS.MY_LIKES, this.myLikesCommandService.getMessageMiddleware())
-      .on(
-        COMMANDS.ACCESS_ADMIN_SITE,
-        this.accessAdminSiteCommandService.getMessageMiddleware(),
-      )
-      .otherwise((command, next) => {
-        logger.log(`unknown command ${command}`);
+      .otherwise((context, next) => {
+        const message = getContextMessage(context);
+        logger.log(`unknown command ${message ? getMessageText(message) : ''}`);
         next();
       });
   }

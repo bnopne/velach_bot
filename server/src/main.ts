@@ -14,10 +14,7 @@ async function bootstrap() {
     .then((app) => {
       const configurationService = app.get(ConfigurationService);
 
-      return app.listen(
-        configurationService.adminSitePort,
-        configurationService.adminSiteHost,
-      );
+      return app.listen(configurationService.port, configurationService.host);
     })
     .catch((err) => {
       logger.error(err);
