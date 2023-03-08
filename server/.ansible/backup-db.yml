@@ -1,5 +1,5 @@
 - name: Velach Bot Database Backup
-  hosts: admin-access
+  hosts: all
   vars:
     DUMP_TIMESTAMP: "{{ lookup('pipe', 'date +%d.%m.%Y-%H:%M:%S') }}"
   tasks:

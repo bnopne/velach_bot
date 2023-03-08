@@ -1,5 +1,5 @@
 - name: Restart Server
-  hosts: admin-access
+  hosts: all
   tasks:
     - name: Restart service unit
       ansible.builtin.systemd:

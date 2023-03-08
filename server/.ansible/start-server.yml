@@ -1,5 +1,5 @@
 - name: Start Server
-  hosts: admin-access
+  hosts: all
   tasks:
     - name: Make sure a service unit is running
       ansible.builtin.systemd:

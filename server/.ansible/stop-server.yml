@@ -1,5 +1,5 @@
 - name: Stop Server
-  hosts: admin-access
+  hosts: all
   tasks:
     - name: Make sure a service unit is stopped
       ansible.builtin.systemd:

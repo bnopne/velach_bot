@@ -1,5 +1,5 @@
 - name: Stop DB Backup Timer
-  hosts: admin-access
+  hosts: all
   tasks:
     - name: Make sure a timer unit is stopped
       ansible.builtin.systemd:

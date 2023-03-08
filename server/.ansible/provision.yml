@@ -1,5 +1,5 @@
 - name: Velach Bot Server Provision
-  hosts: admin-access
+  hosts: all
   vars:
     DIST_BINARY_DIR: "{{ lookup('ansible.builtin.env', 'GITHUB_WORKSPACE') }}/server/dist-binary"
   tasks:

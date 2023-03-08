@@ -3,7 +3,6 @@ Description=velach_bot database backup service
 Wants=velach_bot_backup_db.timer
 
 [Service]
-Environment=NODE_ENV=production
 Environment=VELACH_BOT_DB_DATABASE={{ DB_NAME }}
 Environment=VELACH_BOT_DB_USER={{ DB_USER }}
 Environment=VELACH_BOT_DB_PASSWORD={{ DB_PASSWORD }}
