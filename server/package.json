@@ -22,6 +22,7 @@
     "pg-typed": "pgtyped -w -c pg-typed-config.json",
     "execute-ts": "ts-node -r tsconfig-paths/register",
     "create-tables": "npm run execute-ts ./src/cli.ts -- --create-tables",
+    "drop-tables": "npm run execute-ts ./src/cli.ts -- --drop-tables",
     "seed-test-db": "npm run execute-ts ./src/cli.ts -- --seed-test-db",
     "backup-db": "npm run execute-ts ./src/cli.ts -- --backup-db",
     "download-latest-dump": "npm run execute-ts ./src/cli.ts -- --download-latest-dump",

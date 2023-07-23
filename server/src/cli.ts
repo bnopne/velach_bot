@@ -51,6 +51,24 @@ async function createTables(): Promise<void> {
   }
 }
 
+async function dropTables(): Promise<void> {
+  const configService = new ConfigurationService();
+  const connection = await getConnection(configService.poolConfig);
+
+  const script = readFileSync(
+    join(__dirname, 'common/database/drop-tables.sql'),
+  );
+
+  try {
+    await connection.query(script.toString());
+  } catch (err) {
+    throw err;
+  } finally {
+    connection.release();
+    await disconnect();
+  }
+}
+
 async function seedDatabase(): Promise<void> {
   const configService = new ConfigurationService();
   const connection = await getConnection(configService.poolConfig);
@@ -296,6 +314,7 @@ config();
 const program = createCommand()
   .version('1.0.0')
   .option('--create-tables', 'Creates tables and corresponding stuff in DB')
+  .option('--drop-tables', 'Drops tables and corresponding stuff in DB')
   .option('--seed-test-db', 'Fills DB with test data')
   .option('--backup-db', 'Creates DB dump and uploads it to Dropbox')
   .option(
@@ -320,6 +339,9 @@ let command: ICliCommand = () => Promise.resolve();
 if (program.opts().createTables) {
   console.log('execute CREATE TABLES');
   command = createTables;
+} else if (program.opts().dropTables) {
+  console.log('execute DROP TABLES');
+  command = dropTables;
 } else if (program.opts().seedTestDb) {
   console.log('execute SEED TEST DATABASE');
   command = seedDatabase;
