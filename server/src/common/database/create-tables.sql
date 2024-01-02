@@ -137,14 +137,14 @@ CREATE TABLE "Migration" (
 );
 
 
--- public."AdminSiteAccess" definition
+-- public."BotAdmin" definition
 
 -- Drop table
 
--- DROP TABLE "AdminSiteAccess";
-DROP TABLE IF EXISTS "AdminSiteAccess" CASCADE;
+-- DROP TABLE "BotAdmin";
+DROP TABLE IF EXISTS "BotAdmin" CASCADE;
 
-CREATE TABLE "AdminSiteAccess" (
+CREATE TABLE "BotAdmin" (
   "userId" int8 NOT NULL,
-  CONSTRAINT "AdminSiteAccess_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
+  CONSTRAINT "BotAdmin_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );

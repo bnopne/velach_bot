@@ -9,8 +9,15 @@ export class ConfigurationService {
   readonly maxMessageAge: number; // in seconds
 
   readonly adminSiteAccessCodeTTL: number; // in seconds
-  readonly host: string;
+  readonly adminSiteTokenTTL: number; // in seconds
+  readonly adminSiteHost: string;
+
   readonly port: number;
+  readonly host: string;
+
+  readonly allowedHosts: string[];
+
+  readonly JWTSecret: string;
 
   constructor() {
     /**
@@ -40,10 +47,41 @@ export class ConfigurationService {
     this.maxMessageAge = this.getNumberValue('VELACH_BOT_MAX_MESSAGE_AGE', 60);
 
     /**
-     * Listen configuration
+     * Admin Site
+     */
+    this.adminSiteAccessCodeTTL = this.getNumberValue(
+      'VELACH_BOT_ADMIN_SITE_ACCESS_CODE_TTL',
+      5 * 60 * 1000,
+    );
+    this.adminSiteTokenTTL = this.getNumberValue(
+      'VELACH_BOT_ADMIN_SITE_TOKEN_TTL',
+      60 * 60 * 1000,
+    );
+    this.adminSiteHost = this.getStringValue(
+      'VELACH_BOT_ADMIN_SITE_HOST',
+      'http://127.0.0.1:8080',
+    );
+
+    /**
+     * Listen config
      */
     this.host = this.getStringValue('VELACH_BOT_HOST', '127.0.0.1');
-    this.port = this.getNumberValue('VELACH_BOT_PORT', 20000);
+    this.port = this.getNumberValue('VELACH_BOT_PORT', 8080);
+
+    /**
+     * CORS config
+     */
+    this.allowedHosts = this.getStringValue(
+      'VELACH_BOT_ALLOWED_HOSTS',
+      'http://localhost:8080',
+    )
+      .split(',')
+      .filter(Boolean);
+
+    /**
+     * JWT
+     */
+    this.JWTSecret = this.getStringValue('VELACH_BOT_JWT_SECRET', 'secret');
   }
 
   getStringValueOrFail(name: string): string {

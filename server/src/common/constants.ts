@@ -8,6 +8,7 @@ export const COMMANDS = {
   ON_SALE: 'onsale',
   TOP: 'top',
   MY_LIKES: 'mylikes',
+  ADMIN_SITE: 'adminsite',
 };
 
 export const CALLBACK_QUERY_COMMANDS = {

@@ -15,12 +15,12 @@ import { ConfigurationService } from 'src/modules/configuration/configuration.se
 
 @Injectable()
 export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
-  private bot: Telegraf;
-  private logger: Logger;
-  private configurationService: ConfigurationService;
-  private commandRouterService: CommandRouterService;
-  private callbackQueriesService: CallbackQueryRouterService;
-  private bikecheckCommandService: BikecheckCommandService;
+  private readonly bot: Telegraf;
+  private readonly logger: Logger;
+  private readonly configurationService: ConfigurationService;
+  private readonly commandRouterService: CommandRouterService;
+  private readonly callbackQueriesService: CallbackQueryRouterService;
+  private readonly bikecheckCommandService: BikecheckCommandService;
 
   constructor(
     configService: ConfigurationService,
@@ -49,12 +49,12 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
       .catch(handleError);
   }
 
-  async onModuleInit(): Promise<void> {
-    this.logger.log('Starting Telegram bot');
-    await this.bot.launch();
+  onModuleInit(): void {
+    this.logger.log('Start Telegram bot');
+    this.bot.launch();
   }
 
-  async onModuleDestroy(): Promise<void> {
+  onModuleDestroy(): void {
     this.logger.log('Stop Telegram bot');
     this.bot.stop();
   }

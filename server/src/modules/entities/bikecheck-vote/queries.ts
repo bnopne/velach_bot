@@ -1,9 +1,11 @@
 /** Types generated for queries found in "src/modules/entities/bikecheck-vote/queries.sql" */
-import { PreparedQuery } from '@pgtyped/query';
+import { PreparedQuery } from '@pgtyped/runtime';
+
+export type NumberOrString = number | string;
 
 /** 'FindById' parameters type */
 export interface IFindByIdParams {
-  id: string | null | void;
+  id?: NumberOrString | null | void;
 }
 
 /** 'FindById' return type */
@@ -22,22 +24,7 @@ export interface IFindByIdQuery {
   result: IFindByIdResult;
 }
 
-const findByIdIR: any = {
-  name: 'findById',
-  params: [
-    {
-      name: 'id',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 65, b: 66, line: 4, col: 14 }] },
-    },
-  ],
-  usedParamSet: { id: true },
-  statement: {
-    body: 'SELECT *\nFROM "BikecheckVote"\nWHERE "id" = :id',
-    loc: { a: 21, b: 66, line: 2, col: 0 },
-  },
-};
+const findByIdIR: any = {"usedParamSet":{"id":true},"params":[{"name":"id","required":false,"transform":{"type":"scalar"},"locs":[{"a":43,"b":45}]}],"statement":"SELECT *\nFROM \"BikecheckVote\"\nWHERE \"id\" = :id"};
 
 /**
  * Query generated from SQL:
@@ -47,13 +34,12 @@ const findByIdIR: any = {
  * WHERE "id" = :id
  * ```
  */
-export const findById = new PreparedQuery<IFindByIdParams, IFindByIdResult>(
-  findByIdIR,
-);
+export const findById = new PreparedQuery<IFindByIdParams,IFindByIdResult>(findByIdIR);
+
 
 /** 'GetBikecheckLikesCount' parameters type */
 export interface IGetBikecheckLikesCountParams {
-  bikecheckId: string | null | void;
+  bikecheckId?: NumberOrString | null | void;
 }
 
 /** 'GetBikecheckLikesCount' return type */
@@ -67,22 +53,7 @@ export interface IGetBikecheckLikesCountQuery {
   result: IGetBikecheckLikesCountResult;
 }
 
-const getBikecheckLikesCountIR: any = {
-  name: 'getBikecheckLikesCount',
-  params: [
-    {
-      name: 'bikecheckId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 185, b: 195, line: 9, col: 40 }] },
-    },
-  ],
-  usedParamSet: { bikecheckId: true },
-  statement: {
-    body: 'SELECT COUNT("id")\nFROM "BikecheckVote"\nWHERE "points" > 0 AND "bikecheckId" = :bikecheckId',
-    loc: { a: 105, b: 195, line: 7, col: 0 },
-  },
-};
+const getBikecheckLikesCountIR: any = {"usedParamSet":{"bikecheckId":true},"params":[{"name":"bikecheckId","required":false,"transform":{"type":"scalar"},"locs":[{"a":79,"b":90}]}],"statement":"SELECT COUNT(\"id\")\nFROM \"BikecheckVote\"\nWHERE \"points\" > 0 AND \"bikecheckId\" = :bikecheckId"};
 
 /**
  * Query generated from SQL:
@@ -92,14 +63,12 @@ const getBikecheckLikesCountIR: any = {
  * WHERE "points" > 0 AND "bikecheckId" = :bikecheckId
  * ```
  */
-export const getBikecheckLikesCount = new PreparedQuery<
-  IGetBikecheckLikesCountParams,
-  IGetBikecheckLikesCountResult
->(getBikecheckLikesCountIR);
+export const getBikecheckLikesCount = new PreparedQuery<IGetBikecheckLikesCountParams,IGetBikecheckLikesCountResult>(getBikecheckLikesCountIR);
+
 
 /** 'GetBikecheckDislikesCount' parameters type */
 export interface IGetBikecheckDislikesCountParams {
-  bikecheckId: string | null | void;
+  bikecheckId?: NumberOrString | null | void;
 }
 
 /** 'GetBikecheckDislikesCount' return type */
@@ -113,22 +82,7 @@ export interface IGetBikecheckDislikesCountQuery {
   result: IGetBikecheckDislikesCountResult;
 }
 
-const getBikecheckDislikesCountIR: any = {
-  name: 'getBikecheckDislikesCount',
-  params: [
-    {
-      name: 'bikecheckId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 317, b: 327, line: 14, col: 40 }] },
-    },
-  ],
-  usedParamSet: { bikecheckId: true },
-  statement: {
-    body: 'SELECT COUNT("id")\nFROM "BikecheckVote"\nWHERE "points" < 0 AND "bikecheckId" = :bikecheckId',
-    loc: { a: 237, b: 327, line: 12, col: 0 },
-  },
-};
+const getBikecheckDislikesCountIR: any = {"usedParamSet":{"bikecheckId":true},"params":[{"name":"bikecheckId","required":false,"transform":{"type":"scalar"},"locs":[{"a":79,"b":90}]}],"statement":"SELECT COUNT(\"id\")\nFROM \"BikecheckVote\"\nWHERE \"points\" < 0 AND \"bikecheckId\" = :bikecheckId"};
 
 /**
  * Query generated from SQL:
@@ -138,15 +92,13 @@ const getBikecheckDislikesCountIR: any = {
  * WHERE "points" < 0 AND "bikecheckId" = :bikecheckId
  * ```
  */
-export const getBikecheckDislikesCount = new PreparedQuery<
-  IGetBikecheckDislikesCountParams,
-  IGetBikecheckDislikesCountResult
->(getBikecheckDislikesCountIR);
+export const getBikecheckDislikesCount = new PreparedQuery<IGetBikecheckDislikesCountParams,IGetBikecheckDislikesCountResult>(getBikecheckDislikesCountIR);
+
 
 /** 'SelectByUserAndBikecheck' parameters type */
 export interface ISelectByUserAndBikecheckParams {
-  bikecheckId: string | null | void;
-  userId: string | null | void;
+  bikecheckId?: NumberOrString | null | void;
+  userId?: NumberOrString | null | void;
 }
 
 /** 'SelectByUserAndBikecheck' return type */
@@ -165,28 +117,7 @@ export interface ISelectByUserAndBikecheckQuery {
   result: ISelectByUserAndBikecheckResult;
 }
 
-const selectByUserAndBikecheckIR: any = {
-  name: 'selectByUserAndBikecheck',
-  params: [
-    {
-      name: 'userId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 416, b: 421, line: 19, col: 18 }] },
-    },
-    {
-      name: 'bikecheckId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 444, b: 454, line: 19, col: 46 }] },
-    },
-  ],
-  usedParamSet: { userId: true, bikecheckId: true },
-  statement: {
-    body: 'SELECT *\nFROM "BikecheckVote"\nWHERE "userId" = :userId AND "bikecheckId" = :bikecheckId',
-    loc: { a: 368, b: 454, line: 17, col: 0 },
-  },
-};
+const selectByUserAndBikecheckIR: any = {"usedParamSet":{"userId":true,"bikecheckId":true},"params":[{"name":"userId","required":false,"transform":{"type":"scalar"},"locs":[{"a":47,"b":53}]},{"name":"bikecheckId","required":false,"transform":{"type":"scalar"},"locs":[{"a":75,"b":86}]}],"statement":"SELECT *\nFROM \"BikecheckVote\"\nWHERE \"userId\" = :userId AND \"bikecheckId\" = :bikecheckId"};
 
 /**
  * Query generated from SQL:
@@ -196,16 +127,14 @@ const selectByUserAndBikecheckIR: any = {
  * WHERE "userId" = :userId AND "bikecheckId" = :bikecheckId
  * ```
  */
-export const selectByUserAndBikecheck = new PreparedQuery<
-  ISelectByUserAndBikecheckParams,
-  ISelectByUserAndBikecheckResult
->(selectByUserAndBikecheckIR);
+export const selectByUserAndBikecheck = new PreparedQuery<ISelectByUserAndBikecheckParams,ISelectByUserAndBikecheckResult>(selectByUserAndBikecheckIR);
+
 
 /** 'Insert' parameters type */
 export interface IInsertParams {
-  bikecheckId: string | null | void;
-  points: number | null | void;
-  userId: string | null | void;
+  bikecheckId?: NumberOrString | null | void;
+  points?: number | null | void;
+  userId?: NumberOrString | null | void;
 }
 
 /** 'Insert' return type */
@@ -224,34 +153,7 @@ export interface IInsertQuery {
   result: IInsertResult;
 }
 
-const insertIR: any = {
-  name: 'insert',
-  params: [
-    {
-      name: 'userId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 576, b: 581, line: 23, col: 9 }] },
-    },
-    {
-      name: 'bikecheckId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 585, b: 595, line: 23, col: 18 }] },
-    },
-    {
-      name: 'points',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 599, b: 604, line: 23, col: 32 }] },
-    },
-  ],
-  usedParamSet: { userId: true, bikecheckId: true, points: true },
-  statement: {
-    body: 'INSERT INTO "BikecheckVote" ("userId", "bikecheckId", "points", "createdAt", "updatedAt")\nVALUES (:userId, :bikecheckId, :points, NOW(), NOW())\nRETURNING *',
-    loc: { a: 477, b: 631, line: 22, col: 0 },
-  },
-};
+const insertIR: any = {"usedParamSet":{"userId":true,"bikecheckId":true,"points":true},"params":[{"name":"userId","required":false,"transform":{"type":"scalar"},"locs":[{"a":98,"b":104}]},{"name":"bikecheckId","required":false,"transform":{"type":"scalar"},"locs":[{"a":107,"b":118}]},{"name":"points","required":false,"transform":{"type":"scalar"},"locs":[{"a":121,"b":127}]}],"statement":"INSERT INTO \"BikecheckVote\" (\"userId\", \"bikecheckId\", \"points\", \"createdAt\", \"updatedAt\")\nVALUES (:userId, :bikecheckId, :points, NOW(), NOW())\nRETURNING *"};
 
 /**
  * Query generated from SQL:
@@ -261,12 +163,13 @@ const insertIR: any = {
  * RETURNING *
  * ```
  */
-export const insert = new PreparedQuery<IInsertParams, IInsertResult>(insertIR);
+export const insert = new PreparedQuery<IInsertParams,IInsertResult>(insertIR);
+
 
 /** 'Update' parameters type */
 export interface IUpdateParams {
-  bikecheckVoteId: string | null | void;
-  points: number | null | void;
+  bikecheckVoteId?: NumberOrString | null | void;
+  points?: number | null | void;
 }
 
 /** 'Update' return type */
@@ -285,28 +188,7 @@ export interface IUpdateQuery {
   result: IUpdateResult;
 }
 
-const updateIR: any = {
-  name: 'update',
-  params: [
-    {
-      name: 'points',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 693, b: 698, line: 28, col: 16 }] },
-    },
-    {
-      name: 'bikecheckVoteId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 735, b: 749, line: 29, col: 14 }] },
-    },
-  ],
-  usedParamSet: { points: true, bikecheckVoteId: true },
-  statement: {
-    body: 'UPDATE "BikecheckVote"\nSET "points" = :points, "updatedAt" = NOW()\nWHERE "id" = :bikecheckVoteId\nRETURNING *',
-    loc: { a: 654, b: 761, line: 27, col: 0 },
-  },
-};
+const updateIR: any = {"usedParamSet":{"points":true,"bikecheckVoteId":true},"params":[{"name":"points","required":false,"transform":{"type":"scalar"},"locs":[{"a":38,"b":44}]},{"name":"bikecheckVoteId","required":false,"transform":{"type":"scalar"},"locs":[{"a":80,"b":95}]}],"statement":"UPDATE \"BikecheckVote\"\nSET \"points\" = :points, \"updatedAt\" = NOW()\nWHERE \"id\" = :bikecheckVoteId\nRETURNING *"};
 
 /**
  * Query generated from SQL:
@@ -317,7 +199,8 @@ const updateIR: any = {
  * RETURNING *
  * ```
  */
-export const update = new PreparedQuery<IUpdateParams, IUpdateResult>(updateIR);
+export const update = new PreparedQuery<IUpdateParams,IUpdateResult>(updateIR);
+
 
 /** 'FindTopBikecheck' parameters type */
 export type IFindTopBikecheckParams = void;
@@ -334,15 +217,7 @@ export interface IFindTopBikecheckQuery {
   result: IFindTopBikecheckResult;
 }
 
-const findTopBikecheckIR: any = {
-  name: 'findTopBikecheck',
-  params: [],
-  usedParamSet: {},
-  statement: {
-    body: 'SELECT "id", COUNT("bikecheckId")\nFROM\n  (\n    SELECT * FROM "Bikecheck" b WHERE b."isActive" = TRUE\n  ) AS T1\n  LEFT JOIN\n  (\n    SELECT "bikecheckId" FROM "BikecheckVote" bv WHERE bv."points"  > 0\n  ) AS T2\n  ON T1.id = T2."bikecheckId"\nGROUP BY T1."id"\nORDER BY "count" DESC\nLIMIT 10',
-    loc: { a: 794, b: 1079, line: 33, col: 0 },
-  },
-};
+const findTopBikecheckIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT \"id\", COUNT(\"bikecheckId\")\nFROM\n  (\n    SELECT * FROM \"Bikecheck\" b WHERE b.\"isActive\" = TRUE\n  ) AS T1\n  LEFT JOIN\n  (\n    SELECT \"bikecheckId\" FROM \"BikecheckVote\" bv WHERE bv.\"points\"  > 0\n  ) AS T2\n  ON T1.id = T2.\"bikecheckId\"\nGROUP BY T1.\"id\"\nORDER BY \"count\" DESC\nLIMIT 10"};
 
 /**
  * Query generated from SQL:
@@ -362,14 +237,12 @@ const findTopBikecheckIR: any = {
  * LIMIT 10
  * ```
  */
-export const findTopBikecheck = new PreparedQuery<
-  IFindTopBikecheckParams,
-  IFindTopBikecheckResult
->(findTopBikecheckIR);
+export const findTopBikecheck = new PreparedQuery<IFindTopBikecheckParams,IFindTopBikecheckResult>(findTopBikecheckIR);
+
 
 /** 'GetRank' parameters type */
 export interface IGetRankParams {
-  bikecheckId: string | null | void;
+  bikecheckId?: NumberOrString | null | void;
 }
 
 /** 'GetRank' return type */
@@ -383,22 +256,7 @@ export interface IGetRankQuery {
   result: IGetRankResult;
 }
 
-const getRankIR: any = {
-  name: 'getRank',
-  params: [
-    {
-      name: 'bikecheckId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 1521, b: 1531, line: 65, col: 14 }] },
-    },
-  ],
-  usedParamSet: { bikecheckId: true },
-  statement: {
-    body: 'SELECT "rank"\nFROM (\n  SELECT id, "likes", row_number () over (ORDER BY "likes" desc) AS "rank"\n  FROM (\n    SELECT id, count("likes") AS "likes"\n    FROM\n    (\n      SELECT id FROM "Bikecheck" b WHERE b."isActive" = TRUE\n    ) AS T1\n    INNER JOIN\n    (\n      SELECT "bikecheckId" AS "likes" FROM "BikecheckVote" bv WHERE bv.points > 0\n    ) AS T2\n    ON T1.id = T2."likes"\n    GROUP BY T1.id\n  ) T\n) T\nWHERE T.id = :bikecheckId',
-    loc: { a: 1103, b: 1531, line: 48, col: 0 },
-  },
-};
+const getRankIR: any = {"usedParamSet":{"bikecheckId":true},"params":[{"name":"bikecheckId","required":false,"transform":{"type":"scalar"},"locs":[{"a":417,"b":428}]}],"statement":"SELECT \"rank\"\nFROM (\n  SELECT id, \"likes\", row_number () over (ORDER BY \"likes\" desc) AS \"rank\"\n  FROM (\n    SELECT id, count(\"likes\") AS \"likes\"\n    FROM\n    (\n      SELECT id FROM \"Bikecheck\" b WHERE b.\"isActive\" = TRUE\n    ) AS T1\n    INNER JOIN\n    (\n      SELECT \"bikecheckId\" AS \"likes\" FROM \"BikecheckVote\" bv WHERE bv.points > 0\n    ) AS T2\n    ON T1.id = T2.\"likes\"\n    GROUP BY T1.id\n  ) T\n) T\nWHERE T.id = :bikecheckId"};
 
 /**
  * Query generated from SQL:
@@ -423,6 +281,6 @@ const getRankIR: any = {
  * WHERE T.id = :bikecheckId
  * ```
  */
-export const getRank = new PreparedQuery<IGetRankParams, IGetRankResult>(
-  getRankIR,
-);
+export const getRank = new PreparedQuery<IGetRankParams,IGetRankResult>(getRankIR);
+
+

@@ -17,6 +17,7 @@ import { StartCommandService } from 'src/modules/telegram-bot/commands/start/sta
 import { OnSaleCommandService } from 'src/modules/telegram-bot/commands/on-sale/on-sale-command.service';
 import { TopCommandService } from 'src/modules/telegram-bot/commands/top/top-command.service';
 import { MyLikesCommandService } from 'src/modules/telegram-bot/commands/my-likes/my-likes-command.service';
+import { AdminSiteCommandService } from 'src/modules/telegram-bot/commands/admin-site/admin-site-command.service';
 
 const logger = new Logger('Command Router Service');
 
@@ -43,6 +44,7 @@ export class CommandRouterService {
   private onSaleCommandService: OnSaleCommandService;
   private topCommandService: TopCommandService;
   private myLikesCommandService: MyLikesCommandService;
+  private adminSiteCommandService: AdminSiteCommandService;
 
   constructor(
     helpCommandService: HelpCommandService,
@@ -54,6 +56,7 @@ export class CommandRouterService {
     onSaleCommandService: OnSaleCommandService,
     topCommandService: TopCommandService,
     myLikesCommandService: MyLikesCommandService,
+    accessAdminSiteCommandService: AdminSiteCommandService,
   ) {
     this.helpCommandService = helpCommandService;
     this.bikecheckCommandService = bikecheckCommandService;
@@ -64,6 +67,7 @@ export class CommandRouterService {
     this.onSaleCommandService = onSaleCommandService;
     this.topCommandService = topCommandService;
     this.myLikesCommandService = myLikesCommandService;
+    this.adminSiteCommandService = accessAdminSiteCommandService;
 
     const routeFn: RouteFn = (ctx) => {
       const command = parseCommand(
@@ -95,6 +99,8 @@ export class CommandRouterService {
       [COMMANDS.ON_SALE]: this.onSaleCommandService.getMessageMiddleware(),
       [COMMANDS.TOP]: this.topCommandService.getMessageMiddleware(),
       [COMMANDS.MY_LIKES]: this.myLikesCommandService.getMessageMiddleware(),
+      [COMMANDS.ADMIN_SITE]:
+        this.adminSiteCommandService.getMessageMiddleware(),
       [-1]: (context, next) => {
         const message = getContextMessage(context);
         logger.log(`unknown command ${message ? getMessageText(message) : ''}`);

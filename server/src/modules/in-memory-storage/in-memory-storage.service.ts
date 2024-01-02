@@ -1,7 +1,5 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 
-import { Optional } from 'src/common/types/utils';
-
 @Injectable()
 export class InMemoryStorageService implements OnModuleDestroy {
   private storage: Record<string, unknown>;
@@ -12,7 +10,7 @@ export class InMemoryStorageService implements OnModuleDestroy {
     this.storageTimeouts = {};
   }
 
-  set(key: string, value: unknown, TTL?: number): void {
+  set(key: string, value: unknown, ttl?: number): void {
     const timeout = this.storageTimeouts[key];
 
     if (timeout != null) {
@@ -22,14 +20,14 @@ export class InMemoryStorageService implements OnModuleDestroy {
 
     this.storage[key] = value;
 
-    if (TTL != null) {
+    if (ttl != null) {
       this.storageTimeouts[key] = setTimeout(() => {
         delete this.storage[key];
-      }, TTL);
+      }, ttl);
     }
   }
 
-  get<T>(key: string): Optional<T> {
+  get<T>(key: string): T | undefined {
     return this.storage[key] as T;
   }
 

@@ -11,6 +11,7 @@
   "camelCaseColumnNames": true,
   "db": {
     "host": "127.0.0.1",
+    "port": 5432,
     "user": "velach_bot",
     "dbName": "velach_bot",
     "password": "pass"

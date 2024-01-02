@@ -23,6 +23,24 @@ export class PgPoolService implements OnModuleInit, OnModuleDestroy {
     return this.pool.connect();
   }
 
+  async runInTransaction<T>(
+    func: (connection: PoolClient) => Promise<T>,
+  ): Promise<T> {
+    const client = await this.getConnection();
+    await client.query('START TRANSACTION');
+
+    let result: T;
+    try {
+      result = await func(client);
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    }
+
+    await client.query('COMMIT');
+    return result;
+  }
+
   async onModuleInit(): Promise<void> {
     logger.log('Connecting to Postgres...');
 

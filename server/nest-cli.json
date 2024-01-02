@@ -6,6 +6,7 @@
       "**/*.mustache",
       "common/database/create-tables.sql",
       "common/database/migrations/*.sql"
-    ]
+    ],
+    "watchAssets": true
   }
 }
