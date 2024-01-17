@@ -1,5 +1,8 @@
 import { PoolClient } from 'pg';
-import { Context as TelegrafContext, MiddlewareFn } from 'telegraf';
+import {
+  Context as TelegrafContext,
+  Middleware as TelegrafMiddleware,
+} from 'telegraf';
 
 export class Context extends TelegrafContext {
   database?: {
@@ -15,9 +18,9 @@ export interface Handler {
   (context: Context): Promise<any>;
 }
 
-export type Middleware = MiddlewareFn<Context>;
+export type Middleware = TelegrafMiddleware<Context>;
 
-export type RouteFn = (ctx: Context) => { route: string } | null;
+export type RouteFn = (ctx: Context) => string | number;
 
 export type MiddlewareNext = () => Promise<void>;
 

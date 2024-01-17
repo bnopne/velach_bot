@@ -23,7 +23,7 @@ describe('Test FeatureAnalyticsMiddlewareService', () => {
   });
 
   test('Middleware calls create in entity service and then calls next', async () => {
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -44,7 +44,7 @@ describe('Test FeatureAnalyticsMiddlewareService', () => {
           date: Date.now(),
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 

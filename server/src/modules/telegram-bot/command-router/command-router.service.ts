@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Router } from 'telegraf';
+import { Composer } from 'telegraf';
 
 import { RouteFn, Context, Middleware } from 'src/common/types/bot';
 import {
@@ -33,7 +33,7 @@ function parseCommand(text: string, botUsername: string): string | null {
 
 @Injectable()
 export class CommandRouterService {
-  private router: Router<Context>;
+  private middleware: Middleware;
   private helpCommandService: HelpCommandService;
   private bikecheckCommandService: BikecheckCommandService;
   private checkbikeCommandService: CheckbikeCommandService;
@@ -72,42 +72,38 @@ export class CommandRouterService {
       );
 
       if (!command) {
-        return null;
+        return -1;
       }
 
       if (Object.values(COMMANDS).includes(command)) {
-        return { route: command };
+        return command;
       }
 
-      return null;
+      return -1;
     };
 
-    this.router = new Router(routeFn);
-
-    this.router
-      .on(COMMANDS.HELP, this.helpCommandService.getMessageMiddleware())
-      .on(
-        COMMANDS.BIKECHECK,
-        this.bikecheckCommandService.getMessageMiddleware(),
-      )
-      .on(
-        COMMANDS.CHECKBIKE,
-        this.checkbikeCommandService.getMessageMiddleware(),
-      )
-      .on(COMMANDS.DELETED, this.deletedCommandService.getMessageMiddleware())
-      .on(COMMANDS.SET_STRAVA, this.setStravaCommandService.getMiddleware())
-      .on(COMMANDS.START, this.startCommandService.getMessageMiddleware())
-      .on(COMMANDS.ON_SALE, this.onSaleCommandService.getMessageMiddleware())
-      .on(COMMANDS.TOP, this.topCommandService.getMessageMiddleware())
-      .on(COMMANDS.MY_LIKES, this.myLikesCommandService.getMessageMiddleware())
-      .otherwise((context, next) => {
+    this.middleware = Composer.dispatch<
+      Context,
+      Record<string | number, Middleware>
+    >(routeFn, {
+      [COMMANDS.HELP]: this.helpCommandService.getMessageMiddleware(),
+      [COMMANDS.BIKECHECK]: this.bikecheckCommandService.getMessageMiddleware(),
+      [COMMANDS.CHECKBIKE]: this.checkbikeCommandService.getMessageMiddleware(),
+      [COMMANDS.DELETED]: this.deletedCommandService.getMessageMiddleware(),
+      [COMMANDS.SET_STRAVA]: this.setStravaCommandService.getMiddleware(),
+      [COMMANDS.START]: this.startCommandService.getMessageMiddleware(),
+      [COMMANDS.ON_SALE]: this.onSaleCommandService.getMessageMiddleware(),
+      [COMMANDS.TOP]: this.topCommandService.getMessageMiddleware(),
+      [COMMANDS.MY_LIKES]: this.myLikesCommandService.getMessageMiddleware(),
+      [-1]: (context, next) => {
         const message = getContextMessage(context);
         logger.log(`unknown command ${message ? getMessageText(message) : ''}`);
         next();
-      });
+      },
+    });
   }
 
   getMiddleware(): Middleware {
-    return this.router.middleware();
+    return this.middleware;
   }
 }

@@ -40,9 +40,10 @@ export class CheckbikeCommandService {
         {},
       );
 
-      await ctx.tg.sendMessage(message.chat.id, text, {
+      await ctx.telegram.sendMessage(message.chat.id, text, {
         reply_to_message_id: message.message_id,
         parse_mode: 'MarkdownV2',
+        message_thread_id: message.message_thread_id,
       });
 
       return;
@@ -54,9 +55,10 @@ export class CheckbikeCommandService {
         {},
       );
 
-      await ctx.tg.sendMessage(message.chat.id, text, {
+      await ctx.telegram.sendMessage(message.chat.id, text, {
         reply_to_message_id: message.message_id,
         parse_mode: 'MarkdownV2',
+        message_thread_id: message.message_thread_id,
       });
 
       return;
@@ -70,9 +72,10 @@ export class CheckbikeCommandService {
         {},
       );
 
-      await ctx.tg.sendMessage(message.chat.id, text, {
+      await ctx.telegram.sendMessage(message.chat.id, text, {
         reply_to_message_id: message.message_id,
         parse_mode: 'MarkdownV2',
+        message_thread_id: message.message_thread_id,
       });
 
       return;
@@ -90,9 +93,10 @@ export class CheckbikeCommandService {
       {},
     );
 
-    await ctx.tg.sendMessage(message.chat.id, text, {
+    await ctx.telegram.sendMessage(message.chat.id, text, {
       reply_to_message_id: message.message_id,
       parse_mode: 'MarkdownV2',
+      message_thread_id: message.message_thread_id,
     });
   }
 

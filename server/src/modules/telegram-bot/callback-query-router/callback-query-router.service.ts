@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Router } from 'telegraf';
-import { CallbackQuery } from 'typegram';
+import { Composer } from 'telegraf';
+import { CallbackQuery } from '@telegraf/types';
 
 import {
   RouteFn,
@@ -24,7 +24,7 @@ const logger = new Logger('Callback Queries Service');
 
 @Injectable()
 export class CallbackQueryRouterService {
-  private router: Router<Context>;
+  private middleware: Middleware;
   private bikecheckCommandService: BikecheckCommandService;
   private deletedCommandService: DeletedCommandService;
   private onSaleCommandService: OnSaleCommandService;
@@ -51,7 +51,7 @@ export class CallbackQueryRouterService {
         callbackQuery = getContextCallbackQueryOrFail(ctx);
       } catch (err) {
         logger.error('No callback query found in context');
-        return null;
+        return -1;
       }
 
       let data: IBaseCallbackQueryData;
@@ -62,107 +62,82 @@ export class CallbackQueryRouterService {
         );
       } catch (err) {
         logger.error('Could not parse callback query data');
-        return null;
+        return -1;
       }
 
       if (Object.values(CALLBACK_QUERY_COMMANDS).includes(data.c.toString())) {
-        return { route: data.c.toString() };
+        return data.c.toString();
       }
 
-      return null;
+      return -1;
     };
 
-    this.router = new Router(routeFn);
-
-    this.router
-      .on(
-        CALLBACK_QUERY_COMMANDS.SHOW_NEXT_BIKECHECK,
+    this.middleware = Composer.dispatch<
+      Context,
+      Record<string | number, Middleware>
+    >(routeFn, {
+      [CALLBACK_QUERY_COMMANDS.SHOW_NEXT_BIKECHECK]:
         this.bikecheckCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.SHOW_NEXT_BIKECHECK,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_BIKECHECK,
+
+      [CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_BIKECHECK]:
         this.bikecheckCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_BIKECHECK,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.DELETE_BIKECHECK,
+      [CALLBACK_QUERY_COMMANDS.DELETE_BIKECHECK]:
         this.bikecheckCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.DELETE_BIKECHECK,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.TOGGLE_ON_SALE,
+      [CALLBACK_QUERY_COMMANDS.TOGGLE_ON_SALE]:
         this.bikecheckCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.TOGGLE_ON_SALE,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.LIKE,
+      [CALLBACK_QUERY_COMMANDS.LIKE]:
         this.bikecheckCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.LIKE,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.DISLIKE,
+      [CALLBACK_QUERY_COMMANDS.DISLIKE]:
         this.bikecheckCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.DISLIKE,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.SHOW_NEXT_DELETED_BIKECHECK,
+      [CALLBACK_QUERY_COMMANDS.SHOW_NEXT_DELETED_BIKECHECK]:
         this.deletedCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.SHOW_NEXT_DELETED_BIKECHECK,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_DELETED_BIKECHECK,
+      [CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_DELETED_BIKECHECK]:
         this.deletedCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_DELETED_BIKECHECK,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.RESTORE_BIKECHECK,
+      [CALLBACK_QUERY_COMMANDS.RESTORE_BIKECHECK]:
         this.deletedCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.RESTORE_BIKECHECK,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.SHOW_NEXT_ON_SALE_BIKECHECK,
+      [CALLBACK_QUERY_COMMANDS.SHOW_NEXT_ON_SALE_BIKECHECK]:
         this.onSaleCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.SHOW_NEXT_ON_SALE_BIKECHECK,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_ON_SALE_BIKECHECK,
+      [CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_ON_SALE_BIKECHECK]:
         this.onSaleCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_ON_SALE_BIKECHECK,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.SHOW_TOP_BIKECHECK,
+      [CALLBACK_QUERY_COMMANDS.SHOW_TOP_BIKECHECK]:
         this.topCommandService.getCallbackQueryMiddleware(),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_LIKED_BIKECHECK,
+      [CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_LIKED_BIKECHECK]:
         this.myLikesCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_LIKED_BIKECHECK,
         ),
-      )
-      .on(
-        CALLBACK_QUERY_COMMANDS.SHOW_NEXT_LIKED_BIKECHECK,
+      [CALLBACK_QUERY_COMMANDS.SHOW_NEXT_LIKED_BIKECHECK]:
         this.myLikesCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.SHOW_NEXT_LIKED_BIKECHECK,
         ),
-      )
-      .otherwise((_, next) => {
+      [-1]: (_, next) => {
         next();
-      });
+      },
+    });
   }
 
   getMiddleware(): Middleware {
-    return this.router.middleware();
+    return this.middleware;
   }
 }

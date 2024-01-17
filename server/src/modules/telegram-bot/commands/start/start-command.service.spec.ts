@@ -36,7 +36,7 @@ describe('Test StartCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -57,13 +57,13 @@ describe('Test StartCommandService', () => {
           date: Date.now(),
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
     await service['processMessage'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(1, text, {
+    expect(telegram.sendMessage).toBeCalledWith(1, text, {
       reply_to_message_id: 265,
       parse_mode: 'MarkdownV2',
     });

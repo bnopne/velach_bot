@@ -1,4 +1,4 @@
-import { Chat as TelegramChat } from 'typegram';
+import { Chat as TelegramChat } from '@telegraf/types';
 
 import { BaseEntity } from 'src/common/database/base-entity';
 import { Optional } from 'src/common/types/utils';

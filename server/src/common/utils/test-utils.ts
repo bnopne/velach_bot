@@ -2,7 +2,7 @@ import { Provider } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PoolClient } from 'pg';
 import { Telegram } from 'telegraf';
-import { UserFromGetMe } from 'typegram';
+import { UserFromGetMe } from '@telegraf/types';
 import { config } from 'dotenv';
 
 import { getConnection } from 'src/common/database/connection';

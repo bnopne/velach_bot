@@ -49,9 +49,10 @@ export class OnSaleCommandService {
         {},
       );
 
-      await ctx.tg.sendMessage(message.chat.id, text, {
+      await ctx.telegram.sendMessage(message.chat.id, text, {
         reply_to_message_id: message.message_id,
         parse_mode: 'MarkdownV2',
+        message_thread_id: message.message_thread_id,
       });
       return;
     }
@@ -64,11 +65,12 @@ export class OnSaleCommandService {
       { userId: owner.id },
     );
 
-    await ctx.tg.sendPhoto(message.chat.id, bikecheck.telegramImageId, {
+    await ctx.telegram.sendPhoto(message.chat.id, bikecheck.telegramImageId, {
       caption,
       parse_mode: 'MarkdownV2',
       reply_to_message_id: message.message_id,
       reply_markup: getOnSaleKeyboard(bikecheck),
+      message_thread_id: message.message_thread_id,
     });
   }
 
@@ -86,7 +88,7 @@ export class OnSaleCommandService {
     const bikechecks = await this.bikecheckService.findOnSale(client);
 
     if (!bikechecks.length) {
-      await ctx.tg.answerCbQuery(callbackQuery.id);
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
       return;
     }
 
@@ -108,7 +110,7 @@ export class OnSaleCommandService {
     }
 
     if (index === oldIndex) {
-      await ctx.tg.answerCbQuery(callbackQuery.id);
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
       return;
     }
 
@@ -120,7 +122,7 @@ export class OnSaleCommandService {
       { userId: owner.id },
     );
 
-    ctx.tg.editMessageMedia(
+    ctx.telegram.editMessageMedia(
       message.chat.id,
       message.message_id,
       undefined,
@@ -135,7 +137,7 @@ export class OnSaleCommandService {
       },
     );
 
-    await ctx.tg.answerCbQuery(callbackQuery.id);
+    await ctx.telegram.answerCbQuery(callbackQuery.id);
   }
 
   getCallbackQueryMiddleware(command: string): Middleware {

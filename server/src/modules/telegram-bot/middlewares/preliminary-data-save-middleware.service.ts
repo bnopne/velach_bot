@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { Message, User as TgUser, Chat as TgChat, InlineQuery } from 'typegram';
+import {
+  Message,
+  User as TgUser,
+  Chat as TgChat,
+  InlineQuery,
+} from '@telegraf/types';
 
 import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
 import {

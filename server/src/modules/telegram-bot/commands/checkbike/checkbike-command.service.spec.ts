@@ -59,7 +59,7 @@ describe('Test CheckbikeCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -80,7 +80,7 @@ describe('Test CheckbikeCommandService', () => {
           date: Date.now(),
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
@@ -90,7 +90,7 @@ describe('Test CheckbikeCommandService', () => {
 
     await service['processMessage'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(265, noReplyText, {
+    expect(telegram.sendMessage).toBeCalledWith(265, noReplyText, {
       reply_to_message_id: 1,
       parse_mode: 'MarkdownV2',
     });
@@ -102,7 +102,7 @@ describe('Test CheckbikeCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -146,7 +146,7 @@ describe('Test CheckbikeCommandService', () => {
           },
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
@@ -156,7 +156,7 @@ describe('Test CheckbikeCommandService', () => {
 
     await service['processMessage'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(265, notYourMessageText, {
+    expect(telegram.sendMessage).toBeCalledWith(265, notYourMessageText, {
       reply_to_message_id: 2,
       parse_mode: 'MarkdownV2',
     });
@@ -168,7 +168,7 @@ describe('Test CheckbikeCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -205,7 +205,7 @@ describe('Test CheckbikeCommandService', () => {
           },
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
@@ -215,7 +215,7 @@ describe('Test CheckbikeCommandService', () => {
 
     await service['processMessage'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(265, noPhotoText, {
+    expect(telegram.sendMessage).toBeCalledWith(265, noPhotoText, {
       reply_to_message_id: 2,
       parse_mode: 'MarkdownV2',
     });
@@ -227,7 +227,7 @@ describe('Test CheckbikeCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -271,7 +271,7 @@ describe('Test CheckbikeCommandService', () => {
           },
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
@@ -281,7 +281,7 @@ describe('Test CheckbikeCommandService', () => {
 
     await service['processMessage'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(265, doneText, {
+    expect(telegram.sendMessage).toBeCalledWith(265, doneText, {
       reply_to_message_id: 2,
       parse_mode: 'MarkdownV2',
     });

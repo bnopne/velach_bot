@@ -52,9 +52,10 @@ export class TopCommandService {
         {},
       );
 
-      await ctx.tg.sendMessage(message.chat.id, text, {
+      await ctx.telegram.sendMessage(message.chat.id, text, {
         reply_to_message_id: message.message_id,
         parse_mode: 'MarkdownV2',
+        message_thread_id: message.message_thread_id,
       });
 
       return;
@@ -71,10 +72,11 @@ export class TopCommandService {
       { user, position: 1, onSale: bikecheck.onSale, likes: topData[0].likes },
     );
 
-    await ctx.tg.sendPhoto(message.chat.id, bikecheck.telegramImageId, {
+    await ctx.telegram.sendPhoto(message.chat.id, bikecheck.telegramImageId, {
       caption,
       reply_markup: getTopKeyboard(1, topData.length),
       parse_mode: 'MarkdownV2',
+      message_thread_id: message.message_thread_id,
     });
   }
 
@@ -87,7 +89,7 @@ export class TopCommandService {
     );
 
     if (!data.position) {
-      await ctx.tg.answerCbQuery(callbackQuery.id);
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
       return;
     }
 
@@ -96,7 +98,7 @@ export class TopCommandService {
     );
 
     if (!topData.length || data.position > topData.length) {
-      await ctx.tg.answerCbQuery(callbackQuery.id);
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
       return;
     }
 
@@ -116,7 +118,7 @@ export class TopCommandService {
       },
     );
 
-    await ctx.tg.editMessageMedia(
+    await ctx.telegram.editMessageMedia(
       message.chat.id,
       message.message_id,
       undefined,
@@ -130,7 +132,7 @@ export class TopCommandService {
         reply_markup: getTopKeyboard(data.position, topData.length),
       },
     );
-    await ctx.tg.answerCbQuery(callbackQuery.id);
+    await ctx.telegram.answerCbQuery(callbackQuery.id);
   }
 
   getCallbackQueryMiddleware(): Middleware {

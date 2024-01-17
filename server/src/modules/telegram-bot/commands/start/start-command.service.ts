@@ -27,17 +27,18 @@ export class StartCommandService {
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
+    const message = getContextMessageOrFail(ctx);
+    const chat = getMessageChatOrFail(message);
+
     const text = await this.templatesService.renderTemplate(
       join(__dirname, 'templates', 'greeting.mustache'),
       {},
     );
 
-    const message = getContextMessageOrFail(ctx);
-    const chat = getMessageChatOrFail(message);
-
-    ctx.tg.sendMessage(chat.id, text, {
+    ctx.telegram.sendMessage(chat.id, text, {
       reply_to_message_id: message.message_id,
       parse_mode: 'MarkdownV2',
+      message_thread_id: message.message_thread_id,
     });
   }
 

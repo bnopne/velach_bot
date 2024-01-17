@@ -54,7 +54,7 @@ describe('Test SetStravaCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -91,7 +91,7 @@ describe('Test SetStravaCommandService', () => {
           },
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
@@ -101,7 +101,7 @@ describe('Test SetStravaCommandService', () => {
 
     await service['processCommand'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(265, doneText, {
+    expect(telegram.sendMessage).toBeCalledWith(265, doneText, {
       reply_to_message_id: 2,
       parse_mode: 'MarkdownV2',
     });
@@ -113,7 +113,7 @@ describe('Test SetStravaCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -150,7 +150,7 @@ describe('Test SetStravaCommandService', () => {
           },
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
@@ -160,7 +160,7 @@ describe('Test SetStravaCommandService', () => {
 
     await service['processCommand'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(265, doneText, {
+    expect(telegram.sendMessage).toBeCalledWith(265, doneText, {
       reply_to_message_id: 2,
       parse_mode: 'MarkdownV2',
     });
@@ -172,7 +172,7 @@ describe('Test SetStravaCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -209,7 +209,7 @@ describe('Test SetStravaCommandService', () => {
           },
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
@@ -219,7 +219,7 @@ describe('Test SetStravaCommandService', () => {
 
     await service['processCommand'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(265, doneText, {
+    expect(telegram.sendMessage).toBeCalledWith(265, doneText, {
       reply_to_message_id: 2,
       parse_mode: 'MarkdownV2',
     });
@@ -231,7 +231,7 @@ describe('Test SetStravaCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -268,7 +268,7 @@ describe('Test SetStravaCommandService', () => {
           },
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
@@ -278,7 +278,7 @@ describe('Test SetStravaCommandService', () => {
 
     await service['processCommand'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(265, invalidLinkText, {
+    expect(telegram.sendMessage).toBeCalledWith(265, invalidLinkText, {
       reply_to_message_id: 2,
       parse_mode: 'MarkdownV2',
     });
@@ -290,7 +290,7 @@ describe('Test SetStravaCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -311,7 +311,7 @@ describe('Test SetStravaCommandService', () => {
           date: Date.now(),
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
@@ -321,7 +321,7 @@ describe('Test SetStravaCommandService', () => {
 
     await service['processCommand'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(265, noReplyToText, {
+    expect(telegram.sendMessage).toBeCalledWith(265, noReplyToText, {
       reply_to_message_id: 2,
       parse_mode: 'MarkdownV2',
     });
@@ -333,7 +333,7 @@ describe('Test SetStravaCommandService', () => {
       {},
     );
 
-    const tg = getTestTelegram();
+    const telegram = getTestTelegram();
 
     const ctx = new Context(
       {
@@ -370,7 +370,7 @@ describe('Test SetStravaCommandService', () => {
           },
         },
       },
-      tg,
+      telegram,
       getTestBotInfo(),
     );
 
@@ -380,7 +380,7 @@ describe('Test SetStravaCommandService', () => {
 
     await service['processCommand'](ctx);
 
-    expect(tg.sendMessage).toBeCalledWith(265, notYourMessageText, {
+    expect(telegram.sendMessage).toBeCalledWith(265, notYourMessageText, {
       reply_to_message_id: 2,
       parse_mode: 'MarkdownV2',
     });

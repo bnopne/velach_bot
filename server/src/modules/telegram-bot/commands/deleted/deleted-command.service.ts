@@ -69,18 +69,23 @@ export class DeletedCommandService {
         {},
       );
 
-      await ctx.tg.sendMessage(message.chat.id, text, {
+      await ctx.telegram.sendMessage(message.chat.id, text, {
         reply_to_message_id: message.message_id,
         parse_mode: 'MarkdownV2',
+        message_thread_id: message.message_thread_id,
       });
-      return;
+    } else {
+      await ctx.telegram.sendPhoto(
+        message.chat.id,
+        bikechecks[0].telegramImageId,
+        {
+          reply_to_message_id: message.message_id,
+          parse_mode: 'MarkdownV2',
+          reply_markup: getDeletedKeyboard(bikechecks[0]),
+          message_thread_id: message.message_thread_id,
+        },
+      );
     }
-
-    await ctx.tg.sendPhoto(message.chat.id, bikechecks[0].telegramImageId, {
-      reply_to_message_id: message.message_id,
-      parse_mode: 'MarkdownV2',
-      reply_markup: getDeletedKeyboard(bikechecks[0]),
-    });
   }
 
   private async switchDeleted(
@@ -104,7 +109,7 @@ export class DeletedCommandService {
     );
 
     if (bikechecks.length === 0) {
-      await ctx.tg.answerCbQuery(
+      await ctx.telegram.answerCbQuery(
         callbackQuery.id,
         'Похоже этот пользователь восстановил все свои байкчеки',
       );
@@ -123,13 +128,13 @@ export class DeletedCommandService {
     const nextBikecheck = bikechecks[nextBikecheckIndex];
 
     if (nextBikecheck.id === sourceBikecheck.id) {
-      await ctx.tg.answerCbQuery(callbackQuery.id);
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
       return;
     }
 
     const message = getCallbackQueryMessageOrFail(callbackQuery);
 
-    await ctx.tg.editMessageMedia(
+    await ctx.telegram.editMessageMedia(
       message.chat.id,
       message.message_id,
       undefined,
@@ -166,7 +171,7 @@ export class DeletedCommandService {
     );
 
     if (deletedBikechecks.length === 0) {
-      await ctx.tg.answerCbQuery(
+      await ctx.telegram.answerCbQuery(
         callbackQuery.id,
         'Похоже этот пользователь восстановил все свои байкчеки',
       );
@@ -174,13 +179,13 @@ export class DeletedCommandService {
     }
 
     if (deletedBikechecks[0].id === bikecheck.id) {
-      await ctx.tg.answerCbQuery(callbackQuery.id);
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
       return;
     }
 
     const message = getCallbackQueryMessageOrFail(callbackQuery);
 
-    await ctx.tg.editMessageMedia(
+    await ctx.telegram.editMessageMedia(
       message.chat.id,
       message.message_id,
       undefined,
