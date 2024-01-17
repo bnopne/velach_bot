@@ -35,7 +35,7 @@ import {
   getPrivateBikecheckKeyboard,
   getPublicBikecheckKeyboard,
 } from './keyboards';
-import { InlineQueryResult } from 'typegram';
+import { InlineQueryResult } from '@telegraf/types';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
 
 @Injectable()
@@ -109,7 +109,7 @@ export class BikecheckCommandService {
     );
 
     if (callbackQuery.message) {
-      await ctx.tg.editMessageMedia(
+      await ctx.telegram.editMessageMedia(
         callbackQuery.message.chat.id,
         callbackQuery.message.message_id,
         undefined,
@@ -129,7 +129,7 @@ export class BikecheckCommandService {
     }
 
     if (callbackQuery.inline_message_id) {
-      await ctx.tg.editMessageMedia(
+      await ctx.telegram.editMessageMedia(
         undefined,
         undefined,
         callbackQuery.inline_message_id,
@@ -174,9 +174,10 @@ export class BikecheckCommandService {
         {},
       );
 
-      await ctx.tg.sendMessage(primaryMessage.chat.id, text, {
+      await ctx.telegram.sendMessage(primaryMessage.chat.id, text, {
         reply_to_message_id: primaryMessage.message_id,
         parse_mode: 'MarkdownV2',
+        message_thread_id: primaryMessage.message_thread_id,
       });
 
       return;
@@ -208,24 +209,30 @@ export class BikecheckCommandService {
     );
 
     if (chat.type === 'private') {
-      await ctx.tg.sendPhoto(
+      await ctx.telegram.sendPhoto(
         primaryMessage.chat.id,
         bikecheck.telegramImageId,
         {
           caption,
           reply_markup: getPrivateBikecheckKeyboard(bikecheck),
           parse_mode: 'MarkdownV2',
+          message_thread_id: primaryMessage.message_thread_id,
         },
       );
 
       return;
     }
 
-    await ctx.tg.sendPhoto(primaryMessage.chat.id, bikecheck.telegramImageId, {
-      caption,
-      reply_markup: getPublicBikecheckKeyboard(bikecheck),
-      parse_mode: 'MarkdownV2',
-    });
+    await ctx.telegram.sendPhoto(
+      primaryMessage.chat.id,
+      bikecheck.telegramImageId,
+      {
+        caption,
+        reply_markup: getPublicBikecheckKeyboard(bikecheck),
+        parse_mode: 'MarkdownV2',
+        message_thread_id: primaryMessage.message_thread_id,
+      },
+    );
   }
 
   private async switchBikecheck(
@@ -249,7 +256,7 @@ export class BikecheckCommandService {
     );
 
     if (activeBikechecks.length === 0) {
-      await ctx.tg.answerCbQuery(
+      await ctx.telegram.answerCbQuery(
         callbackQuery.id,
         'Похоже этот пользователь удалил свои байкчеки',
       );
@@ -268,7 +275,7 @@ export class BikecheckCommandService {
     const nextBikecheck = activeBikechecks[nextBikecheckIndex];
 
     if (nextBikecheck.id === sourceBikecheck.id) {
-      await ctx.tg.answerCbQuery(callbackQuery.id);
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
       return;
     }
 
@@ -288,7 +295,7 @@ export class BikecheckCommandService {
     const bikecheck = await this.bikecheckService.getById(client, bikecheckId);
 
     if (bikecheck.userId === callbackQuery.from.id.toString()) {
-      await ctx.tg.answerCbQuery(
+      await ctx.telegram.answerCbQuery(
         callbackQuery.id,
         'Нельзя голосовать за свой байк',
       );
@@ -302,7 +309,7 @@ export class BikecheckCommandService {
     );
 
     if (vote && vote.points === points) {
-      await ctx.tg.answerCbQuery(callbackQuery.id);
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
       return;
     }
 
@@ -324,7 +331,7 @@ export class BikecheckCommandService {
     );
 
     await this.editBikecheckMessage(ctx, bikecheck, activeBikechecks);
-    await ctx.tg.answerCbQuery(callbackQuery.id, 'Готово!');
+    await ctx.telegram.answerCbQuery(callbackQuery.id, 'Готово!');
   }
 
   private async processToggleOnSaleCommand(ctx: Context): Promise<void> {
@@ -340,7 +347,7 @@ export class BikecheckCommandService {
     );
 
     if (bikecheck.userId !== callbackQuery.from.id.toString()) {
-      await ctx.tg.answerCbQuery(
+      await ctx.telegram.answerCbQuery(
         callbackQuery.id,
         'Нельзя выставлять или снимать с продажи чужие байки',
       );
@@ -356,7 +363,7 @@ export class BikecheckCommandService {
     );
 
     await this.editBikecheckMessage(ctx, bikecheck, activeBikechecks);
-    await ctx.tg.answerCbQuery(callbackQuery.id);
+    await ctx.telegram.answerCbQuery(callbackQuery.id);
   }
 
   private async processDeleteCommand(ctx: Context): Promise<void> {
@@ -372,7 +379,7 @@ export class BikecheckCommandService {
     );
 
     if (bikecheck.userId !== callbackQuery.from.id.toString()) {
-      await ctx.tg.answerCbQuery(
+      await ctx.telegram.answerCbQuery(
         callbackQuery.id,
         'Нельзя удалять чужие байкчеки',
       );
@@ -396,7 +403,7 @@ export class BikecheckCommandService {
         {},
       );
 
-      await ctx.tg.editMessageMedia(
+      await ctx.telegram.editMessageMedia(
         message.chat.id,
         message.message_id,
         undefined,
@@ -416,7 +423,7 @@ export class BikecheckCommandService {
       );
     }
 
-    await ctx.tg.answerCbQuery(callbackQuery.id);
+    await ctx.telegram.answerCbQuery(callbackQuery.id);
   }
 
   private async processInlineQuery(ctx: Context): Promise<void> {
@@ -431,7 +438,7 @@ export class BikecheckCommandService {
     const bikechecks = await this.bikecheckService.findActive(client, user.id);
 
     if (!bikechecks.length) {
-      await ctx.tg.answerInlineQuery(inlineQuery.id, []);
+      await ctx.telegram.answerInlineQuery(inlineQuery.id, []);
       return;
     }
 
@@ -466,7 +473,7 @@ export class BikecheckCommandService {
       }),
     );
 
-    await ctx.tg.answerInlineQuery(inlineQuery.id, results, {
+    await ctx.telegram.answerInlineQuery(inlineQuery.id, results, {
       cache_time: 5,
       is_personal: true,
     });

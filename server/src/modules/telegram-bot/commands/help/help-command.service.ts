@@ -3,7 +3,7 @@ import { join } from 'path';
 import { Injectable } from '@nestjs/common';
 
 import { Context, Middleware } from 'src/common/types/bot';
-import { getContextChatOrFail } from 'src/common/utils/telegram-context';
+import { getContextMessageOrFail } from 'src/common/utils/telegram-context';
 import { composeMiddlewares } from 'src/common/utils/telegram-middlewares';
 import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.service';
 import { DbMiddlewareService } from 'src/modules/telegram-bot/middlewares/db-middleware.service';
@@ -22,14 +22,17 @@ export class HelpCommandService {
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
-    const messageText = await this.templatesService.renderTemplate(
+    const message = getContextMessageOrFail(ctx);
+
+    const text = await this.templatesService.renderTemplate(
       join(__dirname, 'templates', 'help-message.mustache'),
       {},
     );
 
-    ctx.tg.sendMessage(getContextChatOrFail(ctx).id, messageText, {
+    ctx.telegram.sendMessage(message.chat.id, text, {
       parse_mode: 'MarkdownV2',
       disable_web_page_preview: true,
+      message_thread_id: message.message_thread_id,
     });
   }
 

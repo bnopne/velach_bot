@@ -18,13 +18,10 @@ import {
 } from 'src/common/utils/telegram-context';
 import { Context, Middleware } from 'src/common/types/bot';
 import { UserService } from 'src/modules/entities/user/user.service';
-import { ChatService } from 'src/modules/entities/chat/chat.service';
 import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
-import { BikecheckVoteService } from 'src/modules/entities/bikecheck-vote/bikecheck-vote.service';
 import { parseCallbackData } from 'src/common/utils/telegram-keyboard';
 import { IBikecheckCommandData } from 'src/modules/telegram-bot/commands/types';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
-import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
 
 import { getMyLikesKeyboard } from './keyboards';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
@@ -38,11 +35,8 @@ export class MyLikesCommandService {
     private preliminaryDataSaveService: PreliminaryDataSaveService,
     private privateChatsOnlyMiddlewareService: PrivateChatsOnlyMiddlewareService,
     private userService: UserService,
-    private chatService: ChatService,
     private bikecheckService: BikecheckService,
-    private bikecheckVoteService: BikecheckVoteService,
     private featureAnalyticsService: FeatureAnalyticsMiddlewareService,
-    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
@@ -65,9 +59,10 @@ export class MyLikesCommandService {
         {},
       );
 
-      await ctx.tg.sendMessage(message.chat.id, text, {
+      await ctx.telegram.sendMessage(message.chat.id, text, {
         parse_mode: 'MarkdownV2',
         reply_to_message_id: message.message_id,
+        message_thread_id: message.message_thread_id,
       });
 
       return;
@@ -82,12 +77,17 @@ export class MyLikesCommandService {
       },
     );
 
-    await ctx.tg.sendPhoto(message.chat.id, liked.bikecheck.telegramImageId, {
-      caption,
-      parse_mode: 'MarkdownV2',
-      reply_to_message_id: message.message_id,
-      reply_markup: getMyLikesKeyboard(liked.bikecheck),
-    });
+    await ctx.telegram.sendPhoto(
+      message.chat.id,
+      liked.bikecheck.telegramImageId,
+      {
+        caption,
+        parse_mode: 'MarkdownV2',
+        reply_to_message_id: message.message_id,
+        reply_markup: getMyLikesKeyboard(liked.bikecheck),
+        message_thread_id: message.message_thread_id,
+      },
+    );
   }
 
   private async switchLikedBikecheck(
@@ -117,7 +117,7 @@ export class MyLikesCommandService {
         {},
       );
 
-      await ctx.tg.editMessageMedia(
+      await ctx.telegram.editMessageMedia(
         message.chat.id,
         message.message_id,
         undefined,
@@ -153,7 +153,7 @@ export class MyLikesCommandService {
       },
     );
 
-    await ctx.tg.editMessageMedia(
+    await ctx.telegram.editMessageMedia(
       message.chat.id,
       message.message_id,
       undefined,

@@ -6,7 +6,7 @@ import {
   User,
   CallbackQuery,
   InlineQuery,
-} from 'typegram';
+} from '@telegraf/types';
 
 import { Context } from 'src/common/types/bot';
 
@@ -77,7 +77,7 @@ export function getMessageFromOrFail(msg: Message): User {
 export function getCallbackQueryDataOrFail(
   callbackQuery: CallbackQuery,
 ): string {
-  const data = (callbackQuery as CallbackQuery.DataCallbackQuery).data;
+  const data = (callbackQuery as CallbackQuery.DataQuery).data;
 
   if (!data) {
     throw new Error('No data in given callback query');

@@ -1,4 +1,4 @@
-import { InlineKeyboardMarkup } from 'typegram';
+import { InlineKeyboardMarkup } from '@telegraf/types';
 
 import { Bikecheck } from 'src/modules/entities/bikecheck/bikecheck.entity';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';

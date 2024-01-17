@@ -1,4 +1,4 @@
-import { User as TelegramUser } from 'typegram';
+import { User as TelegramUser } from '@telegraf/types';
 
 import { BaseEntity } from 'src/common/database/base-entity';
 import { Optional } from 'src/common/types/utils';

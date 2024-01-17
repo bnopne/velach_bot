@@ -1,4 +1,4 @@
-import { InlineKeyboardMarkup } from 'typegram';
+import { InlineKeyboardMarkup } from '@telegraf/types';
 
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
 import { getCommandButton } from 'src/common/utils/telegram-keyboard';

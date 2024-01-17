@@ -1,4 +1,4 @@
-import { InlineKeyboardButton } from 'typegram';
+import { InlineKeyboardButton } from '@telegraf/types';
 
 export function serializeCallbackData(data: Record<string, any>): string {
   const result = JSON.stringify(data);
