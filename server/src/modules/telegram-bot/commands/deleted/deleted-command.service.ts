@@ -72,7 +72,9 @@ export class DeletedCommandService {
       await ctx.telegram.sendMessage(message.chat.id, text, {
         reply_to_message_id: message.message_id,
         parse_mode: 'MarkdownV2',
-        message_thread_id: message.message_thread_id,
+        message_thread_id: message.is_topic_message
+          ? message.message_thread_id
+          : undefined,
       });
     } else {
       await ctx.telegram.sendPhoto(
@@ -82,7 +84,9 @@ export class DeletedCommandService {
           reply_to_message_id: message.message_id,
           parse_mode: 'MarkdownV2',
           reply_markup: getDeletedKeyboard(bikechecks[0]),
-          message_thread_id: message.message_thread_id,
+          message_thread_id: message.is_topic_message
+            ? message.message_thread_id
+            : undefined,
         },
       );
     }

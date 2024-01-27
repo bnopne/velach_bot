@@ -177,7 +177,9 @@ export class BikecheckCommandService {
       await ctx.telegram.sendMessage(primaryMessage.chat.id, text, {
         reply_to_message_id: primaryMessage.message_id,
         parse_mode: 'MarkdownV2',
-        message_thread_id: primaryMessage.message_thread_id,
+        message_thread_id: primaryMessage.is_topic_message
+          ? primaryMessage.message_thread_id
+          : undefined,
       });
 
       return;
@@ -216,7 +218,9 @@ export class BikecheckCommandService {
           caption,
           reply_markup: getPrivateBikecheckKeyboard(bikecheck),
           parse_mode: 'MarkdownV2',
-          message_thread_id: primaryMessage.message_thread_id,
+          message_thread_id: primaryMessage.is_topic_message
+            ? primaryMessage.message_thread_id
+            : undefined,
         },
       );
 
@@ -230,7 +234,9 @@ export class BikecheckCommandService {
         caption,
         reply_markup: getPublicBikecheckKeyboard(bikecheck),
         parse_mode: 'MarkdownV2',
-        message_thread_id: primaryMessage.message_thread_id,
+        message_thread_id: primaryMessage.is_topic_message
+          ? primaryMessage.message_thread_id
+          : undefined,
       },
     );
   }

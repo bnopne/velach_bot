@@ -62,7 +62,9 @@ export class MyLikesCommandService {
       await ctx.telegram.sendMessage(message.chat.id, text, {
         parse_mode: 'MarkdownV2',
         reply_to_message_id: message.message_id,
-        message_thread_id: message.message_thread_id,
+        message_thread_id: message.is_topic_message
+          ? message.message_thread_id
+          : undefined,
       });
 
       return;
@@ -85,7 +87,9 @@ export class MyLikesCommandService {
         parse_mode: 'MarkdownV2',
         reply_to_message_id: message.message_id,
         reply_markup: getMyLikesKeyboard(liked.bikecheck),
-        message_thread_id: message.message_thread_id,
+        message_thread_id: message.is_topic_message
+          ? message.message_thread_id
+          : undefined,
       },
     );
   }
