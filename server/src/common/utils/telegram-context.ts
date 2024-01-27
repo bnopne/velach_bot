@@ -124,5 +124,14 @@ export function getMessageText(msg: Message): string | null {
 
 export function getMessageReplyTo(msg: Message): Message | null {
   const reply = (msg as Message.CommonMessage).reply_to_message;
-  return reply || null;
+
+  if (!reply) {
+    return null;
+  }
+
+  if ((reply as Message.ForumTopicCreatedMessage).forum_topic_created) {
+    return null;
+  }
+
+  return reply;
 }
