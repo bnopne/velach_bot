@@ -68,6 +68,10 @@ export class CheckbikeCommandService {
       return;
     }
 
+    if (replyToMessage.from?.is_bot) {
+      return;
+    }
+
     const photo = getMessageBiggestPhoto(replyToMessage);
 
     if (!photo) {

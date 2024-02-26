@@ -158,9 +158,15 @@ export class BikecheckCommandService {
       getMessageChatOrFail(message).id.toString(),
     );
 
+    const messageFrom = getMessageFromOrFail(message);
+
+    if (messageFrom.is_bot) {
+      return;
+    }
+
     const user = await this.userService.getById(
       client,
-      getMessageFromOrFail(message).id.toString(),
+      messageFrom.id.toString(),
     );
 
     const activeBikechecks = await this.bikecheckService.findActive(
