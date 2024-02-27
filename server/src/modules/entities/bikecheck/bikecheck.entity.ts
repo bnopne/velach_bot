@@ -23,6 +23,17 @@ export interface IBikecheckTableRow {
   userId: string;
 }
 
+export interface IBikecheckDTO {
+  id: string;
+  userId: string;
+  imageUrl?: string;
+  isActive: boolean;
+  onSale: Optional<boolean>;
+  saleRank: Optional<number>;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export class Bikecheck extends BaseEntity {
   id: string;
   userId: string;
@@ -48,5 +59,17 @@ export class Bikecheck extends BaseEntity {
     this.updatedAt = params.updatedAt;
     this.onSale = params.onSale;
     this.saleRank = params.saleRank;
+  }
+
+  getDTO(): IBikecheckDTO {
+    return {
+      id: this.id,
+      userId: this.userId,
+      isActive: this.isActive,
+      createdAt: this.createdAt.toISOString(),
+      updatedAt: this.updatedAt.toISOString(),
+      onSale: this.onSale,
+      saleRank: this.saleRank,
+    };
   }
 }

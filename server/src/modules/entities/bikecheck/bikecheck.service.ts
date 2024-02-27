@@ -11,6 +11,7 @@ import {
   findInactive,
   findOnSale,
   findLiked,
+  findAllForUser,
 } from 'src/modules/entities/bikecheck/queries';
 
 @Injectable()
@@ -45,44 +46,59 @@ export class BikecheckService {
   }
 
   async findActive(client: PoolClient, userId: string): Promise<Bikecheck[]> {
-    const rows = await findActive.run({ userId }, client);
-    return rows.map((r) => Bikecheck.fromTableRow(r));
+    return (await findActive.run({ userId }, client)).map((r) =>
+      Bikecheck.fromTableRow(r),
+    );
   }
 
   async findDeleted(client: PoolClient, userId: string): Promise<Bikecheck[]> {
-    const rows = await findInactive.run({ userId }, client);
-    return rows.map((r) => Bikecheck.fromTableRow(r));
+    return (await findInactive.run({ userId }, client)).map((r) =>
+      Bikecheck.fromTableRow(r),
+    );
   }
 
   async updateBikecheck(
     client: PoolClient,
     bikecheck: Bikecheck,
   ): Promise<Bikecheck> {
-    const rows = await update.run({ ...bikecheck }, client);
-    return Bikecheck.fromTableRow(rows[0]);
+    return Bikecheck.fromTableRow(
+      (await update.run({ ...bikecheck }, client))[0],
+    );
   }
 
   async getBikechecksCount(
     client: PoolClient,
     userId: string,
   ): Promise<number> {
-    const rows = await getActiveBikechecksCount.run({ userId }, client);
-    return Number(rows[0].count);
+    return Number(
+      (await getActiveBikechecksCount.run({ userId }, client))[0].count,
+    );
   }
 
   async findOnSale(client: PoolClient): Promise<Bikecheck[]> {
-    const rows = await findOnSale.run(undefined, client);
-    return rows.map((r) => Bikecheck.fromTableRow(r));
+    return (await findOnSale.run(undefined, client)).map((r) =>
+      Bikecheck.fromTableRow(r),
+    );
   }
 
   async findLiked(
     client: PoolClient,
     userId: string,
   ): Promise<{ bikecheck: Bikecheck; likeDate: Date }[]> {
-    const rows = await findLiked.run({ userId }, client);
-    return rows.map((r) => ({
+    return (await findLiked.run({ userId }, client)).map((r) => ({
       bikecheck: Bikecheck.fromTableRow(r),
       likeDate: r.likeDate,
     }));
+  }
+
+  async getAllForUser(
+    client: PoolClient,
+    userId: string,
+    limit: number,
+    offset: number,
+  ): Promise<Bikecheck[]> {
+    return (await findAllForUser.run({ userId, limit, offset }, client)).map(
+      (r) => Bikecheck.fromTableRow(r),
+    );
   }
 }

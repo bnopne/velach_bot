@@ -23,3 +23,15 @@ SET
   "stravaLink" = :stravaLink
 WHERE "id" = :id
 RETURNING *;
+
+/*
+  @name getUsersList
+*/
+SELECT *
+FROM "User"
+WHERE
+  "firstName" ILIKE :search OR
+  "lastName" ILIKE :search OR
+  "username" ILIKE :search
+LIMIT :limit
+OFFSET :offset;

@@ -59,3 +59,11 @@ INNER JOIN
 ) T_VOTE
 ON T_BIKECHECK."id" = T_VOTE."bikecheckId"
 ORDER BY "likeDate" DESC;
+
+/* @name findAllForUser */
+SELECT *
+FROM "Bikecheck"
+WHERE "userId" = :userId
+ORDER BY "createdAt" DESC
+LIMIT :limit
+OFFSET :offset;

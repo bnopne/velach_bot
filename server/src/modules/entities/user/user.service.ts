@@ -6,6 +6,7 @@ import {
   findById,
   insertUser,
   updateUser,
+  getUsersList,
 } from 'src/modules/entities/user/queries';
 
 @Injectable()
@@ -50,5 +51,23 @@ export class UserService {
     }
 
     return dbUser;
+  }
+
+  async getUsersList(
+    client: PoolClient,
+    limit: number,
+    offset: number,
+    search?: string,
+  ): Promise<User[]> {
+    const rows = await getUsersList.run(
+      {
+        limit,
+        offset,
+        search: `%${search}%`,
+      },
+      client,
+    );
+
+    return rows.map((row) => User.fromTableRow(row));
   }
 }

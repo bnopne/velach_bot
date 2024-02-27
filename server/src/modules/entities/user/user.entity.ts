@@ -3,6 +3,15 @@ import { User as TelegramUser } from '@telegraf/types';
 import { BaseEntity } from 'src/common/database/base-entity';
 import { Optional } from 'src/common/types/utils';
 
+export interface IUserDTO {
+  id: string;
+  isBot: Optional<boolean>;
+  username: Optional<string>;
+  firstName: Optional<string>;
+  lastName: Optional<string>;
+  stravaLink: Optional<string>;
+}
+
 export interface IUserConstructorParams {
   firstName: Optional<string>;
   id: string;
@@ -66,5 +75,16 @@ export class User extends BaseEntity {
     this.lastName = tgUser.last_name;
     this.isBot = tgUser.is_bot;
     this.username = tgUser.username;
+  }
+
+  getDTO(): IUserDTO {
+    return {
+      id: this.id,
+      isBot: this.isBot,
+      username: this.username,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      stravaLink: this.stravaLink,
+    };
   }
 }

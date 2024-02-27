@@ -15,7 +15,7 @@ import { Context, Middleware } from 'src/common/types/bot';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
-import { AuthService } from 'src/modules/auth/auth.service';
+import { AuthApiService } from 'src/modules/admin-api/auth-api/auth-api.service';
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class AdminSiteCommandService {
     private readonly userService: UserService,
     private readonly featureAnalyticsService: FeatureAnalyticsMiddlewareService,
     private readonly messageAgeMiddlewareService: MessageAgeMiddlewareService,
-    private readonly authService: AuthService,
+    private readonly authService: AuthApiService,
     private readonly configurationService: ConfigurationService,
   ) {}
 
@@ -59,10 +59,7 @@ export class AdminSiteCommandService {
       return;
     }
 
-    const url = new URL(
-      '/auth/verify-access-code',
-      this.configurationService.adminSiteHost,
-    );
+    const url = new URL('/login', this.configurationService.adminSiteHost);
     url.searchParams.set('access-code', accessCode);
 
     const text = await this.templatesService.renderTemplate(

@@ -6,12 +6,12 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { ADMIN_SITE_COOKIE_NAME } from 'src/modules/auth/constants';
+import { ADMIN_SITE_COOKIE_NAME } from 'src/modules/admin-api/auth-api/constants';
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
-import { JWTPayload } from 'src/modules/auth/types';
+import { JWTPayload } from 'src/modules/admin-api/auth-api/types';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthApiGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configurationService: ConfigurationService,

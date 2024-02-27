@@ -123,3 +123,44 @@ const updateUserIR: any = {"usedParamSet":{"firstName":true,"lastName":true,"use
 export const updateUser = new PreparedQuery<IUpdateUserParams,IUpdateUserResult>(updateUserIR);
 
 
+/** 'GetUsersList' parameters type */
+export interface IGetUsersListParams {
+  limit?: NumberOrString | null | void;
+  offset?: NumberOrString | null | void;
+  search?: string | null | void;
+}
+
+/** 'GetUsersList' return type */
+export interface IGetUsersListResult {
+  firstName: string | null;
+  id: string;
+  isBot: boolean | null;
+  lastName: string | null;
+  stravaLink: string | null;
+  username: string | null;
+}
+
+/** 'GetUsersList' query type */
+export interface IGetUsersListQuery {
+  params: IGetUsersListParams;
+  result: IGetUsersListResult;
+}
+
+const getUsersListIR: any = {"usedParamSet":{"search":true,"limit":true,"offset":true},"params":[{"name":"search","required":false,"transform":{"type":"scalar"},"locs":[{"a":47,"b":53},{"a":77,"b":83},{"a":107,"b":113}]},{"name":"limit","required":false,"transform":{"type":"scalar"},"locs":[{"a":121,"b":126}]},{"name":"offset","required":false,"transform":{"type":"scalar"},"locs":[{"a":135,"b":141}]}],"statement":"SELECT *\nFROM \"User\"\nWHERE\n  \"firstName\" ILIKE :search OR\n  \"lastName\" ILIKE :search OR\n  \"username\" ILIKE :search\nLIMIT :limit\nOFFSET :offset"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT *
+ * FROM "User"
+ * WHERE
+ *   "firstName" ILIKE :search OR
+ *   "lastName" ILIKE :search OR
+ *   "username" ILIKE :search
+ * LIMIT :limit
+ * OFFSET :offset
+ * ```
+ */
+export const getUsersList = new PreparedQuery<IGetUsersListParams,IGetUsersListResult>(getUsersListIR);
+
+

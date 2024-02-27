@@ -8,8 +8,8 @@ import { InMemoryStorageModule } from 'src/modules/in-memory-storage/in-memory-s
 import { ConfigurationModule } from 'src/modules/configuration/configuration.module';
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
+import { AuthApiService } from './auth-api.service';
+import { AuthApiController } from './auth-api.controller';
 
 @Module({
   imports: [
@@ -26,8 +26,8 @@ import { AuthController } from './auth.controller';
       inject: [ConfigurationService],
     }),
   ],
-  providers: [AuthService],
-  controllers: [AuthController],
-  exports: [AuthService],
+  providers: [AuthApiService],
+  controllers: [AuthApiController],
+  exports: [AuthApiService],
 })
-export class AuthModule {}
+export class AuthApiModule {}

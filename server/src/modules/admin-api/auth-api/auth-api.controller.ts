@@ -1,7 +1,7 @@
 import {
+  Body,
   Controller,
-  Get,
-  Query,
+  Post,
   Res,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,24 +9,30 @@ import type { Response } from 'express';
 import { add } from 'date-fns';
 import { JwtService } from '@nestjs/jwt';
 
-import { AuthService } from 'src/modules/auth/auth.service';
-import type { JWTPayload } from 'src/modules/auth/types';
-import { ADMIN_SITE_COOKIE_NAME } from 'src/modules/auth/constants';
+import { AuthApiService } from 'src/modules/admin-api/auth-api/auth-api.service';
+import type { JWTPayload } from 'src/modules/admin-api/auth-api/types';
+import { ADMIN_SITE_COOKIE_NAME } from 'src/modules/admin-api/auth-api/constants';
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
-@Controller('auth')
-export class AuthController {
+export class LoginBodyDTO {
+  accessCode?: string;
+}
+
+@Controller()
+export class AuthApiController {
   constructor(
-    private readonly authService: AuthService,
+    private readonly authService: AuthApiService,
     private readonly configurationService: ConfigurationService,
     private readonly jwtService: JwtService,
   ) {}
 
-  @Get('/verify-access-code')
-  async verifyAccessCode(
-    @Query('access-code') accessCode: string | undefined,
+  @Post('/login')
+  async login(
+    @Body() body: LoginBodyDTO,
     @Res({ passthrough: true }) response: Response,
   ): Promise<void> {
+    const accessCode = body.accessCode;
+
     if (!accessCode) {
       throw new UnauthorizedException();
     }

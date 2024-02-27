@@ -7,7 +7,7 @@ import { BotAdminService } from 'src/modules/entities/bot-admin/bot-admin.servic
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 @Injectable()
-export class AuthService {
+export class AuthApiService {
   constructor(
     private pgPoolService: PgPoolService,
     private userService: UserService,

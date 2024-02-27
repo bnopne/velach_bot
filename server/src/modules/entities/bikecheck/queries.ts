@@ -311,3 +311,44 @@ const findLikedIR: any = {"usedParamSet":{"userId":true},"params":[{"name":"user
 export const findLiked = new PreparedQuery<IFindLikedParams,IFindLikedResult>(findLikedIR);
 
 
+/** 'FindAllForUser' parameters type */
+export interface IFindAllForUserParams {
+  limit?: NumberOrString | null | void;
+  offset?: NumberOrString | null | void;
+  userId?: NumberOrString | null | void;
+}
+
+/** 'FindAllForUser' return type */
+export interface IFindAllForUserResult {
+  createdAt: Date;
+  id: string;
+  isActive: boolean;
+  onSale: boolean | null;
+  saleRank: number | null;
+  telegramImageId: string;
+  updatedAt: Date;
+  userId: string;
+}
+
+/** 'FindAllForUser' query type */
+export interface IFindAllForUserQuery {
+  params: IFindAllForUserParams;
+  result: IFindAllForUserResult;
+}
+
+const findAllForUserIR: any = {"usedParamSet":{"userId":true,"limit":true,"offset":true},"params":[{"name":"userId","required":false,"transform":{"type":"scalar"},"locs":[{"a":43,"b":49}]},{"name":"limit","required":false,"transform":{"type":"scalar"},"locs":[{"a":83,"b":88}]},{"name":"offset","required":false,"transform":{"type":"scalar"},"locs":[{"a":97,"b":103}]}],"statement":"SELECT *\nFROM \"Bikecheck\"\nWHERE \"userId\" = :userId\nORDER BY \"createdAt\" DESC\nLIMIT :limit\nOFFSET :offset"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT *
+ * FROM "Bikecheck"
+ * WHERE "userId" = :userId
+ * ORDER BY "createdAt" DESC
+ * LIMIT :limit
+ * OFFSET :offset
+ * ```
+ */
+export const findAllForUser = new PreparedQuery<IFindAllForUserParams,IFindAllForUserResult>(findAllForUserIR);
+
+
