@@ -19,6 +19,8 @@ export class ConfigurationService {
 
   readonly JWTSecret: string;
 
+  readonly taskInterval: number;
+
   constructor() {
     /**
      * DB connection config setup
@@ -82,6 +84,11 @@ export class ConfigurationService {
      * JWT
      */
     this.JWTSecret = this.getStringValue('VELACH_BOT_JWT_SECRET', 'secret');
+
+    /**
+     * Task Queue
+     */
+    this.taskInterval = this.getNumberValue('VELACH_BOT_TASK_INTERVAL', 1000); // milliseconds
   }
 
   getStringValueOrFail(name: string): string {
