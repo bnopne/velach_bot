@@ -16,6 +16,8 @@ import { PreliminaryDataSaveService } from 'src/modules/telegram-bot/middlewares
 import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
+import { TaskQueueService } from 'src/modules/task-queue/task-queue.service';
+import { DownloadBikecheckPicturesService } from 'src/modules/telegram-bot/tasks/download-bikecheck-pictures.service';
 
 @Injectable()
 export class CheckbikeCommandService {
@@ -27,6 +29,8 @@ export class CheckbikeCommandService {
     private bikecheckService: BikecheckService,
     private featureAnalyticsService: FeatureAnalyticsMiddlewareService,
     private messageAgeMiddlewareService: MessageAgeMiddlewareService,
+    private taskQueueService: TaskQueueService,
+    private downloadBikecheckPicturesService: DownloadBikecheckPicturesService,
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
@@ -96,7 +100,11 @@ export class CheckbikeCommandService {
       getMessageFromOrFail(message).id.toString(),
     );
 
-    await this.bikecheckService.createActive(client, user.id, photo.file_id);
+    const bikecheck = await this.bikecheckService.createActive(
+      client,
+      user.id,
+      photo.file_id,
+    );
 
     const text = await this.templatesService.renderTemplate(
       join(__dirname, 'templates', 'done.mustache'),
@@ -110,6 +118,10 @@ export class CheckbikeCommandService {
         ? message.message_thread_id
         : undefined,
     });
+
+    this.taskQueueService.enqueueTask(
+      this.downloadBikecheckPicturesService.getTask(bikecheck.id),
+    );
   }
 
   getMessageMiddleware(): Middleware {

@@ -35,4 +35,8 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Env file
 .env
+
+# Default files module root
+/files

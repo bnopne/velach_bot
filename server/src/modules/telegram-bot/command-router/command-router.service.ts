@@ -1,11 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Composer } from 'telegraf';
 
 import { RouteFn, Context, Middleware } from 'src/common/types/bot';
 import {
   getContextMessageOrFail,
   getMessageText,
-  getContextMessage,
 } from 'src/common/utils/telegram-context';
 import { COMMANDS } from 'src/common/constants';
 import { HelpCommandService } from 'src/modules/telegram-bot/commands/help/help-command.service';
@@ -18,8 +17,6 @@ import { OnSaleCommandService } from 'src/modules/telegram-bot/commands/on-sale/
 import { TopCommandService } from 'src/modules/telegram-bot/commands/top/top-command.service';
 import { MyLikesCommandService } from 'src/modules/telegram-bot/commands/my-likes/my-likes-command.service';
 import { AdminSiteCommandService } from 'src/modules/telegram-bot/commands/admin-site/admin-site-command.service';
-
-const logger = new Logger('Command Router Service');
 
 function parseCommand(text: string, botUsername: string): string | null {
   const regexp = new RegExp(`^\/([A-Za-z]+)(?:@${botUsername})?$`);
@@ -102,8 +99,6 @@ export class CommandRouterService {
       [COMMANDS.ADMIN_SITE]:
         this.adminSiteCommandService.getMessageMiddleware(),
       [-1]: (context, next) => {
-        const message = getContextMessage(context);
-        logger.log(`unknown command ${message ? getMessageText(message) : ''}`);
         next();
       },
     });

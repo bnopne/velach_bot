@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 
 import { ConfigurationModule } from 'src/modules/configuration/configuration.module';
 
-import { TasksService } from './tasks.service';
+import { TelegrafInstance } from './telegraf-instance';
 
 @Module({
   imports: [ConfigurationModule],
-  providers: [TasksService],
-  exports: [TasksService],
+  providers: [TelegrafInstance],
+  exports: [TelegrafInstance],
 })
-export class TasksModule {}
+export class TelegrafInstanceModule {}

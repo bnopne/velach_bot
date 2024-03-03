@@ -1,3 +1,6 @@
+import { cwd } from 'process';
+import { join } from 'path';
+
 import { Injectable } from '@nestjs/common';
 import { PoolConfig } from 'pg';
 
@@ -20,6 +23,8 @@ export class ConfigurationService {
   readonly JWTSecret: string;
 
   readonly taskInterval: number;
+
+  readonly filesRootFolder: string;
 
   constructor() {
     /**
@@ -89,6 +94,14 @@ export class ConfigurationService {
      * Task Queue
      */
     this.taskInterval = this.getNumberValue('VELACH_BOT_TASK_INTERVAL', 1000); // milliseconds
+
+    /**
+     * Files
+     */
+    this.filesRootFolder = this.getStringValue(
+      'VELACH_BOT_TASK_INTERVAL',
+      join(cwd(), 'files'),
+    );
   }
 
   getStringValueOrFail(name: string): string {
