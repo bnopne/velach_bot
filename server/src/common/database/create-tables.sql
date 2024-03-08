@@ -47,6 +47,7 @@ CREATE TABLE "Bikecheck" (
   "updatedAt" timestamptz NOT NULL,
   "onSale" bool NULL DEFAULT false,
   "saleRank" int NULL DEFAULT 1,
+  "isPictureDownloaded" BOOLEAN DEFAULT FALSE,
   CONSTRAINT "Bikecheck_pkey" PRIMARY KEY (id),
   CONSTRAINT "Bikecheck_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );

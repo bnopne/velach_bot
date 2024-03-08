@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
 import { Bikecheck } from 'src/modules/entities/bikecheck/bikecheck.entity';
+
 import {
   findById,
   findActive,
@@ -12,7 +13,10 @@ import {
   findOnSale,
   findLiked,
   findAllForUser,
-} from 'src/modules/entities/bikecheck/queries';
+  findOneWithoutDownloadedPicture,
+  setIsPictureDownloaded,
+  getCount,
+} from './queries';
 
 @Injectable()
 export class BikecheckService {
@@ -100,5 +104,28 @@ export class BikecheckService {
     return (await findAllForUser.run({ userId, limit, offset }, client)).map(
       (r) => Bikecheck.fromTableRow(r),
     );
+  }
+
+  async findBikecheckWithoutDownloadedPicture(
+    client: PoolClient,
+  ): Promise<Bikecheck | undefined> {
+    const rows = await findOneWithoutDownloadedPicture.run(undefined, client);
+
+    return rows.length > 0 ? Bikecheck.fromTableRow(rows[0]) : undefined;
+  }
+
+  async setIsPictureDownloaded(
+    client: PoolClient,
+    bikecheckId: string,
+    isPictureDownloaded: boolean,
+  ): Promise<void> {
+    await setIsPictureDownloaded.run(
+      { isPictureDownloaded, id: bikecheckId },
+      client,
+    );
+  }
+
+  async getCount(client: PoolClient): Promise<number> {
+    return parseInt((await getCount.run(undefined, client))[0].count || '', 10);
   }
 }

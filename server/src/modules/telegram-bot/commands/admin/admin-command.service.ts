@@ -16,10 +16,9 @@ import { UserService } from 'src/modules/entities/user/user.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
 import { AuthApiService } from 'src/modules/admin-api/auth-api/auth-api.service';
-import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 @Injectable()
-export class AdminSiteCommandService {
+export class AdminCommandService {
   constructor(
     private readonly templatesService: TemplatesService,
     private readonly dbMiddlewareService: DbMiddlewareService,
@@ -29,7 +28,6 @@ export class AdminSiteCommandService {
     private readonly featureAnalyticsService: FeatureAnalyticsMiddlewareService,
     private readonly messageAgeMiddlewareService: MessageAgeMiddlewareService,
     private readonly authService: AuthApiService,
-    private readonly configurationService: ConfigurationService,
   ) {}
 
   private async processMessage(ctx: Context): Promise<void> {
@@ -44,7 +42,7 @@ export class AdminSiteCommandService {
     let accessCode: string;
 
     try {
-      accessCode = await this.authService.setAdminSiteAccessCode(user.id);
+      accessCode = await this.authService.setAdminAccessCode(user.id);
     } catch (error) {
       const text = await this.templatesService.renderTemplate(
         join(__dirname, 'templates', 'unauthorized.mustache'),
@@ -59,20 +57,14 @@ export class AdminSiteCommandService {
       return;
     }
 
-    const url = new URL('/login', this.configurationService.adminSiteHost);
-    url.searchParams.set('access-code', accessCode);
-
     const text = await this.templatesService.renderTemplate(
       join(__dirname, 'templates', 'your-credentials.mustache'),
-      {
-        link: url.toString(),
-      },
+      { accessCode },
     );
 
     await ctx.telegram.sendMessage(message.chat.id, text, {
       reply_to_message_id: message.message_id,
       parse_mode: 'MarkdownV2',
-      protect_content: true,
     });
   }
 
@@ -81,7 +73,7 @@ export class AdminSiteCommandService {
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
       this.featureAnalyticsService.getMiddleware(
-        'admin-site-command/message-command',
+        'admin-command/message-command',
       ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.privateChatsOnlyMiddlewareService.getMiddleware(),

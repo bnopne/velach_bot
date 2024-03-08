@@ -35,3 +35,7 @@ WHERE
   "username" ILIKE :search
 LIMIT :limit
 OFFSET :offset;
+
+/* @name getCount */
+SELECT COUNT("id")
+FROM "User";

@@ -22,37 +22,46 @@ export class DownloadBikecheckPicturesService
   ) {}
 
   private async execute(bikecheckId: string): Promise<void> {
-    const bikecheck = await this.pgPoolService.runInTransaction((client) =>
-      this.bikecheckService.findById(client, bikecheckId),
-    );
+    await this.pgPoolService.runInTransaction(async (client) => {
+      const bikecheck = await this.bikecheckService.findById(
+        client,
+        bikecheckId,
+      );
 
-    if (!bikecheck) {
-      return;
-    }
+      if (!bikecheck) {
+        return;
+      }
 
-    const imageFile = await this.telegrafInstance.bot.telegram.getFile(
-      bikecheck.telegramImageId,
-    );
+      const imageFile = await this.telegrafInstance.bot.telegram.getFile(
+        bikecheck.telegramImageId,
+      );
 
-    const downloadUrl = await this.telegrafInstance.bot.telegram.getFileLink(
-      imageFile,
-    );
+      const downloadUrl = await this.telegrafInstance.bot.telegram.getFileLink(
+        imageFile,
+      );
 
-    const response = await fetch(downloadUrl, {
-      method: 'GET',
+      const response = await fetch(downloadUrl, {
+        method: 'GET',
+      });
+
+      const arrayBuffer = await response.arrayBuffer();
+
+      const buffer = Buffer.from(arrayBuffer);
+
+      this.filesService.writeFile(
+        join(
+          BIKECHECKS_DIR,
+          `${bikecheck.id}${extname(imageFile.file_path || '')}`,
+        ),
+        buffer,
+      );
+
+      await this.bikecheckService.setIsPictureDownloaded(
+        client,
+        bikecheck.id,
+        true,
+      );
     });
-
-    const arrayBuffer = await response.arrayBuffer();
-
-    const buffer = Buffer.from(arrayBuffer);
-
-    this.filesService.writeFile(
-      join(
-        BIKECHECKS_DIR,
-        `${bikecheck.telegramImageId}.${extname(imageFile.file_path || '')}`,
-      ),
-      buffer,
-    );
   }
 
   getTask(bikecheckId: string): ITask {

@@ -164,3 +164,29 @@ const getUsersListIR: any = {"usedParamSet":{"search":true,"limit":true,"offset"
 export const getUsersList = new PreparedQuery<IGetUsersListParams,IGetUsersListResult>(getUsersListIR);
 
 
+/** 'GetCount' parameters type */
+export type IGetCountParams = void;
+
+/** 'GetCount' return type */
+export interface IGetCountResult {
+  count: string | null;
+}
+
+/** 'GetCount' query type */
+export interface IGetCountQuery {
+  params: IGetCountParams;
+  result: IGetCountResult;
+}
+
+const getCountIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT COUNT(\"id\")\nFROM \"User\""};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT COUNT("id")
+ * FROM "User"
+ * ```
+ */
+export const getCount = new PreparedQuery<IGetCountParams,IGetCountResult>(getCountIR);
+
+

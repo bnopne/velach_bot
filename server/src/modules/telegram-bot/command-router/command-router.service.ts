@@ -16,7 +16,7 @@ import { StartCommandService } from 'src/modules/telegram-bot/commands/start/sta
 import { OnSaleCommandService } from 'src/modules/telegram-bot/commands/on-sale/on-sale-command.service';
 import { TopCommandService } from 'src/modules/telegram-bot/commands/top/top-command.service';
 import { MyLikesCommandService } from 'src/modules/telegram-bot/commands/my-likes/my-likes-command.service';
-import { AdminSiteCommandService } from 'src/modules/telegram-bot/commands/admin-site/admin-site-command.service';
+import { AdminCommandService } from 'src/modules/telegram-bot/commands/admin/admin-command.service';
 
 function parseCommand(text: string, botUsername: string): string | null {
   const regexp = new RegExp(`^\/([A-Za-z]+)(?:@${botUsername})?$`);
@@ -41,7 +41,7 @@ export class CommandRouterService {
   private onSaleCommandService: OnSaleCommandService;
   private topCommandService: TopCommandService;
   private myLikesCommandService: MyLikesCommandService;
-  private adminSiteCommandService: AdminSiteCommandService;
+  private adminCommandService: AdminCommandService;
 
   constructor(
     helpCommandService: HelpCommandService,
@@ -53,7 +53,7 @@ export class CommandRouterService {
     onSaleCommandService: OnSaleCommandService,
     topCommandService: TopCommandService,
     myLikesCommandService: MyLikesCommandService,
-    accessAdminSiteCommandService: AdminSiteCommandService,
+    accessAdminCommandService: AdminCommandService,
   ) {
     this.helpCommandService = helpCommandService;
     this.bikecheckCommandService = bikecheckCommandService;
@@ -64,7 +64,7 @@ export class CommandRouterService {
     this.onSaleCommandService = onSaleCommandService;
     this.topCommandService = topCommandService;
     this.myLikesCommandService = myLikesCommandService;
-    this.adminSiteCommandService = accessAdminSiteCommandService;
+    this.adminCommandService = accessAdminCommandService;
 
     const routeFn: RouteFn = (ctx) => {
       const command = parseCommand(
@@ -96,8 +96,7 @@ export class CommandRouterService {
       [COMMANDS.ON_SALE]: this.onSaleCommandService.getMessageMiddleware(),
       [COMMANDS.TOP]: this.topCommandService.getMessageMiddleware(),
       [COMMANDS.MY_LIKES]: this.myLikesCommandService.getMessageMiddleware(),
-      [COMMANDS.ADMIN_SITE]:
-        this.adminSiteCommandService.getMessageMiddleware(),
+      [COMMANDS.ADMIN]: this.adminCommandService.getMessageMiddleware(),
       [-1]: (context, next) => {
         next();
       },

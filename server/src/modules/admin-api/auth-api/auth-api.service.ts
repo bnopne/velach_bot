@@ -17,7 +17,7 @@ export class AuthApiService {
     private configurationService: ConfigurationService,
   ) {}
 
-  async setAdminSiteAccessCode(userId: string): Promise<string> {
+  async setAdminAccessCode(userId: string): Promise<string> {
     const user = await this.pgPoolService.runInTransaction((connection) =>
       this.userService.findById(connection, userId),
     );
@@ -37,9 +37,9 @@ export class AuthApiService {
     const accessCode = this.randomService.getString(32);
 
     this.inMemoryStorageService.set(
-      `admin-site/access-codes/${accessCode}`,
+      `admin/access-codes/${accessCode}`,
       user.id,
-      this.configurationService.adminSiteAccessCodeTTL,
+      this.configurationService.adminAccessCodeTTL,
     );
 
     return accessCode;
@@ -47,7 +47,7 @@ export class AuthApiService {
 
   findUserIdByAccessCode(accessCode: string): string | undefined {
     const userId = this.inMemoryStorageService.get<string>(
-      `admin-site/access-codes/${accessCode}`,
+      `admin/access-codes/${accessCode}`,
     );
 
     return userId;

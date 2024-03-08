@@ -51,7 +51,7 @@ export class AuthApiController {
     response.cookie(ADMIN_SITE_COOKIE_NAME, token, {
       httpOnly: true,
       expires: add(new Date(), {
-        seconds: this.configurationService.adminSiteTokenTTL,
+        seconds: this.configurationService.adminTokenTTL,
       }),
     });
   }

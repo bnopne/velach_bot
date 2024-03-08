@@ -105,3 +105,29 @@ const updateChatIR: any = {"usedParamSet":{"type":true,"title":true,"id":true},"
 export const updateChat = new PreparedQuery<IUpdateChatParams,IUpdateChatResult>(updateChatIR);
 
 
+/** 'GetCount' parameters type */
+export type IGetCountParams = void;
+
+/** 'GetCount' return type */
+export interface IGetCountResult {
+  count: string | null;
+}
+
+/** 'GetCount' query type */
+export interface IGetCountQuery {
+  params: IGetCountParams;
+  result: IGetCountResult;
+}
+
+const getCountIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT COUNT(\"id\")\nFROM \"Chat\""};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT COUNT("id")
+ * FROM "Chat"
+ * ```
+ */
+export const getCount = new PreparedQuery<IGetCountParams,IGetCountResult>(getCountIR);
+
+

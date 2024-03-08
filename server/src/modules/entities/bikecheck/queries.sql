@@ -67,3 +67,19 @@ WHERE "userId" = :userId
 ORDER BY "createdAt" DESC
 LIMIT :limit
 OFFSET :offset;
+
+/* @name findOneWithoutDownloadedPicture */
+SELECT *
+FROM "Bikecheck"
+WHERE "isPictureDownloaded" = FALSE
+LIMIT 1;
+
+/* @name setIsPictureDownloaded */
+UPDATE "Bikecheck"
+SET "isPictureDownloaded" = :isPictureDownloaded
+WHERE "id" = :id
+RETURNING *;
+
+/* @name getCount */
+SELECT COUNT("id")
+FROM "Bikecheck";

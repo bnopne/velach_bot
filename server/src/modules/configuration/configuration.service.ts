@@ -11,9 +11,9 @@ export class ConfigurationService {
   readonly telegramBotToken: string;
   readonly maxMessageAge: number; // in seconds
 
-  readonly adminSiteAccessCodeTTL: number; // in seconds
-  readonly adminSiteTokenTTL: number; // in seconds
-  readonly adminSiteHost: string;
+  readonly adminAccessCodeTTL: number; // in seconds
+  readonly adminTokenTTL: number; // in seconds
+  readonly adminHost: string;
 
   readonly port: number;
   readonly host: string;
@@ -56,15 +56,15 @@ export class ConfigurationService {
     /**
      * Admin Site
      */
-    this.adminSiteAccessCodeTTL = this.getNumberValue(
+    this.adminAccessCodeTTL = this.getNumberValue(
       'VELACH_BOT_ADMIN_SITE_ACCESS_CODE_TTL',
       5 * 60 * 1000,
     );
-    this.adminSiteTokenTTL = this.getNumberValue(
+    this.adminTokenTTL = this.getNumberValue(
       'VELACH_BOT_ADMIN_SITE_TOKEN_TTL',
       60 * 60 * 1000,
     );
-    this.adminSiteHost = this.getStringValue(
+    this.adminHost = this.getStringValue(
       'VELACH_BOT_ADMIN_SITE_HOST',
       'http://127.0.0.1:8080',
     );

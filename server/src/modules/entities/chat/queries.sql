@@ -20,3 +20,7 @@ SET
   "title" = :title
 WHERE "id" = :id
 RETURNING *;
+
+/* @name getCount */
+SELECT COUNT("id")
+FROM "Chat";

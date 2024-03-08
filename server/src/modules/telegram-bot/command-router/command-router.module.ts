@@ -10,7 +10,7 @@ import { StartCommandModule } from 'src/modules/telegram-bot/commands/start/star
 import { OnSaleCommandModule } from 'src/modules/telegram-bot/commands/on-sale/on-sale-command.module';
 import { TopCommandModule } from 'src/modules/telegram-bot/commands/top/top-command.module';
 import { MyLikesCommandModule } from 'src/modules/telegram-bot/commands/my-likes/my-likes-command.module';
-import { AdminSiteCommandModule } from 'src/modules/telegram-bot/commands/admin-site/admin-site-command.module';
+import { AdminCommandModule } from 'src/modules/telegram-bot/commands/admin/admin-command.module';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { AdminSiteCommandModule } from 'src/modules/telegram-bot/commands/admin-
     OnSaleCommandModule,
     TopCommandModule,
     MyLikesCommandModule,
-    AdminSiteCommandModule,
+    AdminCommandModule,
   ],
   providers: [CommandRouterService],
   exports: [CommandRouterService],

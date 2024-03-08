@@ -2,11 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
 import { Chat } from 'src/modules/entities/chat/chat.entity';
-import {
-  findById,
-  insertChat,
-  updateChat,
-} from 'src/modules/entities/chat/queries';
+
+import { findById, insertChat, updateChat, getCount } from './queries';
 
 @Injectable()
 export class ChatService {
@@ -50,5 +47,9 @@ export class ChatService {
     }
 
     return dbChat;
+  }
+
+  async getCount(client: PoolClient): Promise<number> {
+    return parseInt((await getCount.run(undefined, client))[0].count || '', 10);
   }
 }

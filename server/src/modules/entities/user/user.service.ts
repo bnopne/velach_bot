@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
 import { User } from 'src/modules/entities/user/user.entity';
+
 import {
   findById,
   insertUser,
   updateUser,
   getUsersList,
-} from 'src/modules/entities/user/queries';
+  getCount,
+} from './queries';
 
 @Injectable()
 export class UserService {
@@ -69,5 +71,9 @@ export class UserService {
     );
 
     return rows.map((row) => User.fromTableRow(row));
+  }
+
+  async getCount(client: PoolClient): Promise<number> {
+    return parseInt((await getCount.run(undefined, client))[0].count || '', 10);
   }
 }

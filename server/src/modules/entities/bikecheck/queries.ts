@@ -14,6 +14,7 @@ export interface IInsertActiveResult {
   createdAt: Date;
   id: string;
   isActive: boolean;
+  isPictureDownloaded: boolean | null;
   onSale: boolean | null;
   saleRank: number | null;
   telegramImageId: string;
@@ -50,6 +51,7 @@ export interface IFindByIdResult {
   createdAt: Date;
   id: string;
   isActive: boolean;
+  isPictureDownloaded: boolean | null;
   onSale: boolean | null;
   saleRank: number | null;
   telegramImageId: string;
@@ -86,6 +88,7 @@ export interface IFindActiveResult {
   createdAt: Date;
   id: string;
   isActive: boolean;
+  isPictureDownloaded: boolean | null;
   onSale: boolean | null;
   saleRank: number | null;
   telegramImageId: string;
@@ -123,6 +126,7 @@ export interface IFindInactiveResult {
   createdAt: Date;
   id: string;
   isActive: boolean;
+  isPictureDownloaded: boolean | null;
   onSale: boolean | null;
   saleRank: number | null;
   telegramImageId: string;
@@ -165,6 +169,7 @@ export interface IUpdateResult {
   createdAt: Date;
   id: string;
   isActive: boolean;
+  isPictureDownloaded: boolean | null;
   onSale: boolean | null;
   saleRank: number | null;
   telegramImageId: string;
@@ -235,6 +240,7 @@ export interface IFindOnSaleResult {
   createdAt: Date;
   id: string;
   isActive: boolean;
+  isPictureDownloaded: boolean | null;
   onSale: boolean | null;
   saleRank: number | null;
   telegramImageId: string;
@@ -272,6 +278,7 @@ export interface IFindLikedResult {
   createdAt: Date;
   id: string;
   isActive: boolean;
+  isPictureDownloaded: boolean | null;
   likeDate: Date;
   onSale: boolean | null;
   saleRank: number | null;
@@ -323,6 +330,7 @@ export interface IFindAllForUserResult {
   createdAt: Date;
   id: string;
   isActive: boolean;
+  isPictureDownloaded: boolean | null;
   onSale: boolean | null;
   saleRank: number | null;
   telegramImageId: string;
@@ -350,5 +358,106 @@ const findAllForUserIR: any = {"usedParamSet":{"userId":true,"limit":true,"offse
  * ```
  */
 export const findAllForUser = new PreparedQuery<IFindAllForUserParams,IFindAllForUserResult>(findAllForUserIR);
+
+
+/** 'FindOneWithoutDownloadedPicture' parameters type */
+export type IFindOneWithoutDownloadedPictureParams = void;
+
+/** 'FindOneWithoutDownloadedPicture' return type */
+export interface IFindOneWithoutDownloadedPictureResult {
+  createdAt: Date;
+  id: string;
+  isActive: boolean;
+  isPictureDownloaded: boolean | null;
+  onSale: boolean | null;
+  saleRank: number | null;
+  telegramImageId: string;
+  updatedAt: Date;
+  userId: string;
+}
+
+/** 'FindOneWithoutDownloadedPicture' query type */
+export interface IFindOneWithoutDownloadedPictureQuery {
+  params: IFindOneWithoutDownloadedPictureParams;
+  result: IFindOneWithoutDownloadedPictureResult;
+}
+
+const findOneWithoutDownloadedPictureIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT *\nFROM \"Bikecheck\"\nWHERE \"isPictureDownloaded\" = FALSE\nLIMIT 1"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT *
+ * FROM "Bikecheck"
+ * WHERE "isPictureDownloaded" = FALSE
+ * LIMIT 1
+ * ```
+ */
+export const findOneWithoutDownloadedPicture = new PreparedQuery<IFindOneWithoutDownloadedPictureParams,IFindOneWithoutDownloadedPictureResult>(findOneWithoutDownloadedPictureIR);
+
+
+/** 'SetIsPictureDownloaded' parameters type */
+export interface ISetIsPictureDownloadedParams {
+  id?: NumberOrString | null | void;
+  isPictureDownloaded?: boolean | null | void;
+}
+
+/** 'SetIsPictureDownloaded' return type */
+export interface ISetIsPictureDownloadedResult {
+  createdAt: Date;
+  id: string;
+  isActive: boolean;
+  isPictureDownloaded: boolean | null;
+  onSale: boolean | null;
+  saleRank: number | null;
+  telegramImageId: string;
+  updatedAt: Date;
+  userId: string;
+}
+
+/** 'SetIsPictureDownloaded' query type */
+export interface ISetIsPictureDownloadedQuery {
+  params: ISetIsPictureDownloadedParams;
+  result: ISetIsPictureDownloadedResult;
+}
+
+const setIsPictureDownloadedIR: any = {"usedParamSet":{"isPictureDownloaded":true,"id":true},"params":[{"name":"isPictureDownloaded","required":false,"transform":{"type":"scalar"},"locs":[{"a":47,"b":66}]},{"name":"id","required":false,"transform":{"type":"scalar"},"locs":[{"a":81,"b":83}]}],"statement":"UPDATE \"Bikecheck\"\nSET \"isPictureDownloaded\" = :isPictureDownloaded\nWHERE \"id\" = :id\nRETURNING *"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * UPDATE "Bikecheck"
+ * SET "isPictureDownloaded" = :isPictureDownloaded
+ * WHERE "id" = :id
+ * RETURNING *
+ * ```
+ */
+export const setIsPictureDownloaded = new PreparedQuery<ISetIsPictureDownloadedParams,ISetIsPictureDownloadedResult>(setIsPictureDownloadedIR);
+
+
+/** 'GetCount' parameters type */
+export type IGetCountParams = void;
+
+/** 'GetCount' return type */
+export interface IGetCountResult {
+  count: string | null;
+}
+
+/** 'GetCount' query type */
+export interface IGetCountQuery {
+  params: IGetCountParams;
+  result: IGetCountResult;
+}
+
+const getCountIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT COUNT(\"id\")\nFROM \"Bikecheck\""};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT COUNT("id")
+ * FROM "Bikecheck"
+ * ```
+ */
+export const getCount = new PreparedQuery<IGetCountParams,IGetCountResult>(getCountIR);
 
 
