@@ -181,7 +181,9 @@ export class BikecheckCommandService {
       );
 
       await ctx.telegram.sendMessage(primaryMessage.chat.id, text, {
-        reply_to_message_id: primaryMessage.message_id,
+        reply_parameters: {
+          message_id: primaryMessage.message_id,
+        },
         parse_mode: 'MarkdownV2',
         message_thread_id: primaryMessage.is_topic_message
           ? primaryMessage.message_thread_id

@@ -7,7 +7,7 @@
     "dist/common/database/create-tables.sql"
   ],
   "targets": [
-    "node14-linux-x64"
+    "node20-linux-x64"
   ],
   "outputPath": "dist-binary"
 }

@@ -36,7 +36,9 @@ export class StartCommandService {
     );
 
     ctx.telegram.sendMessage(chat.id, text, {
-      reply_to_message_id: message.message_id,
+      reply_parameters: {
+        message_id: message.message_id,
+      },
       parse_mode: 'MarkdownV2',
       message_thread_id: message.is_topic_message
         ? message.message_thread_id

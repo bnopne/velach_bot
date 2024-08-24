@@ -102,7 +102,10 @@ describe('Test SetStravaCommandService', () => {
     await service['processCommand'](ctx);
 
     expect(telegram.sendMessage).toBeCalledWith(265, doneText, {
-      reply_to_message_id: 2,
+      message_thread_id: undefined,
+      reply_parameters: {
+        message_id: 2,
+      },
       parse_mode: 'MarkdownV2',
     });
   });
@@ -161,7 +164,10 @@ describe('Test SetStravaCommandService', () => {
     await service['processCommand'](ctx);
 
     expect(telegram.sendMessage).toBeCalledWith(265, doneText, {
-      reply_to_message_id: 2,
+      message_thread_id: undefined,
+      reply_parameters: {
+        message_id: 2,
+      },
       parse_mode: 'MarkdownV2',
     });
   });
@@ -220,7 +226,10 @@ describe('Test SetStravaCommandService', () => {
     await service['processCommand'](ctx);
 
     expect(telegram.sendMessage).toBeCalledWith(265, doneText, {
-      reply_to_message_id: 2,
+      message_thread_id: undefined,
+      reply_parameters: {
+        message_id: 2,
+      },
       parse_mode: 'MarkdownV2',
     });
   });
@@ -279,7 +288,10 @@ describe('Test SetStravaCommandService', () => {
     await service['processCommand'](ctx);
 
     expect(telegram.sendMessage).toBeCalledWith(265, invalidLinkText, {
-      reply_to_message_id: 2,
+      message_thread_id: undefined,
+      reply_parameters: {
+        message_id: 2,
+      },
       parse_mode: 'MarkdownV2',
     });
   });
@@ -322,7 +334,10 @@ describe('Test SetStravaCommandService', () => {
     await service['processCommand'](ctx);
 
     expect(telegram.sendMessage).toBeCalledWith(265, noReplyToText, {
-      reply_to_message_id: 2,
+      message_thread_id: undefined,
+      reply_parameters: {
+        message_id: 2,
+      },
       parse_mode: 'MarkdownV2',
     });
   });
@@ -381,7 +396,10 @@ describe('Test SetStravaCommandService', () => {
     await service['processCommand'](ctx);
 
     expect(telegram.sendMessage).toBeCalledWith(265, notYourMessageText, {
-      reply_to_message_id: 2,
+      message_thread_id: undefined,
+      reply_parameters: {
+        message_id: 2,
+      },
       parse_mode: 'MarkdownV2',
     });
   });

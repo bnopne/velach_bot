@@ -6,6 +6,7 @@ import {
   User,
   CallbackQuery,
   InlineQuery,
+  MaybeInaccessibleMessage,
 } from '@telegraf/types';
 
 import { Context } from 'src/common/types/bot';
@@ -88,7 +89,7 @@ export function getCallbackQueryDataOrFail(
 
 export function getCallbackQueryMessageOrFail(
   callbackQuery: CallbackQuery,
-): Message {
+): MaybeInaccessibleMessage {
   if (!callbackQuery.message) {
     throw new Error('Callback query has no message');
   }

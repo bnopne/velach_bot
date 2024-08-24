@@ -31,7 +31,9 @@ export class HelpCommandService {
 
     ctx.telegram.sendMessage(message.chat.id, text, {
       parse_mode: 'MarkdownV2',
-      disable_web_page_preview: true,
+      link_preview_options: {
+        is_disabled: true,
+      },
       message_thread_id: message.is_topic_message
         ? message.message_thread_id
         : undefined,
