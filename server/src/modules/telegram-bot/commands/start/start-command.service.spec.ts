@@ -64,7 +64,10 @@ describe('Test StartCommandService', () => {
     await service['processMessage'](ctx);
 
     expect(telegram.sendMessage).toBeCalledWith(1, text, {
-      reply_to_message_id: 265,
+      message_thread_id: undefined,
+      reply_parameters: {
+        message_id: 265,
+      },
       parse_mode: 'MarkdownV2',
     });
   });
