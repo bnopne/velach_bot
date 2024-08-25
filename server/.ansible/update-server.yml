@@ -21,15 +21,15 @@
             name: velach_bot_backup_db.timer
             state: stopped
 
-    - name: Backup DB
-      environment:
-        VELACH_BOT_DROPBOX_TOKEN: "{{ DROPBOX_TOKEN }}"
-        VELACH_BOT_DB_DATABASE: "{{ DB_NAME }}"
-        VELACH_BOT_DB_USER: "{{ DB_USER }}"
-        VELACH_BOT_DB_PASSWORD: "{{ DB_PASSWORD }}"
-      ansible.builtin.command:
-        chdir: "{{ APP_DIR }}"
-        cmd: "./cli --backup-db pre-deploy-dump-{{ COMMIT_HASH }}"
+    # - name: Backup DB
+    #   environment:
+    #     VELACH_BOT_DROPBOX_TOKEN: "{{ DROPBOX_TOKEN }}"
+    #     VELACH_BOT_DB_DATABASE: "{{ DB_NAME }}"
+    #     VELACH_BOT_DB_USER: "{{ DB_USER }}"
+    #     VELACH_BOT_DB_PASSWORD: "{{ DB_PASSWORD }}"
+    #   ansible.builtin.command:
+    #     chdir: "{{ APP_DIR }}"
+    #     cmd: "./cli --backup-db pre-deploy-dump-{{ COMMIT_HASH }}"
 
     - name: Copy executables
       block:

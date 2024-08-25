@@ -111,12 +111,13 @@ async function backupDatabase(filename?: string): Promise<void> {
 
   const dump = readFileSync(dumpFullname);
 
-  await dropbox.filesUpload({
-    contents: dump,
-    path: `/${dumpFilename}`,
-  });
+  // FIXME: change to filesUploadSession method
+  // await dropbox.filesUpload({
+  //   contents: dump,
+  //   path: `/${dumpFilename}`,
+  // });
 
-  unlinkSync(dumpFullname);
+  // unlinkSync(dumpFullname);
 }
 
 async function donwloadLatestDump(): Promise<void> {
