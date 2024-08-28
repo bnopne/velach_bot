@@ -6,7 +6,6 @@ Wants=velach_bot_backup_db.timer
 Environment=VELACH_BOT_DB_DATABASE={{ DB_NAME }}
 Environment=VELACH_BOT_DB_USER={{ DB_USER }}
 Environment=VELACH_BOT_DB_PASSWORD={{ DB_PASSWORD }}
-Environment=VELACH_BOT_DROPBOX_TOKEN={{ DROPBOX_TOKEN }}
 Type=oneshot
 ExecStart={{ APP_DIR }}/cli --backup-db
 

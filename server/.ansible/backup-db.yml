@@ -12,7 +12,6 @@
       become: true
       become_user: "{{ OS_USER }}"
       environment:
-        VELACH_BOT_DROPBOX_TOKEN: "{{ DROPBOX_TOKEN }}"
         VELACH_BOT_DB_DATABASE: "{{ DB_NAME }}"
         VELACH_BOT_DB_USER: "{{ DB_USER }}"
         VELACH_BOT_DB_PASSWORD: "{{ DB_PASSWORD }}"

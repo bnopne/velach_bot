@@ -91,39 +91,11 @@
       become: true
       become_user: "{{ OS_USER }}"
       environment:
-        VELACH_BOT_DROPBOX_TOKEN: "{{ DROPBOX_TOKEN }}"
         VELACH_BOT_DB_DATABASE: "{{ DB_NAME }}"
         VELACH_BOT_DB_USER: "{{ DB_USER }}"
         VELACH_BOT_DB_PASSWORD: "{{ DB_PASSWORD }}"
       block:
-        - name: Fetch latest DB dump
-          ansible.builtin.command:
-            chdir: "{{ APP_DIR }}"
-            cmd: "./cli --download-latest-dump"
-
-        - name: Get stat of a dump file
-          ansible.builtin.stat:
-            path: "{{ APP_DIR }}/velach-bot-latest.sql"
-          register: dump
-
-        - name: Restore DB from dump
-          when: dump.stat.exists
-          block:
-            - name: Restore dump
-              community.postgresql.postgresql_db:
-                name: "{{ DB_NAME }}"
-                login_user: "{{ DB_USER }}"
-                login_password: "{{ DB_PASSWORD }}"
-                target: "{{ APP_DIR }}/velach-bot-latest.sql"
-                state: "restore"
-
-            - name: Delete dump file
-              ansible.builtin.file:
-                path: "{{ APP_DIR }}/velach-bot-latest.sql"
-                state: absent
-
         - name: Create empty DB
-          when: not dump.stat.exists
           ansible.builtin.command:
             chdir: "{{ APP_DIR }}"
             cmd: "./cli --create-tables"
