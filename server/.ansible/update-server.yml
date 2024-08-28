@@ -21,6 +21,32 @@
             name: velach_bot_backup_db.timer
             state: stopped
 
+    - name: Copy executables
+      block:
+        - name: Create bot directory
+          ansible.builtin.file:
+            path: "{{ APP_DIR }}"
+            owner: "{{ OS_USER }}"
+            group: "{{ OS_GROUP }}"
+            state: directory
+            recurse: true
+
+        - name: Copy server executable
+          ansible.builtin.copy:
+            src: "{{ DIST_BINARY_DIR }}/main"
+            dest: "{{ APP_DIR }}"
+            owner: "{{ OS_USER }}"
+            group: "{{ OS_GROUP }}"
+            mode: "755"
+
+        - name: Copy CLI executable
+          ansible.builtin.copy:
+            src: "{{ DIST_BINARY_DIR }}/cli"
+            dest: "{{ APP_DIR }}"
+            owner: "{{ OS_USER }}"
+            group: "{{ OS_GROUP }}"
+            mode: "755"
+
     - name: Backup DB
       environment:
         VELACH_BOT_DB_DATABASE: "{{ DB_NAME }}"
