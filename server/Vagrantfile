@@ -1,0 +1,73 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.define "master", primary: true do |master|
+    master.vm.box = "ubuntu/jammy64"
+    master.vm.hostname = "velach-bot-master"
+
+    master.vm.provider "virtualbox" do |vb|
+      vb.cpus = 2
+      vb.memory = "512"
+    end
+
+    master.vm.network "public_network", ip: "192.168.26.5"
+
+    master.vm.synced_folder "./.vagrant_data", "/vagrant_data"
+    master.vm.synced_folder "./.ansible", "/ansible"
+
+    master.vm.provision "file", source: ".vagrant_keys/master", destination: "/home/vagrant/.ssh/id_rsa"
+    master.vm.provision "file", source: ".vagrant_keys/master.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
+
+    master.vm.provision "shell", inline: <<-SHELL
+      chmod 700 /home/vagrant/.ssh
+      chmod 600 /home/vagrant/.ssh/id_rsa
+      chmod 644 /home/vagrant/.ssh/id_rsa.pub
+      ssh-keyscan 192.168.26.6 >> /home/vagrant/.ssh/known_hosts
+      chown vagrant /home/vagrant/.ssh/known_hosts
+      chmod 600 /home/vagrant/.ssh/known_hosts
+    SHELL
+
+    master.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y ansible
+    SHELL
+  end
+
+  config.vm.define "slave" do |slave|
+    slave.vm.box = "ubuntu/jammy64"
+    slave.vm.hostname = "velach-bot-slave"
+
+    slave.vm.provider "virtualbox" do |vb|
+      vb.cpus = 2
+      vb.memory = "512"
+    end
+
+    slave.vm.network "public_network", ip: "192.168.26.6"
+    slave.vm.network "forwarded_port", guest: 5432, host: 65432
+
+    slave.vm.synced_folder "./.vagrant_data", "/vagrant_data"
+
+    slave.vm.provision "file", source: ".vagrant_keys/slave", destination: "/home/vagrant/.ssh/id_rsa"
+    slave.vm.provision "file", source: ".vagrant_keys/slave.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
+
+    slave.vm.provision "shell" do |s|
+      master_ssh_pub_key = File.readlines(".vagrant_keys/master.pub").first.strip
+      s.inline = <<-SHELL
+        echo #{master_ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
+        echo #{master_ssh_pub_key} >> /root/.ssh/authorized_keys
+      SHELL
+    end
+
+    slave.vm.provision "shell", inline: <<-SHELL
+      chmod 700 /home/vagrant/.ssh
+      chmod 600 /home/vagrant/.ssh/id_rsa
+      chmod 644 /home/vagrant/.ssh/id_rsa.pub
+      chmod 600 /home/vagrant/.ssh/authorized_keys
+    SHELL
+
+    slave.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+    SHELL
+  end
+end
