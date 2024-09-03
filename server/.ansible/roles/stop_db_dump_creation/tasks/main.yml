@@ -1,0 +1,4 @@
+- name: stop db dump creation
+  ansible.builtin.systemd:
+    name: velach_bot_backup_db.service
+    state: stopped

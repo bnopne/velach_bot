@@ -1,6 +1,7 @@
 # compiled output
 /dist
-/dist-binary
+/dist-binary/cli
+/dist-binary/main
 /node_modules
 
 # Logs

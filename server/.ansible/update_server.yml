@@ -1,0 +1,45 @@
+- name: velach_bot server update
+  hosts: all
+  tasks:
+    - name: stop bot
+      block:
+        - name: include stop_server
+          include_role:
+            name: stop_server
+
+        - name: include unschedule_db_backup
+          include_role:
+            name: unschedule_db_backup
+
+        - name: include stop_db_dump_creation
+          ansible.builtin.systemd:
+            name: stop_db_dump_creation
+
+    - name: include place_executables
+      include_role:
+        name: place_executables
+
+    - name: include create_db_dump
+      vars:
+        DB_DUMP_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_DIR') }}"
+        DB_DUMP_FILENAME: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_FILENAME') }}"
+      include_role:
+        name: create_db_dump
+
+    - name: include apply_db_migrations
+      include_role:
+        name: apply_db_migrations
+
+    - name: include setup_systemd_units
+      include_role:
+        name: setup_systemd_units
+
+    - name: start bot
+      block:
+        - name: include start_server
+          include_role:
+            name: start_server
+
+        - name: include schedule_db_backup
+          include_role:
+            name: schedule_db_backup

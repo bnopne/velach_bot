@@ -1,18 +1,20 @@
-name: Restart Server
+name: Create DB Dump
 on:
   workflow_dispatch:
 jobs:
-  restart-server:
-    name: Restart Server
+  create_db_dump:
+    name: Create DB Dump
     runs-on: ubuntu-22.04
     steps:
       - name: Fetch Repo
         uses: actions/checkout@v3
 
       - name: Run Playbook
+        env:
+          VELACH_BOT_DB_DUMP_DIR: /tmp
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: server/.ansible/restart_server.yml
+          playbook: server/.ansible/create_db_dump.yml
           vault_password: ${{ secrets.VAULT_PASSWORD }}
           options: |
             --inventory "server/.ansible/inventories/production.yml"

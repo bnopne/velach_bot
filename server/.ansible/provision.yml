@@ -1,122 +1,26 @@
-- name: Velach Bot Server Provision
+- name: velach_bot server provision
   hosts: all
-  vars:
-    DIST_BINARY_DIR: "{{ lookup('ansible.builtin.env', 'GITHUB_WORKSPACE') }}/server/dist-binary"
   tasks:
-    - name: Install and configure basic software
-      block:
-        - name: Update all packages to their latest version
-          ansible.builtin.apt:
-            name: "*"
-            state: latest
+    - name: include install_basic_software_role
+      include_role:
+        name: install_basic_software
 
-        - name: Install packages
-          ansible.builtin.apt:
-            update_cache: true
-            name:
-              - postgresql
-              - python3-pip
-            state: present
+    - name: include setup_os_user
+      include_role:
+        name: setup_os_user
 
-        - name: Install Psycopg2
-          ansible.builtin.pip:
-            name: psycopg2-binary
+    - name: include setup_postgres
+      include_role:
+        name: setup_postgres
 
-        - name: Reboot server
-          ansible.builtin.reboot:
-            reboot_timeout: 3600
+    - name: include place_executables
+      include_role:
+        name: place_executables
 
-    - name: Setup OS user
-      block:
-        - name: Create user group
-          ansible.builtin.group:
-            name: "{{ OS_GROUP }}"
-            state: present
+    - name: include setup_blank_db
+      include_role:
+        name: setup_blank_db
 
-        - name: Create user
-          ansible.builtin.user:
-            name: "{{ OS_USER }}"
-            password: "{{ OS_PASSWORD }}"
-            state: present
-
-    - name: Create and configure database
-      become: true
-      become_user: postgres
-      block:
-        - name: Create bot database
-          community.postgresql.postgresql_db:
-            name: "{{ DB_NAME }}"
-
-        - name: Create bot database user
-          community.postgresql.postgresql_user:
-            name: "{{ DB_USER }}"
-            password: "{{ DB_PASSWORD }}"
-            encrypted: true
-
-        - name: Grant database privileges to bot user
-          community.postgresql.postgresql_privs:
-            database: "{{ DB_NAME }}"
-            type: database
-            roles: "{{ DB_USER }}"
-            privs: ALL
-            state: present
-
-    - name: Copy executables
-      block:
-        - name: Create bot directory
-          ansible.builtin.file:
-            path: "{{ APP_DIR }}"
-            owner: "{{ OS_USER }}"
-            group: "{{ OS_GROUP }}"
-            state: directory
-            recurse: true
-
-        - name: Copy server executable
-          ansible.builtin.copy:
-            src: "{{ DIST_BINARY_DIR }}/main"
-            dest: "{{ APP_DIR }}"
-            owner: "{{ OS_USER }}"
-            group: "{{ OS_GROUP }}"
-            mode: "755"
-
-        - name: Copy CLI executable
-          ansible.builtin.copy:
-            src: "{{ DIST_BINARY_DIR }}/cli"
-            dest: "{{ APP_DIR }}"
-            owner: "{{ OS_USER }}"
-            group: "{{ OS_GROUP }}"
-            mode: "755"
-
-    - name: Prepare DB
-      become: true
-      become_user: "{{ OS_USER }}"
-      environment:
-        VELACH_BOT_DB_DATABASE: "{{ DB_NAME }}"
-        VELACH_BOT_DB_USER: "{{ DB_USER }}"
-        VELACH_BOT_DB_PASSWORD: "{{ DB_PASSWORD }}"
-      block:
-        - name: Create empty DB
-          ansible.builtin.command:
-            chdir: "{{ APP_DIR }}"
-            cmd: "./cli --create-tables"
-
-    - name: Setup systemd
-      block:
-        - name: Emit server unit
-          ansible.builtin.template:
-            src: units/velach_bot_server.service.j2
-            dest: /lib/systemd/system/velach_bot_server.service
-
-        - name: Emit DB backup unit
-          ansible.builtin.template:
-            src: units/velach_bot_backup_db.service.j2
-            dest: /lib/systemd/system/velach_bot_backup_db.service
-
-        - name: Emit DB backup timer
-          ansible.builtin.template:
-            src: units/velach_bot_backup_db.timer.j2
-            dest: /lib/systemd/system/velach_bot_backup_db.timer
-
-        - name: Reload units
-          ansible.builtin.systemd:
-            daemon_reload: true
+    - name: include setup_systemd_units
+      include_role:
+        name: setup_systemd_units

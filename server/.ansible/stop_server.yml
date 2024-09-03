@@ -1,0 +1,6 @@
+- name: stop server
+  hosts: all
+  tasks:
+    - name: include stop_server
+      include_role:
+        name: stop_server

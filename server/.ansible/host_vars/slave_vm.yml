@@ -1,0 +1,12 @@
+ansible_host: 192.168.26.6
+ansible_port: 22
+ansible_user: root
+OS_USER: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_USER') }}"
+OS_PASSWORD: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_PASSWORD') }}"
+OS_GROUP: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_GROUP') }}"
+DB_NAME: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_NAME') }}"
+DB_USER: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_USER') }}"
+DB_PASSWORD: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_PASSWORD') }}"
+TELEGRAM_TOKEN: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_TELEGRAM_TOKEN') }}"
+APP_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_APP_DIR') }}"
+DIST_BINARY_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DIST_BINARY_DIR') }}"

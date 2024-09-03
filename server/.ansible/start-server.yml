@@ -1,7 +1,0 @@
-- name: Start Server
-  hosts: all
-  tasks:
-    - name: Make sure a service unit is running
-      ansible.builtin.systemd:
-        name: velach_bot_server.service
-        state: started
