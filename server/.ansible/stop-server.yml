@@ -1,7 +1,0 @@
-- name: Stop Server
-  hosts: all
-  tasks:
-    - name: Make sure a service unit is stopped
-      ansible.builtin.systemd:
-        name: velach_bot_server.service
-        state: stopped

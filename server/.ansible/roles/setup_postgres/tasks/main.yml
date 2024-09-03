@@ -1,0 +1,21 @@
+- name: setup postgres
+  become: true
+  become_user: postgres
+  block:
+    - name: create database
+      community.postgresql.postgresql_db:
+        name: "{{ DB_NAME }}"
+
+    - name: create database user
+      community.postgresql.postgresql_user:
+        name: "{{ DB_USER }}"
+        password: "{{ DB_PASSWORD }}"
+        encrypted: true
+
+    - name: grant database privileges
+      community.postgresql.postgresql_privs:
+        database: "{{ DB_NAME }}"
+        type: database
+        roles: "{{ DB_USER }}"
+        privs: ALL
+        state: present

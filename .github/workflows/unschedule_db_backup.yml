@@ -1,9 +1,9 @@
-name: Restart Server
+name: Unschedule DB Backup
 on:
   workflow_dispatch:
 jobs:
-  restart-server:
-    name: Restart Server
+  unschedule_db_backup:
+    name: Unschedule DB Backup
     runs-on: ubuntu-22.04
     steps:
       - name: Fetch Repo
@@ -12,7 +12,7 @@ jobs:
       - name: Run Playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: server/.ansible/restart_server.yml
+          playbook: server/.ansible/unschedule_db_backup.yml
           vault_password: ${{ secrets.VAULT_PASSWORD }}
           options: |
             --inventory "server/.ansible/inventories/production.yml"

@@ -1,0 +1,18 @@
+- name: emit server unit
+  ansible.builtin.template:
+    src: units/velach_bot_server.service.j2
+    dest: /lib/systemd/system/velach_bot_server.service
+
+- name: emit db backup unit
+  ansible.builtin.template:
+    src: units/velach_bot_backup_db.service.j2
+    dest: /lib/systemd/system/velach_bot_backup_db.service
+
+- name: emit db backup timer
+  ansible.builtin.template:
+    src: units/velach_bot_backup_db.timer.j2
+    dest: /lib/systemd/system/velach_bot_backup_db.timer
+
+- name: reload units
+  ansible.builtin.systemd:
+    daemon_reload: true

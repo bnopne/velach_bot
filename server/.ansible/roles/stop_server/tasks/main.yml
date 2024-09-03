@@ -1,0 +1,4 @@
+- name: stop server
+  ansible.builtin.systemd:
+    name: velach_bot_server.service
+    state: stopped

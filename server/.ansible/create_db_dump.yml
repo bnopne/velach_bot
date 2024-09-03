@@ -1,0 +1,17 @@
+- name: create db dump
+  hosts: all
+  vars:
+    DB_DUMP_DIR: "/tmp"
+    DB_DUMP_FILENAME: "velach_bot_db_{{ lookup('pipe', 'date +%d-%m-%Y_%H-%M-%S') }}"
+  tasks:
+    - name: include stop_server
+      include_role:
+        name: stop_server
+
+    - name: include create_db_dump
+      include_role:
+        name: create_db_dump
+
+    - name: include start_server
+      include_role:
+        name: start_server

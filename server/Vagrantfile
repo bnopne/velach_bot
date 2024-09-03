@@ -14,7 +14,8 @@ Vagrant.configure("2") do |config|
     master.vm.network "public_network", ip: "192.168.26.5"
 
     master.vm.synced_folder "./.vagrant_data", "/vagrant_data"
-    master.vm.synced_folder "./.ansible", "/ansible"
+    master.vm.synced_folder "./.ansible", "/home/vagrant/velach_bot_ansible"
+    master.vm.synced_folder "./dist-binary", "/home/vagrant/dist_binary"
 
     master.vm.provision "file", source: ".vagrant_keys/master", destination: "/home/vagrant/.ssh/id_rsa"
     master.vm.provision "file", source: ".vagrant_keys/master.pub", destination: "/home/vagrant/.ssh/id_rsa.pub"
@@ -31,6 +32,15 @@ Vagrant.configure("2") do |config|
     master.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get install -y ansible
+      echo "export VELACH_BOT_OS_USER=\"velach_bot\"" >> /home/vagrant/.profile
+      echo "export VELACH_BOT_OS_PASSWORD=\"pass\"" >> /home/vagrant/.profile
+      echo "export VELACH_BOT_OS_GROUP=\"velach_bot\"" >> /home/vagrant/.profile
+      echo "export VELACH_BOT_DB_NAME=\"velach_bot\"" >> /home/vagrant/.profile
+      echo "export VELACH_BOT_DB_USER=\"velach_bot\"" >> /home/vagrant/.profile
+      echo "export VELACH_BOT_DB_PASSWORD=\"pass\"" >> /home/vagrant/.profile
+      echo "export VELACH_BOT_TELEGRAM_TOKEN=\"token\"" >> /home/vagrant/.profile
+      echo "export VELACH_BOT_APP_DIR=\"/opt/velach_bot\"" >> /home/vagrant/.profile
+      echo "export VELACH_BOT_DIST_BINARY_DIR=\"/home/vagrant/dist_binary\"" >> /home/vagrant/.profile
     SHELL
   end
 
@@ -64,10 +74,6 @@ Vagrant.configure("2") do |config|
       chmod 600 /home/vagrant/.ssh/id_rsa
       chmod 644 /home/vagrant/.ssh/id_rsa.pub
       chmod 600 /home/vagrant/.ssh/authorized_keys
-    SHELL
-
-    slave.vm.provision "shell", inline: <<-SHELL
-      apt-get update
     SHELL
   end
 end

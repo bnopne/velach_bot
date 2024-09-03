@@ -2,8 +2,8 @@ name: Update Server
 on:
   workflow_dispatch:
 jobs:
-  server_provision:
-    name: Server Provision
+  update_server:
+    name: Update Server
     runs-on: ubuntu-22.04
 
     steps:
@@ -56,9 +56,13 @@ jobs:
           npm run build-binary:bot
 
       - name: Run Playbook
+        env:
+          VELACH_BOT_DIST_BINARY_DIR: ${{ GITHUB_WORKSPACE }}/server/dist-binary
+          VELACH_BOT_DB_DUMP_DIR: /tmp
+          VELACH_BOT_DB_DUMP_FILENAME: velach_bot_db_dump_before_deploy_${{ GITHUB_SHA }}
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: server/.ansible/update-server.yml
+          playbook: server/.ansible/update_server.yml
           vault_password: ${{ secrets.VAULT_PASSWORD }}
           options: |
-            --inventory "server/.ansible/inventory.yml"
+            --inventory "server/.ansible/inventories/production.yml"

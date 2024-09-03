@@ -1,7 +1,0 @@
-- name: Stop DB Backup Timer
-  hosts: all
-  tasks:
-    - name: Make sure a timer unit is stopped
-      ansible.builtin.systemd:
-        name: velach_bot_backup_db.timer
-        state: stopped

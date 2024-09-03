@@ -2,7 +2,7 @@ name: Stop Server
 on:
   workflow_dispatch:
 jobs:
-  server_provision:
+  stop_server:
     name: Stop server
     runs-on: ubuntu-22.04
     steps:
@@ -12,7 +12,7 @@ jobs:
       - name: Run Playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: server/.ansible/stop-server.yml
+          playbook: server/.ansible/stop_server.yml
           vault_password: ${{ secrets.VAULT_PASSWORD }}
           options: |
-            --inventory "server/.ansible/inventory.yml"
+            --inventory "server/.ansible/inventories/production.yml"

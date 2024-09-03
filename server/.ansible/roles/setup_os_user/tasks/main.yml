@@ -1,0 +1,10 @@
+- name: create group
+  ansible.builtin.group:
+    name: "{{ OS_GROUP }}"
+    state: present
+
+- name: create user
+  ansible.builtin.user:
+    name: "{{ OS_USER }}"
+    password: "{{ OS_PASSWORD }}"
+    state: present
