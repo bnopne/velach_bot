@@ -57,9 +57,9 @@ jobs:
 
       - name: Run Playbook
         env:
-          VELACH_BOT_DIST_BINARY_DIR: $GITHUB_WORKSPACE/server/dist-binary
+          VELACH_BOT_DIST_BINARY_DIR: ${{ github.workspace }}/server/dist-binary
           VELACH_BOT_DB_DUMP_DIR: /tmp
-          VELACH_BOT_DB_DUMP_FILENAME: velach_bot_db_dump_before_deploy_$GITHUB_SHA
+          VELACH_BOT_DB_DUMP_FILENAME: velach_bot_db_dump_before_deploy_${{ github.sha }}
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: server/.ansible/update_server.yml
