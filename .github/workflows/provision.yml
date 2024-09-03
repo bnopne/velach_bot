@@ -56,7 +56,7 @@ jobs:
 
       - name: Run Playbook
         env:
-          VELACH_BOT_DIST_BINARY_DIR: ${{ GITHUB_WORKSPACE }}/server/dist-binary
+          VELACH_BOT_DIST_BINARY_DIR: ${{ github.workspace }}/server/dist-binary
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: server/.ansible/provision.yml
