@@ -51,7 +51,7 @@
     "telegraf": "^4.16.3"
   },
   "devDependencies": {
-    "@nestjs/cli": "^8.2.8",
+    "@nestjs/cli": "^10.4.4",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
     "@pgtyped/cli": "^0.13.0",
