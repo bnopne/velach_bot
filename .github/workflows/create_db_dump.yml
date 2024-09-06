@@ -15,6 +15,8 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: server/.ansible/create_db_dump.yml
+          inventory: |
+            ${{ secrets.INVENTORY }}
           vault_password: ${{ secrets.VAULT_PASSWORD }}
           options: |
             --inventory "server/.ansible/inventories/production.yml"

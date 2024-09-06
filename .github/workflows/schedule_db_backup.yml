@@ -13,6 +13,8 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: server/.ansible/schedule_db_backup.yml
+          inventory: |
+            ${{ secrets.INVENTORY }}
           vault_password: ${{ secrets.VAULT_PASSWORD }}
           options: |
             --inventory "server/.ansible/inventories/production.yml"
