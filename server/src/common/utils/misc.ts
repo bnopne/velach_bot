@@ -12,3 +12,7 @@ export function getPreviousIndex(
 
   return currentIndex - 1;
 }
+
+export function isNil(value: unknown): value is null | undefined {
+  return value == null;
+}

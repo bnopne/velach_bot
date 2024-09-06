@@ -19,7 +19,7 @@ import {
   getContextMessageOrFail,
   getMessageReplyTo,
 } from 'src/common/utils/telegram-context';
-import { getNextIndex, getPreviousIndex } from 'src/common/utils/misc';
+import { getNextIndex, getPreviousIndex, isNil } from 'src/common/utils/misc';
 import { Context, Middleware } from 'src/common/types/bot';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { ChatService } from 'src/modules/entities/chat/chat.service';
@@ -411,7 +411,7 @@ export class BikecheckCommandService {
 
     const message = getCallbackQueryMessageOrFail(callbackQuery);
 
-    if (!activeBikechecks.length) {
+    if (activeBikechecks.length === 0) {
       const caption = await this.templatesService.renderTemplate(
         join(__dirname, 'templates', 'no-bikechecks.mustache'),
         {},
@@ -438,6 +438,70 @@ export class BikecheckCommandService {
     }
 
     await ctx.telegram.answerCbQuery(callbackQuery.id);
+  }
+
+  private async deleteStrava(ctx: Context): Promise<void> {
+    const client = getContextConnectionOrFail(ctx);
+    const callbackQuery = getContextCallbackQueryOrFail(ctx);
+    const data = parseCallbackData<IBikecheckCommandData>(
+      getCallbackQueryDataOrFail(callbackQuery),
+    );
+
+    const bikecheck = await this.bikecheckService.getById(
+      client,
+      data.bikecheckId,
+    );
+
+    if (!bikecheck) {
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
+      return;
+    }
+
+    if (bikecheck.userId !== callbackQuery.from.id.toString(10)) {
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
+      return;
+    }
+
+    const user = await this.userService.findById(client, bikecheck.userId);
+
+    if (!user) {
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
+      return;
+    }
+
+    if (isNil(user.stravaLink)) {
+      await ctx.telegram.answerCbQuery(
+        callbackQuery.id,
+        'Уже удалена или еще не добавлена',
+      );
+      return;
+    }
+
+    user.stravaLink = undefined;
+
+    await this.userService.updateUser(client, user);
+
+    const activeBikechecks = await this.bikecheckService.findActive(
+      client,
+      bikecheck.userId,
+    );
+
+    const currentBikecheckIndex = activeBikechecks.findIndex(
+      (bc) => bc.id === bikecheck.id,
+    );
+
+    if (currentBikecheckIndex < 0) {
+      await ctx.telegram.answerCbQuery(callbackQuery.id);
+      return;
+    }
+
+    await this.editBikecheckMessage(
+      ctx,
+      activeBikechecks[currentBikecheckIndex],
+      activeBikechecks,
+    );
+
+    await ctx.telegram.answerCbQuery(callbackQuery.id, 'Готово');
   }
 
   private async processInlineQuery(ctx: Context): Promise<void> {
@@ -504,6 +568,16 @@ export class BikecheckCommandService {
             'bikecheck-command/callback-query/delete',
           ),
           this.processDeleteCommand.bind(this),
+        ]);
+      case CALLBACK_QUERY_COMMANDS.DELETE_STRAVA:
+        return composeMiddlewares([
+          this.dbMiddlewareService.getMiddleware(),
+          this.preliminaryDataSaveService.getMiddleware(),
+          this.privateChatsOnlyMiddlewareService.getMiddleware(),
+          this.featureAnalyticsService.getMiddleware(
+            'bikecheck-command/callback-query/delete-strava',
+          ),
+          this.deleteStrava.bind(this),
         ]);
       case CALLBACK_QUERY_COMMANDS.TOGGLE_ON_SALE:
         return composeMiddlewares([
