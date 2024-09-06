@@ -14,7 +14,7 @@ jobs:
         with:
           playbook: server/.ansible/restart_server.yml
           inventory: |
-            ${{ secrets.PRODUCTION_INVENTORY }}
+            ${{ secrets.INVENTORY }}
           vault_password: ${{ secrets.VAULT_PASSWORD }}
           options: |
             --inventory "server/.ansible/inventories/production.yml"
