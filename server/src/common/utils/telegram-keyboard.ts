@@ -17,7 +17,7 @@ export function parseCallbackData<T>(rawData: string): T {
 export function getCommandButton(
   text: string,
   command: string,
-  data: Record<string, any>,
+  data: Record<string, unknown>,
 ): InlineKeyboardButton.CallbackButton {
   return {
     text,

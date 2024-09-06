@@ -52,6 +52,15 @@ export function getPrivateBikecheckKeyboard(
           },
         ),
       ],
+      [
+        getCommandButton(
+          'Удалить страву',
+          CALLBACK_QUERY_COMMANDS.DELETE_STRAVA,
+          {
+            bikecheckId: bikecheck.id,
+          },
+        ),
+      ],
     ],
   };
 }

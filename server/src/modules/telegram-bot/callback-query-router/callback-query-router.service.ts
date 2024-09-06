@@ -80,7 +80,6 @@ export class CallbackQueryRouterService {
         this.bikecheckCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.SHOW_NEXT_BIKECHECK,
         ),
-
       [CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_BIKECHECK]:
         this.bikecheckCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_BIKECHECK,
@@ -88,6 +87,10 @@ export class CallbackQueryRouterService {
       [CALLBACK_QUERY_COMMANDS.DELETE_BIKECHECK]:
         this.bikecheckCommandService.getCallbackQueryMiddleware(
           CALLBACK_QUERY_COMMANDS.DELETE_BIKECHECK,
+        ),
+      [CALLBACK_QUERY_COMMANDS.DELETE_STRAVA]:
+        this.bikecheckCommandService.getCallbackQueryMiddleware(
+          CALLBACK_QUERY_COMMANDS.DELETE_STRAVA,
         ),
       [CALLBACK_QUERY_COMMANDS.TOGGLE_ON_SALE]:
         this.bikecheckCommandService.getCallbackQueryMiddleware(
