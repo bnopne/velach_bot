@@ -1,27 +1,27 @@
 import { BaseEntity } from 'src/common/database/base-entity';
 
-export interface IBikecheckChatMtmConstructorParams {
+export type TBikecheckChatMtmConstructorParams = {
   bikecheckId: string;
   chatId: string;
   isBanned: boolean;
-}
+};
 
-export interface IBikecheckChatMtmTableRow {
+export type TBikecheckChatMtmTableRow = {
   bikecheckId: string;
   chatId: string;
   isBanned: boolean;
-}
+};
 
 export class BikecheckChatMtm extends BaseEntity {
   bikecheckId: string;
   chatId: string;
   isBanned: boolean;
 
-  static fromTableRow(row: IBikecheckChatMtmTableRow): BikecheckChatMtm {
+  static fromTableRow(row: TBikecheckChatMtmTableRow): BikecheckChatMtm {
     return new BikecheckChatMtm(row);
   }
 
-  constructor(params: IBikecheckChatMtmConstructorParams) {
+  constructor(params: TBikecheckChatMtmConstructorParams) {
     super();
 
     this.bikecheckId = params.bikecheckId;

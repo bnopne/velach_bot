@@ -1,6 +1,6 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 
-import { Optional } from 'src/common/types/utils';
+import { TOptional } from 'src/common/types/utils';
 
 @Injectable()
 export class InMemoryStorageService implements OnModuleDestroy {
@@ -29,7 +29,7 @@ export class InMemoryStorageService implements OnModuleDestroy {
     }
   }
 
-  get<T>(key: string): Optional<T> {
+  get<T>(key: string): TOptional<T> {
     return this.storage[key] as T;
   }
 

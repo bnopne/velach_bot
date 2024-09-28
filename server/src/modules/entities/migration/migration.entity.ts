@@ -1,23 +1,23 @@
 import { BaseEntity } from 'src/common/database/base-entity';
 
-export interface IMigrationTableRow {
+export type TTableRow = {
   id: string;
   name: string;
   createdAt: Date;
-}
+};
 
-export interface IMigrationConstructorParams {
+export type TConstructorParams = {
   id: string;
   name: string;
   createdAt: Date;
-}
+};
 
 export class Migration extends BaseEntity {
   id: string;
   name: string;
   createdAt: Date;
 
-  static fromTableRow(row: IMigrationTableRow): Migration {
+  static fromTableRow(row: TTableRow): Migration {
     return new Migration({
       id: row.id,
       name: row.name,
@@ -25,7 +25,7 @@ export class Migration extends BaseEntity {
     });
   }
 
-  constructor(params: IMigrationConstructorParams) {
+  constructor(params: TConstructorParams) {
     super();
 
     this.id = params.id;

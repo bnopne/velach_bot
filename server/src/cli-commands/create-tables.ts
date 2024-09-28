@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { join } from 'node:path';
+import { cwd } from 'node:process';
 
 import { disconnect, getConnection } from 'src/common/database/connection';
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
@@ -9,7 +10,7 @@ export async function createTables(): Promise<void> {
   const connection = await getConnection(configService.poolConfig);
 
   const script = readFileSync(
-    join(dirname(__dirname), 'common/database/create-tables.sql'),
+    join(cwd(), 'src', 'common', 'database', 'create-tables.sql'),
   );
 
   try {

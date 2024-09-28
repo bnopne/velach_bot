@@ -14,7 +14,7 @@ import {
   getMessageFromOrFail,
   getContextMessageOrFail,
 } from 'src/common/utils/telegram-context';
-import { Context, Middleware } from 'src/common/types/bot';
+import { Context, TMiddleware } from 'src/common/types/bot';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
 import { parseCallbackData } from 'src/common/utils/telegram-keyboard';
@@ -208,7 +208,7 @@ export class DeletedCommandService {
     );
   }
 
-  getCallbackQueryMiddleware(command: string): Middleware {
+  getCallbackQueryMiddleware(command: string): TMiddleware {
     switch (command) {
       case CALLBACK_QUERY_COMMANDS.RESTORE_BIKECHECK:
         return composeMiddlewares([
@@ -247,7 +247,7 @@ export class DeletedCommandService {
     }
   }
 
-  getMessageMiddleware(): Middleware {
+  getMessageMiddleware(): TMiddleware {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),

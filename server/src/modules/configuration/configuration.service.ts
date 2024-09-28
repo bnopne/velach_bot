@@ -8,9 +8,10 @@ export class ConfigurationService {
   readonly telegramBotToken: string;
   readonly maxMessageAge: number; // in seconds
 
-  readonly adminSiteAccessCodeTTL: number; // in seconds
   readonly host: string;
   readonly port: number;
+
+  readonly jwtSecret: string;
 
   constructor() {
     /**
@@ -44,6 +45,11 @@ export class ConfigurationService {
      */
     this.host = this.getStringValue('VELACH_BOT_HOST', '127.0.0.1');
     this.port = this.getNumberValue('VELACH_BOT_PORT', 20000);
+
+    /**
+     * Auth configuration
+     */
+    this.jwtSecret = this.getStringValue('VELACH_BOT_JWT_SECRET', 'jwt-secret');
   }
 
   getStringValueOrFail(name: string): string {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { join } from 'path';
-import { Context, Middleware } from 'src/common/types/bot';
+import { Context, TMiddleware } from 'src/common/types/bot';
 import {
   getContextConnectionOrFail,
   getContextMessageOrFail,
@@ -120,7 +120,7 @@ export class CheckbikeCommandService {
     });
   }
 
-  getMessageMiddleware(): Middleware {
+  getMessageMiddleware(): TMiddleware {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),

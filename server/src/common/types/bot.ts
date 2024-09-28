@@ -18,9 +18,9 @@ export interface Handler {
   (context: Context): Promise<any>;
 }
 
-export type Middleware = TelegrafMiddleware<Context>;
+export type TMiddleware = TelegrafMiddleware<Context>;
 
-export type RouteFn = (ctx: Context) => string | number;
+export type TRouteFn = (ctx: Context) => string | number;
 
 export type MiddlewareNext = () => Promise<void>;
 

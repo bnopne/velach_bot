@@ -2,7 +2,7 @@ import { join } from 'path';
 
 import { Injectable } from '@nestjs/common';
 
-import { Context, Middleware } from 'src/common/types/bot';
+import { Context, TMiddleware } from 'src/common/types/bot';
 import {
   getCallbackQueryDataOrFail,
   getCallbackQueryMessageOrFail,
@@ -142,7 +142,7 @@ export class TopCommandService {
     await ctx.telegram.answerCbQuery(callbackQuery.id);
   }
 
-  getCallbackQueryMiddleware(): Middleware {
+  getCallbackQueryMiddleware(): TMiddleware {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
@@ -153,7 +153,7 @@ export class TopCommandService {
     ]);
   }
 
-  getMessageMiddleware(): Middleware {
+  getMessageMiddleware(): TMiddleware {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),

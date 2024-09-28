@@ -54,9 +54,9 @@ DROP TABLE IF EXISTS "FeatureAnalytics" CASCADE;
 -- DROP TABLE "Migration";
 DROP TABLE IF EXISTS "Migration" CASCADE;
 
--- public."AdminSiteAccess" definition
+-- public."BotAdmin" definition
 
 -- Drop table
 
--- DROP TABLE "AdminSiteAccess";
-DROP TABLE IF EXISTS "AdminSiteAccess" CASCADE;
+-- DROP TABLE "BotAdmin";
+DROP TABLE IF EXISTS "BotAdmin" CASCADE;

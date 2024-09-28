@@ -1,24 +1,24 @@
 import { BaseEntity } from 'src/common/database/base-entity';
 
-export interface IUserChatMtmConstructorParams {
+export type TConstructorParams = {
   chatId: string;
   userId: string;
-}
+};
 
-export interface IUserChatMtmTableRow {
+export type TTableRow = {
   chatId: string;
   userId: string;
-}
+};
 
 export class UserChatMtm extends BaseEntity {
   chatId: string;
   userId: string;
 
-  static fromTableRow(row: IUserChatMtmTableRow): UserChatMtm {
+  static fromTableRow(row: TTableRow): UserChatMtm {
     return new UserChatMtm(row);
   }
 
-  constructor(params: IUserChatMtmConstructorParams) {
+  constructor(params: TConstructorParams) {
     super();
 
     this.userId = params.userId;

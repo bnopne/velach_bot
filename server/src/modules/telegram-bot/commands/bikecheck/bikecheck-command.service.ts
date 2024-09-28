@@ -20,7 +20,7 @@ import {
   getMessageReplyTo,
 } from 'src/common/utils/telegram-context';
 import { getNextIndex, getPreviousIndex, isNil } from 'src/common/utils/misc';
-import { Context, Middleware } from 'src/common/types/bot';
+import { Context, TMiddleware } from 'src/common/types/bot';
 import { UserService } from 'src/modules/entities/user/user.service';
 import { ChatService } from 'src/modules/entities/chat/chat.service';
 import { Bikecheck } from 'src/modules/entities/bikecheck/bikecheck.entity';
@@ -557,7 +557,7 @@ export class BikecheckCommandService {
     });
   }
 
-  getCallbackQueryMiddleware(command: string): Middleware {
+  getCallbackQueryMiddleware(command: string): TMiddleware {
     switch (command) {
       case CALLBACK_QUERY_COMMANDS.DELETE_BIKECHECK:
         return composeMiddlewares([
@@ -632,7 +632,7 @@ export class BikecheckCommandService {
     }
   }
 
-  getInlineQueryMiddleware(): Middleware {
+  getInlineQueryMiddleware(): TMiddleware {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
@@ -643,7 +643,7 @@ export class BikecheckCommandService {
     ]);
   }
 
-  getMessageMiddleware(): Middleware {
+  getMessageMiddleware(): TMiddleware {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),

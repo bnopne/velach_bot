@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
+import { Context, TMiddleware, MiddlewareNext } from 'src/common/types/bot';
 
 @Injectable()
 export class PrivateChatsOnlyMiddlewareService {
-  getMiddleware(): Middleware {
+  getMiddleware(): TMiddleware {
     return this.middleware.bind(this);
   }
 

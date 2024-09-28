@@ -1,35 +1,35 @@
 import { User as TelegramUser } from '@telegraf/types';
 
 import { BaseEntity } from 'src/common/database/base-entity';
-import { Optional } from 'src/common/types/utils';
+import { type TOptional } from 'src/common/types/utils';
 
-export interface IUserConstructorParams {
-  firstName: Optional<string>;
+export type TConstructorParams = {
+  firstName: TOptional<string>;
   id: string;
-  isBot: Optional<boolean>;
-  lastName: Optional<string>;
-  stravaLink: Optional<string>;
-  username: Optional<string>;
-}
+  isBot: TOptional<boolean>;
+  lastName: TOptional<string>;
+  stravaLink: TOptional<string>;
+  username: TOptional<string>;
+};
 
-export interface IUserTableRow {
+export type TTableRow = {
   firstName: string | null;
   id: string;
   isBot: boolean | null;
   lastName: string | null;
   stravaLink: string | null;
   username: string | null;
-}
+};
 
 export class User extends BaseEntity {
-  firstName: Optional<string>;
+  firstName: TOptional<string>;
   id: string;
-  isBot: Optional<boolean>;
-  lastName: Optional<string>;
-  stravaLink: Optional<string>;
-  username: Optional<string>;
+  isBot: TOptional<boolean>;
+  lastName: TOptional<string>;
+  stravaLink: TOptional<string>;
+  username: TOptional<string>;
 
-  static fromTableRow(row: IUserTableRow): User {
+  static fromTableRow(row: TTableRow): User {
     return new User(row);
   }
 
@@ -44,7 +44,7 @@ export class User extends BaseEntity {
     });
   }
 
-  constructor(params: IUserConstructorParams) {
+  constructor(params: TConstructorParams) {
     super();
 
     this.id = params.id;

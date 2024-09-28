@@ -1,22 +1,22 @@
 import { BaseEntity } from 'src/common/database/base-entity';
 
-export interface IBikecheckVoteConstructorParams {
+export type TBikecheckVoteConstructorParams = {
   bikecheckId: string;
   createdAt: Date;
   id: string;
   points: number;
   updatedAt: Date;
   userId: string;
-}
+};
 
-export interface IBikecheckVoteTableRow {
+export type TBikecheckVoteTableRow = {
   bikecheckId: string;
   createdAt: Date;
   id: string;
   points: number;
   updatedAt: Date;
   userId: string;
-}
+};
 
 export class BikecheckVote extends BaseEntity {
   bikecheckId: string;
@@ -26,11 +26,11 @@ export class BikecheckVote extends BaseEntity {
   updatedAt: Date;
   userId: string;
 
-  static fromTableRow(row: IBikecheckVoteTableRow): BikecheckVote {
+  static fromTableRow(row: TBikecheckVoteTableRow): BikecheckVote {
     return new BikecheckVote(row);
   }
 
-  constructor(params: IBikecheckVoteConstructorParams) {
+  constructor(params: TBikecheckVoteConstructorParams) {
     super();
 
     this.bikecheckId = params.bikecheckId;

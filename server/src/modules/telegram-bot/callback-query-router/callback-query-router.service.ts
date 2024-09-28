@@ -3,9 +3,9 @@ import { Composer } from 'telegraf';
 import { CallbackQuery } from '@telegraf/types';
 
 import {
-  RouteFn,
+  TRouteFn,
   Context,
-  Middleware,
+  TMiddleware,
   IBaseCallbackQueryData,
 } from 'src/common/types/bot';
 import {
@@ -24,7 +24,7 @@ const logger = new Logger('Callback Queries Service');
 
 @Injectable()
 export class CallbackQueryRouterService {
-  private middleware: Middleware;
+  private middleware: TMiddleware;
   private bikecheckCommandService: BikecheckCommandService;
   private deletedCommandService: DeletedCommandService;
   private onSaleCommandService: OnSaleCommandService;
@@ -44,7 +44,7 @@ export class CallbackQueryRouterService {
     this.topCommandService = topCommandService;
     this.myLikesCommandService = myLikesCommandService;
 
-    const routeFn: RouteFn = (ctx) => {
+    const routeFn: TRouteFn = (ctx) => {
       let callbackQuery: CallbackQuery;
 
       try {
@@ -74,7 +74,7 @@ export class CallbackQueryRouterService {
 
     this.middleware = Composer.dispatch<
       Context,
-      Record<string | number, Middleware>
+      Record<string | number, TMiddleware>
     >(routeFn, {
       [CALLBACK_QUERY_COMMANDS.SHOW_NEXT_BIKECHECK]:
         this.bikecheckCommandService.getCallbackQueryMiddleware(
@@ -140,7 +140,7 @@ export class CallbackQueryRouterService {
     });
   }
 
-  getMiddleware(): Middleware {
+  getMiddleware(): TMiddleware {
     return this.middleware;
   }
 }

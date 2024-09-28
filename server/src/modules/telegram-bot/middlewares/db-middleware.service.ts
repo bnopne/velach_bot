@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
 import { PgPoolService } from 'src/modules/pg-pool/pg-pool.service';
-import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
+import { Context, TMiddleware, MiddlewareNext } from 'src/common/types/bot';
 import { handlers } from 'src/modules/telegram-bot/error-handler';
 
 const logger = new Logger('DB Middleware Service');
@@ -40,7 +40,7 @@ export class DbMiddlewareService {
     connection.release();
   }
 
-  getMiddleware(): Middleware {
+  getMiddleware(): TMiddleware {
     return this.middleware.bind(this);
   }
 }

@@ -2,7 +2,7 @@ import { join } from 'path';
 
 import { Injectable } from '@nestjs/common';
 
-import { Context, Middleware } from 'src/common/types/bot';
+import { Context, TMiddleware } from 'src/common/types/bot';
 import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.service';
 import {
   getMessageChatOrFail,
@@ -46,7 +46,7 @@ export class StartCommandService {
     });
   }
 
-  getMessageMiddleware(): Middleware {
+  getMessageMiddleware(): TMiddleware {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),

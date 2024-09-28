@@ -7,7 +7,7 @@ import {
   InlineQuery,
 } from '@telegraf/types';
 
-import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
+import { Context, TMiddleware, MiddlewareNext } from 'src/common/types/bot';
 import {
   getContextConnectionOrFail,
   getMessageChatOrFail,
@@ -31,7 +31,7 @@ export class PreliminaryDataSaveService {
     private userChatMtmService: UserChatMtmService,
   ) {}
 
-  getMiddleware(): Middleware {
+  getMiddleware(): TMiddleware {
     return this.middleware.bind(this);
   }
 

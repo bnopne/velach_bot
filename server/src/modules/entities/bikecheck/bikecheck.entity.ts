@@ -1,18 +1,18 @@
 import { BaseEntity } from 'src/common/database/base-entity';
-import { Optional } from 'src/common/types/utils';
+import { TOptional } from 'src/common/types/utils';
 
-export interface IBikecheckConstructorParams {
+export type TBikecheckConstructorParams = {
   id: string;
   userId: string;
   telegramImageId: string;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
-  onSale: Optional<boolean>;
-  saleRank: Optional<number>;
-}
+  onSale: TOptional<boolean>;
+  saleRank: TOptional<number>;
+};
 
-export interface IBikecheckTableRow {
+export type TBikecheckTableRow = {
   createdAt: Date;
   id: string;
   isActive: boolean;
@@ -21,7 +21,7 @@ export interface IBikecheckTableRow {
   telegramImageId: string;
   updatedAt: Date;
   userId: string;
-}
+};
 
 export class Bikecheck extends BaseEntity {
   id: string;
@@ -30,14 +30,14 @@ export class Bikecheck extends BaseEntity {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
-  onSale: Optional<boolean>;
-  saleRank: Optional<number>;
+  onSale: TOptional<boolean>;
+  saleRank: TOptional<number>;
 
-  static fromTableRow(row: IBikecheckTableRow): Bikecheck {
+  static fromTableRow(row: TBikecheckTableRow): Bikecheck {
     return new Bikecheck(row);
   }
 
-  constructor(params: IBikecheckConstructorParams) {
+  constructor(params: TBikecheckConstructorParams) {
     super();
 
     this.id = params.id;

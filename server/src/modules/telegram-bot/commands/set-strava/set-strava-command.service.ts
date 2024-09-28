@@ -2,7 +2,7 @@ import { join } from 'path';
 
 import { Injectable } from '@nestjs/common';
 
-import { Context, Middleware } from 'src/common/types/bot';
+import { Context, TMiddleware } from 'src/common/types/bot';
 import {
   getContextConnectionOrFail,
   getMessageFromOrFail,
@@ -126,7 +126,7 @@ export class SetStravaCommandService {
     });
   }
 
-  getMiddleware(): Middleware {
+  getMiddleware(): TMiddleware {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),

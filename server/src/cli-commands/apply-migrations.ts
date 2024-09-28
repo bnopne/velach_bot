@@ -1,12 +1,13 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, parse } from 'node:path';
+import { cwd } from 'node:process';
 
 import { getConnection, disconnect } from 'src/common/database/connection';
 import { MigrationService } from 'src/modules/entities/migration/migration.service';
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 export async function applyMigrations(): Promise<void> {
-  const migrationsDir = join(__dirname, 'common', 'database', 'migrations');
+  const migrationsDir = join(cwd(), 'src', 'common', 'database', 'migrations');
 
   const migrationFiles = existsSync(migrationsDir)
     ? readdirSync(migrationsDir, { withFileTypes: true })

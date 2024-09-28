@@ -6,6 +6,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "nest": "nest",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -34,7 +35,7 @@
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
-    "@nestjs/jwt": "^10.0.1",
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^8.4.7",
     "class-transformer": "^0.5.1",

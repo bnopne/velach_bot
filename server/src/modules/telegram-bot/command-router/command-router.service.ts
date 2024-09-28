@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Composer } from 'telegraf';
 
-import { RouteFn, Context, Middleware } from 'src/common/types/bot';
+import { TRouteFn, Context, TMiddleware } from 'src/common/types/bot';
 import {
   getContextMessageOrFail,
   getMessageText,
@@ -30,7 +30,7 @@ function parseCommand(text: string, botUsername: string): string | null {
 
 @Injectable()
 export class CommandRouterService {
-  private middleware: Middleware;
+  private middleware: TMiddleware;
   private helpCommandService: HelpCommandService;
   private bikecheckCommandService: BikecheckCommandService;
   private checkbikeCommandService: CheckbikeCommandService;
@@ -62,7 +62,7 @@ export class CommandRouterService {
     this.topCommandService = topCommandService;
     this.myLikesCommandService = myLikesCommandService;
 
-    const routeFn: RouteFn = (ctx) => {
+    const routeFn: TRouteFn = (ctx) => {
       const command = parseCommand(
         getMessageText(getContextMessageOrFail(ctx)) || '',
         ctx.botInfo.username,
@@ -81,7 +81,7 @@ export class CommandRouterService {
 
     this.middleware = Composer.dispatch<
       Context,
-      Record<string | number, Middleware>
+      Record<string | number, TMiddleware>
     >(routeFn, {
       [COMMANDS.HELP]: this.helpCommandService.getMessageMiddleware(),
       [COMMANDS.BIKECHECK]: this.bikecheckCommandService.getMessageMiddleware(),
@@ -98,7 +98,7 @@ export class CommandRouterService {
     });
   }
 
-  getMiddleware(): Middleware {
+  getMiddleware(): TMiddleware {
     return this.middleware;
   }
 }

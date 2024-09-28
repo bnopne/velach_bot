@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { differenceInSeconds, fromUnixTime } from 'date-fns';
 
-import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
+import { Context, TMiddleware, MiddlewareNext } from 'src/common/types/bot';
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class MessageAgeMiddlewareService {
     }
   }
 
-  getMiddleware(): Middleware {
+  getMiddleware(): TMiddleware {
     return this.middleware.bind(this);
   }
 }

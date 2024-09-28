@@ -1,26 +1,26 @@
 import { Chat as TelegramChat } from '@telegraf/types';
 
 import { BaseEntity } from 'src/common/database/base-entity';
-import { Optional } from 'src/common/types/utils';
+import { type TOptional } from 'src/common/types/utils';
 
-export interface IChatConstructorParams {
+export type TChatConstructorParams = {
   id: string;
-  title: Optional<string>;
-  type: Optional<string>;
-}
+  title: TOptional<string>;
+  type: TOptional<string>;
+};
 
-export interface IChatTableRow {
+export type TChatTableRow = {
   id: string;
   title: string | null;
   type: string | null;
-}
+};
 
 export class Chat extends BaseEntity {
   id: string;
-  title: Optional<string>;
-  type: Optional<string>;
+  title: TOptional<string>;
+  type: TOptional<string>;
 
-  static fromTableRow(row: IChatTableRow): Chat {
+  static fromTableRow(row: TChatTableRow): Chat {
     return new Chat(row);
   }
 
@@ -40,7 +40,7 @@ export class Chat extends BaseEntity {
     });
   }
 
-  constructor(params: IChatConstructorParams) {
+  constructor(params: TChatConstructorParams) {
     super();
 
     this.id = params.id;

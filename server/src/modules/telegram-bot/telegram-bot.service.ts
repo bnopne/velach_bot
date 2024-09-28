@@ -15,12 +15,12 @@ import { ConfigurationService } from 'src/modules/configuration/configuration.se
 
 @Injectable()
 export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
-  private bot: Telegraf;
-  private logger: Logger;
-  private configurationService: ConfigurationService;
-  private commandRouterService: CommandRouterService;
-  private callbackQueriesService: CallbackQueryRouterService;
-  private bikecheckCommandService: BikecheckCommandService;
+  private readonly bot: Telegraf;
+  private readonly logger: Logger;
+  private readonly configurationService: ConfigurationService;
+  private readonly commandRouterService: CommandRouterService;
+  private readonly callbackQueriesService: CallbackQueryRouterService;
+  private readonly bikecheckCommandService: BikecheckCommandService;
 
   constructor(
     configService: ConfigurationService,
