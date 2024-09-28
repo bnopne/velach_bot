@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { Migration } from './migration.entity';
 import { findByName, getAll, insert } from './queries';

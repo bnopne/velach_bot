@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { PgPoolService } from 'src/modules/pg-pool/pg-pool.service';
-import { Context, TMiddleware, MiddlewareNext } from 'src/common/types/bot';
+import { Context, TMiddleware, TMiddlewareNext } from 'src/common/types/bot';
 import { handlers } from 'src/modules/telegram-bot/error-handler';
 
 const logger = new Logger('DB Middleware Service');
@@ -18,7 +18,7 @@ export class DbMiddlewareService {
 
   private async middleware(
     context: Context,
-    next: MiddlewareNext,
+    next: TMiddlewareNext,
   ): Promise<void> {
     let connection: PoolClient;
 

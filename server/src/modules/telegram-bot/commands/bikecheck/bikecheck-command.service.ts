@@ -1,7 +1,7 @@
 import { join } from 'path';
 
 import { Injectable } from '@nestjs/common';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.service';
 import { DbMiddlewareService } from 'src/modules/telegram-bot/middlewares/db-middleware.service';

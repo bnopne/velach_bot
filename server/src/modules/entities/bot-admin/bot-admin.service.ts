@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { BotAdmin } from './bot-admin.entity';
 import { findByUserId } from './queries';

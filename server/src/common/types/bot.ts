@@ -1,7 +1,7 @@
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 import {
   Context as TelegrafContext,
-  Middleware as TelegrafMiddleware,
+  type Middleware as TelegrafMiddleware,
 } from 'telegraf';
 
 export class Context extends TelegrafContext {
@@ -10,20 +10,20 @@ export class Context extends TelegrafContext {
   };
 }
 
-export interface ErrorHandler {
+export type TErrorHandler = {
   (error: unknown, context: Context): Promise<void>;
-}
+};
 
-export interface Handler {
+export type THandler = {
   (context: Context): Promise<any>;
-}
+};
 
 export type TMiddleware = TelegrafMiddleware<Context>;
 
 export type TRouteFn = (ctx: Context) => string | number;
 
-export type MiddlewareNext = () => Promise<void>;
+export type TMiddlewareNext = () => Promise<void>;
 
-export interface IBaseCallbackQueryData {
+export type TBaseCallbackQueryData = {
   c: number;
-}
+};

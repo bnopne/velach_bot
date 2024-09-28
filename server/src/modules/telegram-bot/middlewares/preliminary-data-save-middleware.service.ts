@@ -7,7 +7,7 @@ import {
   InlineQuery,
 } from '@telegraf/types';
 
-import { Context, TMiddleware, MiddlewareNext } from 'src/common/types/bot';
+import { Context, TMiddleware, TMiddlewareNext } from 'src/common/types/bot';
 import {
   getContextConnectionOrFail,
   getMessageChatOrFail,
@@ -19,7 +19,7 @@ import { ChatService } from 'src/modules/entities/chat/chat.service';
 import { Chat } from 'src/modules/entities/chat/chat.entity';
 import { User } from 'src/modules/entities/user/user.entity';
 import { UserChatMtmService } from 'src/modules/entities/user-chat-mtm/user-chat-mtm.service';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 const logger = new Logger('Preliminary Data Save Service');
 
@@ -37,7 +37,7 @@ export class PreliminaryDataSaveService {
 
   private async middleware(
     context: Context,
-    next: MiddlewareNext,
+    next: TMiddlewareNext,
   ): Promise<void> {
     if (!context.message) {
       return next();

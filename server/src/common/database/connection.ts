@@ -1,8 +1,8 @@
-import { Pool, PoolConfig, PoolClient, ClientConfig } from 'pg';
+import { Pool, type PoolConfig, type PoolClient, type ClientConfig } from 'pg';
 
-export interface IRunWithPGConnection<T> {
+export type TRunWithPGConnection<T> = {
   (connection: PoolClient, ...args: any[]): Promise<T>;
-}
+};
 
 let pool: Pool;
 

@@ -1,4 +1,4 @@
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 import {
   Message,
   PhotoSize,

@@ -1,6 +1,6 @@
 import { join } from 'path';
 
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { USER_IDS } from 'src/common/database/test-database';
 import { Context } from 'src/common/types/bot';

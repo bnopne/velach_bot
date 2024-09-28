@@ -1,6 +1,6 @@
-import { ErrorHandler, Context } from 'src/common/types/bot';
+import { TErrorHandler, Context } from 'src/common/types/bot';
 
-export const handlers: ErrorHandler[] = [];
+export const handlers: TErrorHandler[] = [];
 
 export async function handleError(
   error: unknown,

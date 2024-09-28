@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { BikecheckChatMtm } from 'src/modules/entities/bikecheck-chat-mtm/bikecheck-chat-mtm.entity';
 import { find } from 'src/modules/entities/bikecheck-chat-mtm/queries';

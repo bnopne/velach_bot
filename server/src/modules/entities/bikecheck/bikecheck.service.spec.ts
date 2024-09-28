@@ -1,5 +1,5 @@
 import { TestingModule } from '@nestjs/testing';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { USER_IDS } from 'src/common/database/test-database';
 import { disconnect } from 'src/common/database/connection';

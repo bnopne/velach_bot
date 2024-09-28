@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { Context, TMiddleware, MiddlewareNext } from 'src/common/types/bot';
+import { Context, TMiddleware, TMiddlewareNext } from 'src/common/types/bot';
 
 @Injectable()
 export class PrivateChatsOnlyMiddlewareService {
@@ -10,7 +10,7 @@ export class PrivateChatsOnlyMiddlewareService {
 
   private async middleware(
     context: Context,
-    next: MiddlewareNext,
+    next: TMiddlewareNext,
   ): Promise<void> {
     const chat = context.chat;
 

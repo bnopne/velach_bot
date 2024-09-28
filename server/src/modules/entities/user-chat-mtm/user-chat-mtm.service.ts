@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { UserChatMtm } from 'src/modules/entities/user-chat-mtm/user-chat-mtm.entity';
 import { find, insert } from 'src/modules/entities/user-chat-mtm/queries';

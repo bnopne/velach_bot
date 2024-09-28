@@ -1,4 +1,4 @@
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { UserService } from 'src/modules/entities/user/user.service';
 import { User } from 'src/modules/entities/user/user.entity';

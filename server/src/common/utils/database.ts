@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 type WrappedFunc<TResult> = (...args: unknown[]) => Promise<TResult>;
 

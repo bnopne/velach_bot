@@ -6,7 +6,7 @@ import {
   TRouteFn,
   Context,
   TMiddleware,
-  IBaseCallbackQueryData,
+  TBaseCallbackQueryData,
 } from 'src/common/types/bot';
 import {
   getContextCallbackQueryOrFail,
@@ -54,10 +54,10 @@ export class CallbackQueryRouterService {
         return -1;
       }
 
-      let data: IBaseCallbackQueryData;
+      let data: TBaseCallbackQueryData;
 
       try {
-        data = parseCallbackData<IBaseCallbackQueryData>(
+        data = parseCallbackData<TBaseCallbackQueryData>(
           getCallbackQueryDataOrFail(callbackQuery),
         );
       } catch (err) {

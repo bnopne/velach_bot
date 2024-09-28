@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 
 import { FeatureAnalyticsService } from 'src/modules/entities/feature-analytics/feature-analytics.service';
-import { Context, TMiddleware, MiddlewareNext } from 'src/common/types/bot';
+import { Context, TMiddleware, TMiddlewareNext } from 'src/common/types/bot';
 import { getContextConnectionOrFail } from 'src/common/utils/telegram-context';
 
 const logger = new Logger('Feature Analytics Middleware Service');
@@ -13,7 +13,7 @@ export class FeatureAnalyticsMiddlewareService {
 
   private async middleware(
     ctx: Context,
-    next: MiddlewareNext,
+    next: TMiddlewareNext,
     feature: string,
   ): Promise<void> {
     const client = getContextConnectionOrFail(ctx);

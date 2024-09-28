@@ -11,6 +11,8 @@ export class ConfigurationService {
   readonly host: string;
   readonly port: number;
 
+  readonly adminPasscodeLength: number;
+  readonly adminPasscodeTTL: number;
   readonly jwtSecret: string;
 
   constructor() {
@@ -49,6 +51,14 @@ export class ConfigurationService {
     /**
      * Auth configuration
      */
+    this.adminPasscodeLength = this.getNumberValue(
+      'VELACH_BOT_ADMIN_PASSCODE_LENGTH',
+      16,
+    );
+    this.adminPasscodeTTL = this.getNumberValue(
+      'VELACH_BOT_ADMIN_PASSCODE_TTL',
+      3600,
+    );
     this.jwtSecret = this.getStringValue('VELACH_BOT_JWT_SECRET', 'jwt-secret');
   }
 

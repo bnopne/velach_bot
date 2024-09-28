@@ -1,8 +1,8 @@
-import { Provider } from '@nestjs/common';
+import { type Provider } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 import { Telegram } from 'telegraf';
-import { UserFromGetMe } from '@telegraf/types';
+import { type UserFromGetMe } from '@telegraf/types';
 import { config } from 'dotenv';
 
 import { getConnection } from 'src/common/database/connection';

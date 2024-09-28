@@ -1,10 +1,24 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 
-import { TOptional } from 'src/common/types/utils';
+type TInMemoryValueSetOptions = {
+  TTL?: number;
+  ownerId?: string;
+};
+
+type TInMemoryValueAccessOptions = {
+  ownerId?: string;
+};
+
+type TInMemoryValue = {
+  value: unknown;
+  metadata: {
+    ownerId?: string;
+  };
+};
 
 @Injectable()
 export class InMemoryStorageService implements OnModuleDestroy {
-  private storage: Record<string, unknown>;
+  private storage: Record<string, TInMemoryValue>;
   private storageTimeouts: Record<string, ReturnType<typeof setTimeout>>;
 
   constructor() {
@@ -12,7 +26,11 @@ export class InMemoryStorageService implements OnModuleDestroy {
     this.storageTimeouts = {};
   }
 
-  set(key: string, value: unknown, TTL?: number): void {
+  set(
+    key: string,
+    value: unknown,
+    { TTL, ownerId }: TInMemoryValueSetOptions,
+  ): void {
     const timeout = this.storageTimeouts[key];
 
     if (timeout != null) {
@@ -20,23 +38,50 @@ export class InMemoryStorageService implements OnModuleDestroy {
       delete this.storageTimeouts[key];
     }
 
-    this.storage[key] = value;
+    this.storage[key] = {
+      value,
+      metadata: {
+        ownerId,
+      },
+    };
 
-    if (TTL != null) {
+    if (typeof TTL === 'number') {
       this.storageTimeouts[key] = setTimeout(() => {
         delete this.storage[key];
       }, TTL);
     }
   }
 
-  get<T>(key: string): TOptional<T> {
-    return this.storage[key] as T;
+  get<T>(key: string, { ownerId }: TInMemoryValueAccessOptions): T {
+    const storedValue = this.storage[key];
+
+    if (!storedValue) {
+      throw new Error('In-memory value does not exist');
+    }
+
+    const { value, metadata } = storedValue;
+
+    if (metadata.ownerId && metadata.ownerId !== ownerId) {
+      throw new Error('In-memory value access denied');
+    }
+
+    return value as T;
   }
 
-  delete(key: string): void {
-    if (Object.keys(this.storage).includes(key)) {
-      delete this.storage[key];
+  delete(key: string, { ownerId }: TInMemoryValueAccessOptions): void {
+    const storedValue = this.storage[key];
+
+    if (!storedValue) {
+      return;
     }
+
+    const { metadata } = storedValue;
+
+    if (metadata.ownerId && metadata.ownerId !== ownerId) {
+      throw new Error('In-memory value delete denied');
+    }
+
+    delete this.storage[key];
 
     if (Object.keys(this.storageTimeouts).includes(key)) {
       clearTimeout(this.storageTimeouts[key]);

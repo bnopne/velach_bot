@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { Bikecheck } from 'src/modules/entities/bikecheck/bikecheck.entity';
 import {

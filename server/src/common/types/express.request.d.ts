@@ -1,6 +1,6 @@
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
-import { JwtPayload } from 'src/modules/admin-site-auth/types';
+import { type JwtPayload } from 'src/modules/admin-site-auth/types';
 
 declare global {
   namespace Express {

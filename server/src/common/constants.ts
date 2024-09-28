@@ -8,6 +8,7 @@ export const COMMANDS = {
   ON_SALE: 'onsale',
   TOP: 'top',
   MY_LIKES: 'mylikes',
+  GET_ADMIN_PASSCODE: 'getadminpasscode',
 };
 
 export const CALLBACK_QUERY_COMMANDS = {

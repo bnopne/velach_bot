@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { differenceInSeconds, fromUnixTime } from 'date-fns';
 
-import { Context, TMiddleware, MiddlewareNext } from 'src/common/types/bot';
+import { Context, TMiddleware, TMiddlewareNext } from 'src/common/types/bot';
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 @Injectable()
 export class MessageAgeMiddlewareService {
   constructor(private configurationService: ConfigurationService) {}
 
-  private async middleware(ctx: Context, next: MiddlewareNext): Promise<void> {
+  private async middleware(ctx: Context, next: TMiddlewareNext): Promise<void> {
     const now = new Date();
     let updateDate: Date;
 
