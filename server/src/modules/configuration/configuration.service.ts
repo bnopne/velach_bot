@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PoolConfig } from 'pg';
+import { type PoolConfig } from 'pg';
 
 @Injectable()
 export class ConfigurationService {

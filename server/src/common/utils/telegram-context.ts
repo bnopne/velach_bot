@@ -1,12 +1,12 @@
 import { type PoolClient } from 'pg';
 import {
-  Message,
-  PhotoSize,
-  Chat,
-  User,
-  CallbackQuery,
-  InlineQuery,
-  MaybeInaccessibleMessage,
+  type Message,
+  type PhotoSize,
+  type Chat,
+  type User,
+  type CallbackQuery,
+  type InlineQuery,
+  type MaybeInaccessibleMessage,
 } from '@telegraf/types';
 
 import { Context } from 'src/common/types/bot';

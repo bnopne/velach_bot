@@ -1,8 +1,8 @@
 import {
   Injectable,
-  OnModuleInit,
-  OnModuleDestroy,
   Logger,
+  type OnModuleInit,
+  type OnModuleDestroy,
 } from '@nestjs/common';
 import { Pool, type PoolClient } from 'pg';
 

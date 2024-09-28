@@ -1,5 +1,5 @@
-import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { Injectable, type NestMiddleware, Logger } from '@nestjs/common';
+import { type Request, type Response, type NextFunction } from 'express';
 
 import { PgPoolService } from 'src/modules/pg-pool/pg-pool.service';
 

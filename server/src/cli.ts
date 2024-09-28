@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 import { createCommand } from 'commander';
 
 import { execute } from './cli-commands/common';
-import { type ICliCommand } from './cli-commands/types';
+import { type TCLICommand } from './cli-commands/types';
 import { applyMigrations } from './cli-commands/apply-migrations';
 import { createDbDump } from './cli-commands/create-db-dump';
 import { createMigration } from './cli-commands/create-migration';
@@ -22,7 +22,7 @@ const program = createCommand()
   .option('--apply-migrations', 'Applies all pending migrations')
   .parse(process.argv);
 
-let command: ICliCommand = () => Promise.reject('unknown CLI params');
+let command: TCLICommand = () => Promise.reject('unknown CLI params');
 
 if (program.opts().createTables) {
   console.log('execute CREATE TABLES');

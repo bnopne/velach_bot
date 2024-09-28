@@ -1,3 +1,3 @@
-export type ICliCommand = {
+export type TCLICommand = {
   (): Promise<void>;
 };

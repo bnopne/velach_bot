@@ -1,12 +1,12 @@
-import { Request } from 'express';
+import { type Request } from 'express';
 import { type PoolClient } from 'pg';
 
-type WrappedFunc<TResult> = (...args: unknown[]) => Promise<TResult>;
+type TWrappedFunc<TResult> = (...args: unknown[]) => Promise<TResult>;
 
 export function wrapInTransaction<TResult>(
   connection: PoolClient,
-  func: WrappedFunc<TResult>,
-): WrappedFunc<TResult> {
+  func: TWrappedFunc<TResult>,
+): TWrappedFunc<TResult> {
   return async function (...args: unknown[]): Promise<TResult> {
     await connection.query('START TRANSACTION');
 

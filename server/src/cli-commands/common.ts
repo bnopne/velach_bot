@@ -1,6 +1,6 @@
-import { type ICliCommand } from './types';
+import { type TCLICommand } from './types';
 
-export async function execute(command: ICliCommand): Promise<void> {
+export async function execute(command: TCLICommand): Promise<void> {
   try {
     await command();
   } catch (err) {
