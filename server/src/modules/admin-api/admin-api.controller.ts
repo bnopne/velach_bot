@@ -1,4 +1,26 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Post, UnauthorizedException, Body } from '@nestjs/common';
 
-@Controller('admin-api')
-export class AdminApiController {}
+import { AuthService } from 'src/modules/auth/auth.service';
+
+import { SignInWithPasscodeBody } from './dto/sign-in-with-passcode.body';
+import { SignInWithPasscodeResponse } from './dto/sign-in-with-passcode.response';
+
+@Controller('auth')
+export class AdminApiController {
+  constructor(private readonly authService: AuthService) {}
+
+  @Post('sign-in-with-passcode')
+  async signInWithPasscode(
+    @Body() body: SignInWithPasscodeBody,
+  ): Promise<SignInWithPasscodeResponse> {
+    let jwt: string;
+
+    try {
+      jwt = await this.authService.signInWithPasscode(body.passcode);
+    } catch (err) {
+      throw new UnauthorizedException();
+    }
+
+    return new SignInWithPasscodeResponse(jwt);
+  }
+}

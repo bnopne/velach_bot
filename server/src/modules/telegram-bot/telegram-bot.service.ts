@@ -1,8 +1,8 @@
 import {
   Injectable,
-  OnModuleInit,
-  OnModuleDestroy,
   Logger,
+  type OnModuleInit,
+  type OnModuleDestroy,
 } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
 
@@ -50,8 +50,8 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleInit(): Promise<void> {
-    this.logger.log('Starting Telegram bot');
-    await this.bot.launch();
+    this.logger.log('Start Telegram bot');
+    this.bot.launch();
   }
 
   async onModuleDestroy(): Promise<void> {
