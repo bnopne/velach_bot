@@ -8,6 +8,7 @@ import { InMemoryStorageModule } from 'src/modules/in-memory-storage/in-memory-s
 
 import { AuthService } from './auth.service';
 import { AdminPasscodeService } from './admin-passcode.service';
+import { AuthGuard } from './auth.guard';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { AdminPasscodeService } from './admin-passcode.service';
     RandomModule,
     InMemoryStorageModule,
   ],
-  providers: [AuthService, AdminPasscodeService],
-  exports: [AuthService, AdminPasscodeService],
+  providers: [AuthService, AdminPasscodeService, AuthGuard],
+  exports: [AuthService, AdminPasscodeService, AuthGuard],
 })
 export class AuthModule {}

@@ -25,6 +25,11 @@ export class AdminPasscodeService {
   }
 
   async verifyPasscode(passcode: string): Promise<string> {
-    return this.inMemoryStorageService.get(`admin-passcode/${passcode}`, {});
+    const userId = this.inMemoryStorageService.get<string>(
+      `admin-passcode/${passcode}`,
+      {},
+    );
+    this.inMemoryStorageService.delete(`admin-passcode/${passcode}`, {});
+    return userId;
   }
 }
