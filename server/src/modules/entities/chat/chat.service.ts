@@ -6,6 +6,7 @@ import {
   findById,
   insertChat,
   updateChat,
+  getChats,
 } from 'src/modules/entities/chat/queries';
 
 @Injectable()
@@ -50,5 +51,19 @@ export class ChatService {
     }
 
     return dbChat;
+  }
+
+  async getChats(
+    client: PoolClient,
+    type: string,
+    limit = 100,
+    offset = 0,
+  ): Promise<Chat[]> {
+    const rows = await getChats.run(
+      { type, limit: limit.toString(10), offset: offset.toString(10) },
+      client,
+    );
+
+    return rows.map((r) => Chat.fromTableRow(r));
   }
 }

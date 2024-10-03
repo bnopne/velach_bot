@@ -17,7 +17,7 @@ export interface IGetAllQuery {
   result: IGetAllResult;
 }
 
-const getAllIR: any = {"name":"getAll","params":[],"usedParamSet":{},"statement":{"body":"SELECT *\nFROM \"Migration\"\nORDER BY \"createdAt\" ASC","loc":{"a":19,"b":68,"line":2,"col":0}}};
+const getAllIR: any = {"name":"getAll","params":[],"usedParamSet":{},"statement":{"body":"SELECT *\r\nFROM \"Migration\"\r\nORDER BY \"createdAt\" ASC","loc":{"a":20,"b":71,"line":2,"col":0}}};
 
 /**
  * Query generated from SQL:
@@ -48,7 +48,7 @@ export interface IInsertQuery {
   result: IInsertResult;
 }
 
-const insertIR: any = {"name":"insert","params":[{"name":"name","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":133,"b":136,"line":8,"col":9}]}}],"usedParamSet":{"name":true},"statement":{"body":"INSERT INTO \"Migration\" (\"name\")\nVALUES (:name)\nRETURNING *","loc":{"a":91,"b":149,"line":7,"col":0}}};
+const insertIR: any = {"name":"insert","params":[{"name":"name","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":140,"b":143,"line":8,"col":9}]}}],"usedParamSet":{"name":true},"statement":{"body":"INSERT INTO \"Migration\" (\"name\")\r\nVALUES (:name)\r\nRETURNING *","loc":{"a":97,"b":157,"line":7,"col":0}}};
 
 /**
  * Query generated from SQL:
@@ -79,7 +79,7 @@ export interface IFindByNameQuery {
   result: IFindByNameResult;
 }
 
-const findByNameIR: any = {"name":"findByName","params":[{"name":"name","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":218,"b":221,"line":14,"col":16}]}}],"usedParamSet":{"name":true},"statement":{"body":"SELECT *\nFROM \"Migration\"\nWHERE \"name\" = :name","loc":{"a":176,"b":221,"line":12,"col":0}}};
+const findByNameIR: any = {"name":"findByName","params":[{"name":"name","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":231,"b":234,"line":14,"col":16}]}}],"usedParamSet":{"name":true},"statement":{"body":"SELECT *\r\nFROM \"Migration\"\r\nWHERE \"name\" = :name","loc":{"a":187,"b":234,"line":12,"col":0}}};
 
 /**
  * Query generated from SQL:

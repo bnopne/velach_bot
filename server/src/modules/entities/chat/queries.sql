@@ -20,3 +20,12 @@ SET
   "title" = :title
 WHERE "id" = :id
 RETURNING *;
+
+/*
+  @name getChats
+*/
+SELECT *
+FROM "Chat"
+WHERE "type" = :type
+LIMIT :limit
+OFFSET :offset;

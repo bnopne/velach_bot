@@ -3,13 +3,13 @@ import { Chat as TelegramChat } from '@telegraf/types';
 import { BaseEntity } from 'src/common/database/base-entity';
 import { type TOptional } from 'src/common/types/utils';
 
-export type TChatConstructorParams = {
+export type TConstructorParams = {
   id: string;
   title: TOptional<string>;
   type: TOptional<string>;
 };
 
-export type TChatTableRow = {
+export type TTableRow = {
   id: string;
   title: string | null;
   type: string | null;
@@ -20,7 +20,7 @@ export class Chat extends BaseEntity {
   title: TOptional<string>;
   type: TOptional<string>;
 
-  static fromTableRow(row: TChatTableRow): Chat {
+  static fromTableRow(row: TTableRow): Chat {
     return new Chat(row);
   }
 
@@ -40,7 +40,7 @@ export class Chat extends BaseEntity {
     });
   }
 
-  constructor(params: TChatConstructorParams) {
+  constructor(params: TConstructorParams) {
     super();
 
     this.id = params.id;

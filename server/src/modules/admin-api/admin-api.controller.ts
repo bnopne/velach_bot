@@ -5,17 +5,23 @@ import {
   Body,
   Get,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 
 import { AuthService } from 'src/modules/auth/auth.service';
-import { AuthGuard } from 'src/modules/auth/auth.guard';
 
-import { SignInWithPasscodeBody } from './dto/sign-in-with-passcode.body';
-import { SignInWithPasscodeResponse } from './dto/sign-in-with-passcode.response';
+import { SignInWithPasscodeBody } from './dto/sign-in-with-passcode/body';
+import { SignInWithPasscodeResponse } from './dto/sign-in-with-passcode/response';
+import { GetChatsResponse } from './dto/get-chats/response';
+import { AuthGuard } from '@nestjs/passport';
+import { ChatService } from 'src/modules/entities/chat/chat.service';
 
 @Controller('auth')
 export class AdminApiController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly chatService: ChatService,
+  ) {}
 
   @Post('sign-in-with-passcode')
   async signInWithPasscode(
@@ -33,8 +39,16 @@ export class AdminApiController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('test')
-  async test() {
-    return 'test';
+  @Get('chats')
+  async getChats(
+    @Query('search') search: string,
+    @Query('type') type: string,
+    @Query('limit') limit: string,
+    @Query('offset') offset: string,
+  ): Promise<GetChatsResponse> {
+    const chats = this.chatService.getChats();
+    return {
+      chats: [],
+    };
   }
 }

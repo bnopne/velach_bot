@@ -17,7 +17,7 @@ export interface IFindByUserIdQuery {
   result: IFindByUserIdResult;
 }
 
-const findByUserIdIR: any = {"name":"findByUserId","params":[{"name":"userId","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":68,"b":73,"line":4,"col":18}]}}],"usedParamSet":{"userId":true},"statement":{"body":"SELECT *\nFROM \"BotAdmin\"\nWHERE \"userId\" = :userId","loc":{"a":25,"b":73,"line":2,"col":0}}};
+const findByUserIdIR: any = {"name":"findByUserId","params":[{"name":"userId","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":71,"b":76,"line":4,"col":18}]}}],"usedParamSet":{"userId":true},"statement":{"body":"SELECT *\r\nFROM \"BotAdmin\"\r\nWHERE \"userId\" = :userId","loc":{"a":26,"b":76,"line":2,"col":0}}};
 
 /**
  * Query generated from SQL:
