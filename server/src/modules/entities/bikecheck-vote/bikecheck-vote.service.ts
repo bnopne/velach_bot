@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
-import { BikecheckVote } from 'src/modules/entities/bikecheck-vote/bikecheck-vote.entity';
+import { BikecheckVote } from './bikecheck-vote.entity';
 import {
   findById,
   getBikecheckLikesCount,
@@ -11,7 +11,7 @@ import {
   insert,
   getRank,
   findTopBikecheck,
-} from 'src/modules/entities/bikecheck-vote/queries';
+} from './queries';
 
 @Injectable()
 export class BikecheckVoteService {

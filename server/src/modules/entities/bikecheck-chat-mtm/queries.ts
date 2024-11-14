@@ -20,28 +20,7 @@ export interface IFindQuery {
   result: IFindResult;
 }
 
-const findIR: any = {
-  name: 'find',
-  params: [
-    {
-      name: 'bikecheckId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 73, b: 83, line: 4, col: 23 }] },
-    },
-    {
-      name: 'chatId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 101, b: 106, line: 4, col: 51 }] },
-    },
-  ],
-  usedParamSet: { bikecheckId: true, chatId: true },
-  statement: {
-    body: 'SELECT *\nFROM "BikecheckChatMtm"\nWHERE "bikecheckId" = :bikecheckId AND "chatId" = :chatId',
-    loc: { a: 17, b: 106, line: 2, col: 0 },
-  },
-};
+const findIR: any = {"name":"find","params":[{"name":"bikecheckId","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":76,"b":86,"line":4,"col":23}]}},{"name":"chatId","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":104,"b":109,"line":4,"col":51}]}}],"usedParamSet":{"bikecheckId":true,"chatId":true},"statement":{"body":"SELECT *\r\nFROM \"BikecheckChatMtm\"\r\nWHERE \"bikecheckId\" = :bikecheckId AND \"chatId\" = :chatId","loc":{"a":18,"b":109,"line":2,"col":0}}};
 
 /**
  * Query generated from SQL:
@@ -51,4 +30,6 @@ const findIR: any = {
  * WHERE "bikecheckId" = :bikecheckId AND "chatId" = :chatId
  * ```
  */
-export const find = new PreparedQuery<IFindParams, IFindResult>(findIR);
+export const find = new PreparedQuery<IFindParams,IFindResult>(findIR);
+
+

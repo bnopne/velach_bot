@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
-import { Chat } from 'src/modules/entities/chat/chat.entity';
-import {
-  findById,
-  insertChat,
-  updateChat,
-} from 'src/modules/entities/chat/queries';
+import { Chat } from './chat.entity';
+import { findById, insertChat, updateChat } from './queries';
 
 @Injectable()
 export class ChatService {
