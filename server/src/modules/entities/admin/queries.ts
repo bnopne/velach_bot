@@ -17,7 +17,22 @@ export interface IFindByUserIdQuery {
   result: IFindByUserIdResult;
 }
 
-const findByUserIdIR: any = {"name":"findByUserId","params":[{"name":"userId","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":65,"b":70,"line":4,"col":18}]}}],"usedParamSet":{"userId":true},"statement":{"body":"SELECT *\nFROM \"Admin\"\nWHERE \"userId\" = :userId","loc":{"a":25,"b":70,"line":2,"col":0}}};
+const findByUserIdIR: any = {
+  name: 'findByUserId',
+  params: [
+    {
+      name: 'userId',
+      required: false,
+      transform: { type: 'scalar' },
+      codeRefs: { used: [{ a: 65, b: 70, line: 4, col: 18 }] },
+    },
+  ],
+  usedParamSet: { userId: true },
+  statement: {
+    body: 'SELECT *\nFROM "Admin"\nWHERE "userId" = :userId',
+    loc: { a: 25, b: 70, line: 2, col: 0 },
+  },
+};
 
 /**
  * Query generated from SQL:
@@ -27,6 +42,7 @@ const findByUserIdIR: any = {"name":"findByUserId","params":[{"name":"userId","r
  * WHERE "userId" = :userId
  * ```
  */
-export const findByUserId = new PreparedQuery<IFindByUserIdParams,IFindByUserIdResult>(findByUserIdIR);
-
-
+export const findByUserId = new PreparedQuery<
+  IFindByUserIdParams,
+  IFindByUserIdResult
+>(findByUserIdIR);
