@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
-import { User } from 'src/modules/entities/user/user.entity';
-import {
-  findById,
-  insertUser,
-  updateUser,
-} from 'src/modules/entities/user/queries';
+import { User } from './user.entity';
+import { findById, insertUser, updateUser } from './queries';
 
 @Injectable()
 export class UserService {

@@ -1,8 +1,4 @@
 -- public."Chat" definition
-
--- Drop table
-
--- DROP TABLE "Chat";
 DROP TABLE IF EXISTS "Chat" CASCADE;
 
 CREATE TABLE "Chat" (
@@ -12,12 +8,7 @@ CREATE TABLE "Chat" (
   CONSTRAINT "Chat_pkey" PRIMARY KEY (id)
 );
 
-
 -- public."User" definition
-
--- Drop table
-
--- DROP TABLE "User";
 DROP TABLE IF EXISTS "User" CASCADE;
 
 CREATE TABLE "User" (
@@ -30,12 +21,7 @@ CREATE TABLE "User" (
   CONSTRAINT "User_pkey" PRIMARY KEY (id)
 );
 
-
 -- public."Bikecheck" definition
-
--- Drop table
-
--- DROP TABLE "Bikecheck";
 DROP TABLE IF EXISTS "Bikecheck" CASCADE;
 
 CREATE TABLE "Bikecheck" (
@@ -51,12 +37,7 @@ CREATE TABLE "Bikecheck" (
   CONSTRAINT "Bikecheck_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );
 
-
 -- public."BikecheckChatMtm" definition
-
--- Drop table
-
--- DROP TABLE "BikecheckChatMtm";
 DROP TABLE IF EXISTS "BikecheckChatMtm" CASCADE;
 
 CREATE TABLE "BikecheckChatMtm" (
@@ -68,12 +49,7 @@ CREATE TABLE "BikecheckChatMtm" (
   CONSTRAINT "BikecheckChatMtm_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat"(id) ON UPDATE CASCADE
 );
 
-
 -- public."BikecheckVote" definition
-
--- Drop table
-
--- DROP TABLE "BikecheckVote";
 DROP TABLE IF EXISTS "BikecheckVote" CASCADE;
 
 CREATE TABLE "BikecheckVote" (
@@ -88,12 +64,7 @@ CREATE TABLE "BikecheckVote" (
   CONSTRAINT "BikecheckVote_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );
 
-
 -- public."UserChatMtm" definition
-
--- Drop table
-
--- DROP TABLE "UserChatMtm";
 DROP TABLE IF EXISTS "UserChatMtm" CASCADE;
 
 CREATE TABLE "UserChatMtm" (
@@ -104,12 +75,7 @@ CREATE TABLE "UserChatMtm" (
   CONSTRAINT "UserChatMtm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );
 
-
 -- public."FeatureAnalytics" definition
-
--- Drop table
-
--- DROP TABLE "FeatureAnalytics";
 DROP TABLE IF EXISTS "FeatureAnalytics" CASCADE;
 
 CREATE TABLE "FeatureAnalytics" (
@@ -122,12 +88,7 @@ CREATE TABLE "FeatureAnalytics" (
   CONSTRAINT "FeatureAnalytics_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );
 
-
 -- public."Migration" definition
-
--- Drop table
-
--- DROP TABLE "Migration";
 DROP TABLE IF EXISTS "Migration" CASCADE;
 
 CREATE TABLE "Migration" (
@@ -136,15 +97,10 @@ CREATE TABLE "Migration" (
   "createdAt" timestamptz NOT NULL DEFAULT NOW()
 );
 
+-- public."Admin" definition
+DROP TABLE IF EXISTS "Admin" CASCADE;
 
--- public."AdminSiteAccess" definition
-
--- Drop table
-
--- DROP TABLE "AdminSiteAccess";
-DROP TABLE IF EXISTS "AdminSiteAccess" CASCADE;
-
-CREATE TABLE "AdminSiteAccess" (
+CREATE TABLE "Admin" (
   "userId" int8 NOT NULL,
-  CONSTRAINT "AdminSiteAccess_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
+  CONSTRAINT "Admin_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );

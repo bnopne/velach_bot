@@ -19,22 +19,7 @@ export interface IFindByIdQuery {
   result: IFindByIdResult;
 }
 
-const findByIdIR: any = {
-  name: 'findById',
-  params: [
-    {
-      name: 'id',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 56, b: 57, line: 4, col: 14 }] },
-    },
-  ],
-  usedParamSet: { id: true },
-  statement: {
-    body: 'SELECT *\nFROM "Chat"\nWHERE "id" = :id',
-    loc: { a: 21, b: 57, line: 2, col: 0 },
-  },
-};
+const findByIdIR: any = {"name":"findById","params":[{"name":"id","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":59,"b":60,"line":4,"col":14}]}}],"usedParamSet":{"id":true},"statement":{"body":"SELECT *\r\nFROM \"Chat\"\r\nWHERE \"id\" = :id","loc":{"a":22,"b":60,"line":2,"col":0}}};
 
 /**
  * Query generated from SQL:
@@ -44,17 +29,16 @@ const findByIdIR: any = {
  * WHERE "id" = :id
  * ```
  */
-export const findById = new PreparedQuery<IFindByIdParams, IFindByIdResult>(
-  findByIdIR,
-);
+export const findById = new PreparedQuery<IFindByIdParams,IFindByIdResult>(findByIdIR);
+
 
 /** 'InsertChat' parameters type */
 export interface IInsertChatParams {
-  values: readonly {
-    id: string | null | void;
-    type: string | null | void;
-    title: string | null | void;
-  }[];
+  values: readonly ({
+    id: string | null | void,
+    type: string | null | void,
+    title: string | null | void
+  })[];
 }
 
 /** 'InsertChat' return type */
@@ -70,32 +54,7 @@ export interface IInsertChatQuery {
   result: IInsertChatResult;
 }
 
-const insertChatIR: any = {
-  name: 'insertChat',
-  params: [
-    {
-      name: 'values',
-      codeRefs: {
-        defined: { a: 92, b: 97, line: 8, col: 9 },
-        used: [{ a: 179, b: 184, line: 11, col: 8 }],
-      },
-      transform: {
-        type: 'pick_array_spread',
-        keys: [
-          { name: 'id', required: false },
-          { name: 'type', required: false },
-          { name: 'title', required: false },
-        ],
-      },
-      required: false,
-    },
-  ],
-  usedParamSet: { values: true },
-  statement: {
-    body: 'INSERT INTO "Chat" ("id", "type", "title")\nVALUES :values\nRETURNING *',
-    loc: { a: 128, b: 196, line: 10, col: 0 },
-  },
-};
+const insertChatIR: any = {"name":"insertChat","params":[{"name":"values","codeRefs":{"defined":{"a":99,"b":104,"line":8,"col":9},"used":[{"a":189,"b":194,"line":11,"col":8}]},"transform":{"type":"pick_array_spread","keys":[{"name":"id","required":false},{"name":"type","required":false},{"name":"title","required":false}]},"required":false}],"usedParamSet":{"values":true},"statement":{"body":"INSERT INTO \"Chat\" (\"id\", \"type\", \"title\")\r\nVALUES :values\r\nRETURNING *","loc":{"a":137,"b":207,"line":10,"col":0}}};
 
 /**
  * Query generated from SQL:
@@ -105,10 +64,8 @@ const insertChatIR: any = {
  * RETURNING *
  * ```
  */
-export const insertChat = new PreparedQuery<
-  IInsertChatParams,
-  IInsertChatResult
->(insertChatIR);
+export const insertChat = new PreparedQuery<IInsertChatParams,IInsertChatResult>(insertChatIR);
+
 
 /** 'UpdateChat' parameters type */
 export interface IUpdateChatParams {
@@ -130,34 +87,7 @@ export interface IUpdateChatQuery {
   result: IUpdateChatResult;
 }
 
-const updateChatIR: any = {
-  name: 'updateChat',
-  params: [
-    {
-      name: 'type',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 255, b: 258, line: 19, col: 12 }] },
-    },
-    {
-      name: 'title',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 274, b: 278, line: 20, col: 13 }] },
-    },
-    {
-      name: 'id',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 294, b: 295, line: 21, col: 14 }] },
-    },
-  ],
-  usedParamSet: { type: true, title: true, id: true },
-  statement: {
-    body: 'UPDATE "Chat"\nSET\n  "type" = :type,\n  "title" = :title\nWHERE "id" = :id\nRETURNING *',
-    loc: { a: 225, b: 307, line: 17, col: 0 },
-  },
-};
+const updateChatIR: any = {"name":"updateChat","params":[{"name":"type","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":273,"b":276,"line":19,"col":12}]}},{"name":"title","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":293,"b":297,"line":20,"col":13}]}},{"name":"id","required":false,"transform":{"type":"scalar"},"codeRefs":{"used":[{"a":314,"b":315,"line":21,"col":14}]}}],"usedParamSet":{"type":true,"title":true,"id":true},"statement":{"body":"UPDATE \"Chat\"\r\nSET\r\n  \"type\" = :type,\r\n  \"title\" = :title\r\nWHERE \"id\" = :id\r\nRETURNING *","loc":{"a":241,"b":328,"line":17,"col":0}}};
 
 /**
  * Query generated from SQL:
@@ -170,7 +100,6 @@ const updateChatIR: any = {
  * RETURNING *
  * ```
  */
-export const updateChat = new PreparedQuery<
-  IUpdateChatParams,
-  IUpdateChatResult
->(updateChatIR);
+export const updateChat = new PreparedQuery<IUpdateChatParams,IUpdateChatResult>(updateChatIR);
+
+

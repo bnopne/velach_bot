@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { BikecheckService } from 'src/modules/entities/bikecheck/bikecheck.service';
+import { BikecheckService } from './bikecheck.service';
 
 @Module({
   providers: [BikecheckService],

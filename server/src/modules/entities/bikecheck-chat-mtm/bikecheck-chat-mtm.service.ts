@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
-import { BikecheckChatMtm } from 'src/modules/entities/bikecheck-chat-mtm/bikecheck-chat-mtm.entity';
-import { find } from 'src/modules/entities/bikecheck-chat-mtm/queries';
+import { BikecheckChatMtm } from './bikecheck-chat-mtm.entity';
+import { find } from './queries';
 
 @Injectable()
 export class BikecheckChatMtmService {

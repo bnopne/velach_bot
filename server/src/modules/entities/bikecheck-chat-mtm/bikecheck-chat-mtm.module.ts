@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { BikecheckChatMtmService } from 'src/modules/entities/bikecheck-chat-mtm/bikecheck-chat-mtm.service';
+import { BikecheckChatMtmService } from './bikecheck-chat-mtm.service';
 
 @Module({
   providers: [BikecheckChatMtmService],
