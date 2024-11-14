@@ -101,6 +101,6 @@ CREATE TABLE "Migration" (
 DROP TABLE IF EXISTS "Admin" CASCADE;
 
 CREATE TABLE "Admin" (
-  "userId" int8 NOT NULL,
+  "userId" int8 PRIMARY KEY,
   CONSTRAINT "Admin_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE
 );

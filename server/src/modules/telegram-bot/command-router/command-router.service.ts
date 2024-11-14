@@ -16,6 +16,7 @@ import { StartCommandService } from 'src/modules/telegram-bot/commands/start/sta
 import { OnSaleCommandService } from 'src/modules/telegram-bot/commands/on-sale/on-sale-command.service';
 import { TopCommandService } from 'src/modules/telegram-bot/commands/top/top-command.service';
 import { MyLikesCommandService } from 'src/modules/telegram-bot/commands/my-likes/my-likes-command.service';
+import { GetAdminPasscodeService } from 'src/modules/telegram-bot/commands/get-admin-passcode/get-admin-passcode.service';
 
 function parseCommand(text: string, botUsername: string): string | null {
   const regexp = new RegExp(`^\/([A-Za-z]+)(?:@${botUsername})?$`);
@@ -30,16 +31,17 @@ function parseCommand(text: string, botUsername: string): string | null {
 
 @Injectable()
 export class CommandRouterService {
-  private middleware: Middleware;
-  private helpCommandService: HelpCommandService;
-  private bikecheckCommandService: BikecheckCommandService;
-  private checkbikeCommandService: CheckbikeCommandService;
-  private deletedCommandService: DeletedCommandService;
-  private setStravaCommandService: SetStravaCommandService;
-  private startCommandService: StartCommandService;
-  private onSaleCommandService: OnSaleCommandService;
-  private topCommandService: TopCommandService;
-  private myLikesCommandService: MyLikesCommandService;
+  private readonly middleware: Middleware;
+  private readonly helpCommandService: HelpCommandService;
+  private readonly bikecheckCommandService: BikecheckCommandService;
+  private readonly checkbikeCommandService: CheckbikeCommandService;
+  private readonly deletedCommandService: DeletedCommandService;
+  private readonly setStravaCommandService: SetStravaCommandService;
+  private readonly startCommandService: StartCommandService;
+  private readonly onSaleCommandService: OnSaleCommandService;
+  private readonly topCommandService: TopCommandService;
+  private readonly myLikesCommandService: MyLikesCommandService;
+  private readonly getAdminPasscodeService: GetAdminPasscodeService;
 
   constructor(
     helpCommandService: HelpCommandService,
@@ -51,6 +53,7 @@ export class CommandRouterService {
     onSaleCommandService: OnSaleCommandService,
     topCommandService: TopCommandService,
     myLikesCommandService: MyLikesCommandService,
+    getAdminPasscodeService: GetAdminPasscodeService,
   ) {
     this.helpCommandService = helpCommandService;
     this.bikecheckCommandService = bikecheckCommandService;
@@ -61,6 +64,7 @@ export class CommandRouterService {
     this.onSaleCommandService = onSaleCommandService;
     this.topCommandService = topCommandService;
     this.myLikesCommandService = myLikesCommandService;
+    this.getAdminPasscodeService = getAdminPasscodeService;
 
     const routeFn: RouteFn = (ctx) => {
       const command = parseCommand(
@@ -92,6 +96,8 @@ export class CommandRouterService {
       [COMMANDS.ON_SALE]: this.onSaleCommandService.getMessageMiddleware(),
       [COMMANDS.TOP]: this.topCommandService.getMessageMiddleware(),
       [COMMANDS.MY_LIKES]: this.myLikesCommandService.getMessageMiddleware(),
+      [COMMANDS.GET_ADMIN_PASSCODE]:
+        this.getAdminPasscodeService.getMessageMiddleware(),
       [-1]: (context, next) => {
         next();
       },

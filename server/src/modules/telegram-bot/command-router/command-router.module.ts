@@ -10,6 +10,7 @@ import { StartCommandModule } from 'src/modules/telegram-bot/commands/start/star
 import { OnSaleCommandModule } from 'src/modules/telegram-bot/commands/on-sale/on-sale-command.module';
 import { TopCommandModule } from 'src/modules/telegram-bot/commands/top/top-command.module';
 import { MyLikesCommandModule } from 'src/modules/telegram-bot/commands/my-likes/my-likes-command.module';
+import { GetAdminPasscodeModule } from 'src/modules/telegram-bot/commands/get-admin-passcode/get-admin-passcode.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MyLikesCommandModule } from 'src/modules/telegram-bot/commands/my-likes
     OnSaleCommandModule,
     TopCommandModule,
     MyLikesCommandModule,
+    GetAdminPasscodeModule,
   ],
   providers: [CommandRouterService],
   exports: [CommandRouterService],
