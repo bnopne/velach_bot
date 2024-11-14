@@ -1,9 +1,11 @@
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+import { SRC_DIR } from './common';
+
 export async function createMigration(name: string): Promise<void> {
   const path = join(
-    __dirname,
+    SRC_DIR,
     'common',
     'database',
     'migrations',
