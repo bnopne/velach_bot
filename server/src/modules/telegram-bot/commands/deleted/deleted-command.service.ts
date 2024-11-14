@@ -42,14 +42,14 @@ function getPreviousBikecheckIndex(
 @Injectable()
 export class DeletedCommandService {
   constructor(
-    private templatesService: TemplatesService,
-    private dbMiddlewareService: DbMiddlewareService,
-    private preliminaryDataSaveService: PreliminaryDataSaveService,
-    private privateChatsOnlyMiddlewareService: PrivateChatsOnlyMiddlewareService,
-    private userService: UserService,
-    private bikecheckService: BikecheckService,
-    private featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
-    private messageAgeMiddlewareService: MessageAgeMiddlewareService,
+    private readonly templatesService: TemplatesService,
+    private readonly dbMiddlewareService: DbMiddlewareService,
+    private readonly preliminaryDataSaveService: PreliminaryDataSaveService,
+    private readonly privateChatsOnlyMiddlewareService: PrivateChatsOnlyMiddlewareService,
+    private readonly userService: UserService,
+    private readonly bikecheckService: BikecheckService,
+    private readonly featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
+    private readonly messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
   private async processCommand(ctx: Context): Promise<void> {
