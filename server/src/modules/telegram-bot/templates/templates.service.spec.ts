@@ -1,7 +1,8 @@
-import { join } from 'path';
+import { join } from 'node:path';
+
+import { getTestingModule } from 'src/common/utils/test-utils';
 
 import { TemplatesService } from './templates.service';
-import { getTestingModule } from 'src/common/utils/test-utils';
 
 describe('Test TemplatesService', () => {
   let service: TemplatesService;

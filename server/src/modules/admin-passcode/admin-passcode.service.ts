@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  OnModuleDestroy,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { type PoolClient } from 'pg';
 
 import { InMemoryStorage } from 'src/common/in-memory-storage';
@@ -7,7 +11,7 @@ import { RandomService } from 'src/modules/random/random.service';
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
 @Injectable()
-export class AdminPasscodeService {
+export class AdminPasscodeService implements OnModuleDestroy {
   private readonly adminService: AdminService;
   private readonly randomService: RandomService;
   private readonly configurationService: ConfigurationService;
@@ -30,7 +34,7 @@ export class AdminPasscodeService {
     const admin = await this.adminService.findUserById(client, userId);
 
     if (!admin) {
-      throw new Error(`user ${userId} is not admin`);
+      throw new UnauthorizedException();
     }
 
     const passcode = this.randomService.getString(16);
@@ -51,17 +55,21 @@ export class AdminPasscodeService {
     const userId = this.storage.getValue<string>(passcode);
 
     if (!userId) {
-      return undefined;
+      throw new UnauthorizedException();
     }
 
     const admin = await this.adminService.findUserById(client, userId);
 
     if (!admin) {
-      return undefined;
+      throw new UnauthorizedException();
     }
 
     this.storage.deleteValue(passcode);
 
     return userId;
+  }
+
+  async onModuleDestroy(): Promise<void> {
+    this.storage.destroy();
   }
 }
