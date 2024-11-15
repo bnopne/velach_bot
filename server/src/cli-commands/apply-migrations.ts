@@ -5,10 +5,14 @@ import { getConnection, disconnect } from 'src/common/database/connection';
 import { MigrationService } from 'src/modules/entities/migration/migration.service';
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
-import { SRC_DIR } from './common';
-
 export async function applyMigrations(): Promise<void> {
-  const migrationsDir = join(SRC_DIR, 'common', 'database', 'migrations');
+  const migrationsDir = join(
+    __dirname,
+    '..',
+    'common',
+    'database',
+    'migrations',
+  );
 
   const migrationFiles = existsSync(migrationsDir)
     ? readdirSync(migrationsDir, { withFileTypes: true })
