@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PoolClient } from 'pg';
 
 import { Admin } from './admin.entity';
-import { findByUserId } from './queries';
+import { findByUserId, insertAdmin, deleteAdmin } from './queries';
 
 @Injectable()
 export class AdminService {
@@ -17,5 +17,14 @@ export class AdminService {
     }
 
     return Admin.fromTableRow(rows[0]);
+  }
+
+  async insertAdmin(client: PoolClient, userId: string): Promise<Admin> {
+    const rows = await insertAdmin.run({ userId }, client);
+    return Admin.fromTableRow(rows[0]);
+  }
+
+  async deleteAdmin(client: PoolClient, userId: string): Promise<void> {
+    await deleteAdmin.run({ userId }, client);
   }
 }

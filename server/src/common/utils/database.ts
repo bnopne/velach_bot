@@ -1,4 +1,3 @@
-import { Request } from 'express';
 import { PoolClient } from 'pg';
 
 type WrappedFunc<TResult> = (...args: unknown[]) => Promise<TResult>;
@@ -23,12 +22,4 @@ export function wrapInTransaction<TResult>(
 
     return result;
   };
-}
-
-export function getRequestDbConnectionOrFail(request: Request): PoolClient {
-  if (!request.dbConnection) {
-    throw new Error('No DB connection found in request object');
-  }
-
-  return request.dbConnection;
 }
