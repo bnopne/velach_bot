@@ -9,9 +9,11 @@ export async function seedTestDb(): Promise<void> {
   try {
     await seedTestDatabase(connection);
   } catch (err) {
-    throw err;
-  } finally {
     connection.release();
     await disconnect();
+    throw err;
   }
+
+  connection.release();
+  await disconnect();
 }

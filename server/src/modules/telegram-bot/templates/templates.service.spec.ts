@@ -20,7 +20,7 @@ describe('Test TemplatesService', () => {
   });
 
   it('loadTemplate() reads template from disk only on first call and returns cached template on consequent calls', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const fs = require('fs/promises');
     const fn = jest.spyOn(fs, 'readFile');
 

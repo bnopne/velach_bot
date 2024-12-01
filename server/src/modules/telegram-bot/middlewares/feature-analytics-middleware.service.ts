@@ -34,9 +34,9 @@ export class FeatureAnalyticsMiddlewareService {
       );
     } catch (err) {
       logger.error(err);
-    } finally {
-      return next();
     }
+
+    return next();
   }
 
   getMiddleware(feature: string): Middleware {

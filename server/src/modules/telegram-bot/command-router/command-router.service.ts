@@ -19,7 +19,7 @@ import { MyLikesCommandService } from 'src/modules/telegram-bot/commands/my-like
 import { GetAdminPasscodeService } from 'src/modules/telegram-bot/commands/get-admin-passcode/get-admin-passcode.service';
 
 function parseCommand(text: string, botUsername: string): string | null {
-  const regexp = new RegExp(`^\/([A-Za-z]+)(?:@${botUsername})?$`);
+  const regexp = new RegExp(`^/([A-Za-z]+)(?:@${botUsername})?$`);
   const match = regexp.exec(text);
 
   if (!match) {
