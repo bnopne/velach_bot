@@ -42,9 +42,8 @@ export class TopCommandService {
     const client = getContextConnectionOrFail(ctx);
     const message = getContextMessageOrFail(ctx);
 
-    const topData = await this.bikecheckVoteService.getBikechecksTopData(
-      client,
-    );
+    const topData =
+      await this.bikecheckVoteService.getBikechecksTopData(client);
 
     if (!topData.length) {
       const text = await this.templatesService.renderTemplate(
@@ -99,9 +98,8 @@ export class TopCommandService {
       return;
     }
 
-    const topData = await this.bikecheckVoteService.getBikechecksTopData(
-      client,
-    );
+    const topData =
+      await this.bikecheckVoteService.getBikechecksTopData(client);
 
     if (!topData.length || data.position > topData.length) {
       await ctx.telegram.answerCbQuery(callbackQuery.id);

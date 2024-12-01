@@ -17,9 +17,11 @@ export async function createTables(): Promise<void> {
   try {
     await connection.query(script.toString());
   } catch (err) {
-    throw err;
-  } finally {
     connection.release();
     await disconnect();
+    throw err;
   }
+
+  connection.release();
+  await disconnect();
 }
