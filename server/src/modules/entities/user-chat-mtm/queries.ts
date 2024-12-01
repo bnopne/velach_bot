@@ -1,10 +1,12 @@
 /** Types generated for queries found in "src/modules/entities/user-chat-mtm/queries.sql" */
-import { PreparedQuery } from '@pgtyped/query';
+import { PreparedQuery } from '@pgtyped/runtime';
+
+export type NumberOrString = number | string;
 
 /** 'Find' parameters type */
 export interface IFindParams {
-  chatId: string | null | void;
-  userId: string | null | void;
+  chatId?: NumberOrString | null | void;
+  userId?: NumberOrString | null | void;
 }
 
 /** 'Find' return type */
@@ -19,28 +21,7 @@ export interface IFindQuery {
   result: IFindResult;
 }
 
-const findIR: any = {
-  name: 'find',
-  params: [
-    {
-      name: 'userId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 66, b: 71, line: 4, col: 18 }] },
-    },
-    {
-      name: 'chatId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 89, b: 94, line: 4, col: 41 }] },
-    },
-  ],
-  usedParamSet: { userId: true, chatId: true },
-  statement: {
-    body: 'SELECT *\r\nFROM "UserChatMtm"\r\nWHERE "userId" = :userId AND "chatId" = :chatId',
-    loc: { a: 18, b: 94, line: 2, col: 0 },
-  },
-};
+const findIR: any = {"usedParamSet":{"userId":true,"chatId":true},"params":[{"name":"userId","required":false,"transform":{"type":"scalar"},"locs":[{"a":45,"b":51}]},{"name":"chatId","required":false,"transform":{"type":"scalar"},"locs":[{"a":68,"b":74}]}],"statement":"SELECT *\nFROM \"UserChatMtm\"\nWHERE \"userId\" = :userId AND \"chatId\" = :chatId"};
 
 /**
  * Query generated from SQL:
@@ -50,13 +31,14 @@ const findIR: any = {
  * WHERE "userId" = :userId AND "chatId" = :chatId
  * ```
  */
-export const find = new PreparedQuery<IFindParams, IFindResult>(findIR);
+export const find = new PreparedQuery<IFindParams,IFindResult>(findIR);
+
 
 /** 'Insert' parameters type */
 export interface IInsertParams {
   userChatMtm: {
-    userId: string | null | void;
-    chatId: string | null | void;
+    userId: NumberOrString | null | void,
+    chatId: NumberOrString | null | void
   };
 }
 
@@ -72,31 +54,7 @@ export interface IInsertQuery {
   result: IInsertResult;
 }
 
-const insertIR: any = {
-  name: 'insert',
-  params: [
-    {
-      name: 'userChatMtm',
-      codeRefs: {
-        defined: { a: 129, b: 139, line: 8, col: 9 },
-        used: [{ a: 222, b: 232, line: 11, col: 8 }],
-      },
-      transform: {
-        type: 'pick_tuple',
-        keys: [
-          { name: 'userId', required: false },
-          { name: 'chatId', required: false },
-        ],
-      },
-      required: false,
-    },
-  ],
-  usedParamSet: { userChatMtm: true },
-  statement: {
-    body: 'INSERT INTO "UserChatMtm" ("userId", "chatId")\r\nVALUES :userChatMtm\r\nRETURNING *',
-    loc: { a: 166, b: 245, line: 10, col: 0 },
-  },
-};
+const insertIR: any = {"usedParamSet":{"userChatMtm":true},"params":[{"name":"userChatMtm","required":false,"transform":{"type":"pick_tuple","keys":[{"name":"userId","required":false},{"name":"chatId","required":false}]},"locs":[{"a":54,"b":65}]}],"statement":"INSERT INTO \"UserChatMtm\" (\"userId\", \"chatId\")\nVALUES :userChatMtm\nRETURNING *"};
 
 /**
  * Query generated from SQL:
@@ -106,4 +64,6 @@ const insertIR: any = {
  * RETURNING *
  * ```
  */
-export const insert = new PreparedQuery<IInsertParams, IInsertResult>(insertIR);
+export const insert = new PreparedQuery<IInsertParams,IInsertResult>(insertIR);
+
+
