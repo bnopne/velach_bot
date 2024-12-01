@@ -1,5 +1,5 @@
 /** Types generated for queries found in "src/modules/entities/migration/queries.sql" */
-import { PreparedQuery } from '@pgtyped/query';
+import { PreparedQuery } from '@pgtyped/runtime';
 
 /** 'GetAll' parameters type */
 export type IGetAllParams = void;
@@ -17,15 +17,7 @@ export interface IGetAllQuery {
   result: IGetAllResult;
 }
 
-const getAllIR: any = {
-  name: 'getAll',
-  params: [],
-  usedParamSet: {},
-  statement: {
-    body: 'SELECT *\r\nFROM "Migration"\r\nORDER BY "createdAt" ASC',
-    loc: { a: 20, b: 71, line: 2, col: 0 },
-  },
-};
+const getAllIR: any = {"usedParamSet":{},"params":[],"statement":"SELECT *\nFROM \"Migration\"\nORDER BY \"createdAt\" ASC"};
 
 /**
  * Query generated from SQL:
@@ -35,11 +27,12 @@ const getAllIR: any = {
  * ORDER BY "createdAt" ASC
  * ```
  */
-export const getAll = new PreparedQuery<IGetAllParams, IGetAllResult>(getAllIR);
+export const getAll = new PreparedQuery<IGetAllParams,IGetAllResult>(getAllIR);
+
 
 /** 'Insert' parameters type */
 export interface IInsertParams {
-  name: string | null | void;
+  name?: string | null | void;
 }
 
 /** 'Insert' return type */
@@ -55,22 +48,7 @@ export interface IInsertQuery {
   result: IInsertResult;
 }
 
-const insertIR: any = {
-  name: 'insert',
-  params: [
-    {
-      name: 'name',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 140, b: 143, line: 8, col: 9 }] },
-    },
-  ],
-  usedParamSet: { name: true },
-  statement: {
-    body: 'INSERT INTO "Migration" ("name")\r\nVALUES (:name)\r\nRETURNING *',
-    loc: { a: 97, b: 157, line: 7, col: 0 },
-  },
-};
+const insertIR: any = {"usedParamSet":{"name":true},"params":[{"name":"name","required":false,"transform":{"type":"scalar"},"locs":[{"a":41,"b":45}]}],"statement":"INSERT INTO \"Migration\" (\"name\")\nVALUES (:name)\nRETURNING *"};
 
 /**
  * Query generated from SQL:
@@ -80,11 +58,12 @@ const insertIR: any = {
  * RETURNING *
  * ```
  */
-export const insert = new PreparedQuery<IInsertParams, IInsertResult>(insertIR);
+export const insert = new PreparedQuery<IInsertParams,IInsertResult>(insertIR);
+
 
 /** 'FindByName' parameters type */
 export interface IFindByNameParams {
-  name: string | null | void;
+  name?: string | null | void;
 }
 
 /** 'FindByName' return type */
@@ -100,22 +79,7 @@ export interface IFindByNameQuery {
   result: IFindByNameResult;
 }
 
-const findByNameIR: any = {
-  name: 'findByName',
-  params: [
-    {
-      name: 'name',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 231, b: 234, line: 14, col: 16 }] },
-    },
-  ],
-  usedParamSet: { name: true },
-  statement: {
-    body: 'SELECT *\r\nFROM "Migration"\r\nWHERE "name" = :name',
-    loc: { a: 187, b: 234, line: 12, col: 0 },
-  },
-};
+const findByNameIR: any = {"usedParamSet":{"name":true},"params":[{"name":"name","required":false,"transform":{"type":"scalar"},"locs":[{"a":41,"b":45}]}],"statement":"SELECT *\nFROM \"Migration\"\nWHERE \"name\" = :name"};
 
 /**
  * Query generated from SQL:
@@ -125,7 +89,6 @@ const findByNameIR: any = {
  * WHERE "name" = :name
  * ```
  */
-export const findByName = new PreparedQuery<
-  IFindByNameParams,
-  IFindByNameResult
->(findByNameIR);
+export const findByName = new PreparedQuery<IFindByNameParams,IFindByNameResult>(findByNameIR);
+
+
