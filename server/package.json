@@ -26,6 +26,7 @@
     "drop-tables": "npm run execute-ts ./src/cli.ts -- --drop-tables",
     "seed-test-db": "npm run execute-ts ./src/cli.ts -- --seed-test-db",
     "backup-db": "npm run execute-ts ./src/cli.ts -- --backup-db",
+    "clean-old-dumps": "npm run execute-ts ./src/cli.ts -- --clean-old-dumps",
     "create-migration": "npm run execute-ts ./src/cli.ts -- --create-migration",
     "apply-migrations": "npm run execute-ts ./src/cli.ts -- --apply-migrations",
     "build-binary:bot": "pkg --config pkg-bot.config.json dist/main.js",

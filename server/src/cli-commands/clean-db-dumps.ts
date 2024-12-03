@@ -1,4 +1,5 @@
 import { statSync, readdirSync, unlinkSync, Stats } from 'node:fs';
+import { join, extname } from 'node:path';
 
 const DEFAULT_HOW_MANY_TO_KEEP = 2;
 
@@ -12,25 +13,31 @@ export async function cleanDbDumps(
     throw new Error(`${dir} is not a directory`);
   }
 
-  const dirContents = readdirSync(dir);
+  const dirFiles = readdirSync(dir)
+    .filter((fileName) => extname(fileName) === '.sql')
+    .map((fileName) => join(dir, fileName));
 
-  const statMap = new Map<Stats, string>();
+  const statsMap = new Map<Stats, string>();
 
-  const dirContentsStats = dirContents.map((dc) => {
-    const stat = statSync(dc);
-    statMap.set(stat, dc);
+  const dirFilesStats = dirFiles.map((dirFile) => {
+    const stat = statSync(dirFile);
+    statsMap.set(stat, dirFile);
     return stat;
   });
 
-  dirContentsStats.sort((a, b) => a.birthtimeMs - b.birthtimeMs);
+  dirFilesStats.sort((a, b) => b.birthtimeMs - a.birthtimeMs);
 
-  dirContentsStats.slice(howManyToKeep).forEach((stat) => {
-    const path = statMap.get(stat);
+  dirFilesStats.slice(howManyToKeep).forEach((stat) => {
+    const dirFile = statsMap.get(stat);
 
-    if (!path) {
+    if (!dirFile) {
       throw new Error(`Could not find path for given stat`);
     }
 
-    unlinkSync(path);
+    try {
+      unlinkSync(dirFile);
+    } catch (error) {
+      console.error(error);
+    }
   });
 }

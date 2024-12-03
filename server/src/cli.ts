@@ -39,7 +39,7 @@ if (program.opts().createTables) {
   console.debug('execute BACKUP DATABASE');
   command = () => createDbDump(program.args[0], program.args[1]);
 } else if (program.opts().cleanOldDumps) {
-  console.debug('execute BACKUP DATABASE');
+  console.debug('execute CLEAN OLD DUMPS');
   command = () => cleanDbDumps(program.args[0]);
 } else if (program.opts().createMigration) {
   console.debug('execute CREATE MIGRATION FILE');
