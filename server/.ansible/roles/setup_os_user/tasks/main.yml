@@ -6,5 +6,6 @@
 - name: create user
   ansible.builtin.user:
     name: "{{ OS_USER }}"
+    group: "{{ OS_GROUP }}"
     password: "{{ OS_PASSWORD }}"
     state: present

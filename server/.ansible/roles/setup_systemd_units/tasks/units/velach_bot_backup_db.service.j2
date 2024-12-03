@@ -7,7 +7,9 @@ Environment=VELACH_BOT_DB_DATABASE={{ DB_NAME }}
 Environment=VELACH_BOT_DB_USER={{ DB_USER }}
 Environment=VELACH_BOT_DB_PASSWORD={{ DB_PASSWORD }}
 Type=oneshot
-ExecStart={{ APP_DIR }}/cli --backup-db /tmp
+User={{ OS_USER }}
+WorkingDirectory={{ SERVER_DIR }}
+ExecStart=npm run start:prod:cli -- --backup-db /tmp
 
 [Install]
 WantedBy=multi-user.target

@@ -1,0 +1,33 @@
+- name: copy compiled js files
+  ansible.builtin.copy:
+    src: "{{ SERVER_DIST_DIR }}"
+    dest: "{{ SERVER_DIR }}"
+    owner: "{{ OS_USER }}"
+    group: "{{ OS_GROUP }}"
+    mode: "755"
+    force: true
+
+- name: copy package.json
+  ansible.builtin.copy:
+    src: "{{ SERVER_PACKAGE_JSON }}"
+    dest: "{{ SERVER_DIR }}"
+    owner: "{{ OS_USER }}"
+    group: "{{ OS_GROUP }}"
+    mode: "755"
+    force: true
+
+- name: copy package-lock.json
+  ansible.builtin.copy:
+    src: "{{ SERVER_PACKAGE_LOCK_JSON }}"
+    dest: "{{ SERVER_DIR }}"
+    owner: "{{ OS_USER }}"
+    group: "{{ OS_GROUP }}"
+    mode: "755"
+    force: true
+
+- name: install deps
+  become: true
+  become_user: "{{ OS_USER }}"
+  community.general.npm:
+    path: "{{ SERVER_DIR }}"
+    ci: true

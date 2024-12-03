@@ -3,12 +3,25 @@
     name: "*"
     state: latest
 
+- name: download Nodesource repo setup script
+  ansible.builtin.get_url:
+    url: https://deb.nodesource.com/setup_22.x
+    dest: /tmp/nodesource_setup.sh
+
+- name: add Nodesource repo
+  become: true
+  become_user: "root"
+  ansible.builtin.command:
+    chdir: "/tmp"
+    cmd: "bash nodesource_setup.sh"
+
 - name: install packages
   ansible.builtin.apt:
     update_cache: true
     name:
       - postgresql
       - python3-pip
+      - nodejs
     state: present
 
 - name: install psycopg2
@@ -17,4 +30,4 @@
 
 - name: reboot
   ansible.builtin.reboot:
-    reboot_timeout: 360
+    reboot_timeout: 720

@@ -10,7 +10,8 @@ Environment=VELACH_BOT_DB_PASSWORD={{ DB_PASSWORD }}
 Environment=VELACH_BOT_TELEGRAM_TOKEN={{ TELEGRAM_TOKEN }}
 Type=simple
 User={{ OS_USER }}
-ExecStart={{ APP_DIR }}/main
+WorkingDirectory={{ SERVER_DIR }}
+ExecStart=npm run start:prod:server
 Restart=on-failure
 
 [Install]

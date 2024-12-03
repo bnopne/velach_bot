@@ -1,7 +1,6 @@
 # compiled output
 /dist
-/dist-binary/cli
-/dist-binary/main
+
 /node_modules
 
 # Logs
@@ -38,3 +37,5 @@ lerna-debug.log*
 
 .env
 .vagrant
+
+.vagrant_data
