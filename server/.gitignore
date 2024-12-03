@@ -38,3 +38,5 @@ lerna-debug.log*
 
 .env
 .vagrant
+
+velach_bot_server*.tgz
