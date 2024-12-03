@@ -9,6 +9,7 @@ import { createMigration } from './cli-commands/create-migration';
 import { createTables } from './cli-commands/create-tables';
 import { dropTables } from './cli-commands/drop-tables';
 import { seedTestDb } from './cli-commands/seed-test-db';
+import { cleanDbDumps } from './cli-commands/clean-db-dumps';
 
 config();
 
@@ -18,6 +19,7 @@ const program = createCommand()
   .option('--drop-tables', 'Drops tables and corresponding stuff in DB')
   .option('--seed-test-db', 'Fills DB with test data')
   .option('--backup-db', 'Creates DB dump')
+  .option('--clean-old-dumps', 'Removes old DM dumps')
   .option('--create-migration', 'Creates empty migration file')
   .option('--apply-migrations', 'Applies all pending migrations')
   .parse(process.argv);
@@ -25,22 +27,25 @@ const program = createCommand()
 let command: ICliCommand = () => Promise.reject('unknown CLI params');
 
 if (program.opts().createTables) {
-  console.log('execute CREATE TABLES');
+  console.debug('execute CREATE TABLES');
   command = createTables;
 } else if (program.opts().dropTables) {
-  console.log('execute DROP TABLES');
+  console.debug('execute DROP TABLES');
   command = dropTables;
 } else if (program.opts().seedTestDb) {
-  console.log('execute SEED TEST DATABASE');
+  console.debug('execute SEED TEST DATABASE');
   command = seedTestDb;
 } else if (program.opts().backupDb) {
-  console.log('execute BACKUP DATABASE');
+  console.debug('execute BACKUP DATABASE');
   command = () => createDbDump(program.args[0], program.args[1]);
+} else if (program.opts().cleanOldDumps) {
+  console.debug('execute BACKUP DATABASE');
+  command = () => cleanDbDumps(program.args[0]);
 } else if (program.opts().createMigration) {
-  console.log('execute CREATE MIGRATION FILE');
+  console.debug('execute CREATE MIGRATION FILE');
   command = () => createMigration(program.args[0]);
 } else if (program.opts().applyMigrations) {
-  console.log('execute APPLY MIGRATIONS');
+  console.debug('execute APPLY MIGRATIONS');
   command = applyMigrations;
 }
 
