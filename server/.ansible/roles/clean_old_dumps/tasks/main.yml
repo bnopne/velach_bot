@@ -1,0 +1,6 @@
+- name: clean olds dumps
+  become: true
+  become_user: "{{ OS_USER }}"
+  ansible.builtin.command:
+    chdir: "{{ APP_DIR }}"
+    cmd: "./cli --clean-old-dumps {{ DB_DUMP_DIR }}"
