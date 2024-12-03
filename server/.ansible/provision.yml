@@ -1,5 +1,20 @@
-- name: velach_bot server provision
+- name: server provision
   hosts: all
+  vars:
+    OS_USER: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_USER') }}"
+    OS_PASSWORD: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_PASSWORD') }}"
+    OS_GROUP: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_GROUP') }}"
+    DB_NAME: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_NAME') }}"
+    DB_USER: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_USER') }}"
+    DB_PASSWORD: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_PASSWORD') }}"
+    DB_DUMP_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_DIR') }}"
+    DB_DUMP_LINK: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_LINK') }}"
+    DB_DUMP_FILENAME: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_FILENAME') }}"
+    TELEGRAM_TOKEN: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_TELEGRAM_TOKEN') }}"
+    SERVER_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_DIR') }}"
+    SERVER_DIST_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_DIST_DIR') }}"
+    SERVER_PACKAGE_JSON: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_PACKAGE_JSON') }}"
+    SERVER_PACKAGE_LOCK_JSON: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_PACKAGE_LOCK_JSON') }}"
   tasks:
     - name: include install_basic_software_role
       include_role:
@@ -13,14 +28,18 @@
       include_role:
         name: setup_postgres
 
-    - name: include place_executables
+    - name: include create_server_directory
       include_role:
-        name: place_executables
-
-    - name: include setup_blank_db
-      include_role:
-        name: setup_blank_db
+        name: create_server_directory
 
     - name: include setup_systemd_units
       include_role:
         name: setup_systemd_units
+
+    - name: include restore_db_from_dump
+      include_role:
+        name: restore_db_from_dump
+
+    - name: include update_server_files
+      include_role:
+        name: update_server_files

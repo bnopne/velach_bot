@@ -1,6 +1,0 @@
-- name: schedule db backup
-  hosts: all
-  tasks:
-    - name: include schedule_db_backup
-      include_role:
-        name: schedule_db_backup

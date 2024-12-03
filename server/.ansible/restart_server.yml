@@ -1,6 +1,0 @@
-- name: restart server
-  hosts: all
-  tasks:
-    - name: include restart_server
-      include_role:
-        name: restart_server

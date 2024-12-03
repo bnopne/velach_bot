@@ -1,6 +1,12 @@
 - name: stop server
   hosts: all
   tasks:
-    - name: include stop_server
-      include_role:
-        name: stop_server
+    - name: stop server
+      block:
+        - name: include stop_server
+          include_role:
+            name: stop_server
+
+        - name: include stop_db_backup_timer
+          include_role:
+            name: stop_db_backup_timer

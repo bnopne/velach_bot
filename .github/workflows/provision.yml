@@ -3,23 +3,23 @@ on:
   workflow_dispatch:
 jobs:
   provision:
-    name: Provision
+    name: Setup New Server
     runs-on: ubuntu-22.04
     steps:
       - name: Fetch Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Node JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: 20.17.0
+          node-version: 22.11.0
           cache: "npm"
           cache-dependency-path: server/package-lock.json
 
       - name: Setup PostgreSQL
         uses: harmon758/postgresql-action@v1
         with:
-          postgresql version: "12"
+          postgresql version: "14"
           postgresql db: "velach_bot"
           postgresql user: "velach_bot"
           postgresql password: "pass"
@@ -48,20 +48,24 @@ jobs:
         working-directory: server
         run: npm run build
 
-      - name: Build Binaries
-        working-directory: server
-        run: |
-          npm run build-binary:cli
-          npm run build-binary:bot
-
       - name: Run Playbook
         env:
-          VELACH_BOT_DIST_BINARY_DIR: ${{ github.workspace }}/server/dist-binary
+          VELACH_BOT_OS_USER: ${{ secrets.OS_USER }}
+          VELACH_BOT_OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
+          VELACH_BOT_OS_GROUP: ${{ secrets.OS_GROUP }}
+          VELACH_BOT_DB_NAME: ${{ secrets.DB_NAME }}
+          VELACH_BOT_DB_USER: ${{ secrets.DB_USER }}
+          VELACH_BOT_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          VELACH_BOT_DB_DUMP_DIR: /tmp
+          VELACH_BOT_DB_DUMP_LINK: ${{ secrets.DB_DUMP_LINK }}
+          VELACH_BOT_DB_DUMP_FILENAME: velach_bot_provision_dump.sql
+          VELACH_BOT_TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          VELACH_BOT_SERVER_DIR: /opt/velach_bot
+          VELACH_BOT_SERVER_DIST_DIR: ${{ github.workspace }}/server/dist
+          VELACH_BOT_SERVER_PACKAGE_JSON: ${{ github.workspace }}/server/package.json
+          VELACH_BOT_SERVER_PACKAGE_LOCK_JSON: ${{ github.workspace }}/server/package-lock.json
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: server/.ansible/provision.yml
           inventory: |
             ${{ secrets.INVENTORY }}
-          vault_password: ${{ secrets.VAULT_PASSWORD }}
-          options: |
-            --inventory "server/.ansible/inventories/production.yml"

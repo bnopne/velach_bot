@@ -1,0 +1,17 @@
+- name: fetch dump
+  ansible.builtin.get_url:
+    url: "{{ DB_DUMP_LINK }}"
+    dest: /tmp/{{ DB_DUMP_FILENAME }}
+
+- name: restore from dump
+  become: true
+  become_user: postgres
+  community.postgresql.postgresql_db:
+    name: "{{ DB_NAME }}"
+    state: restore
+    target: /tmp/{{ DB_DUMP_FILENAME }}
+
+- name: delete dump
+  ansible.builtin.file:
+    path: /tmp/{{ DB_DUMP_FILENAME }}
+    state: absent

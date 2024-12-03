@@ -1,6 +1,0 @@
-- name: unschedule db backup
-  hosts: all
-  tasks:
-    - name: include unschedule_db_backup
-      include_role:
-        name: unschedule_db_backup

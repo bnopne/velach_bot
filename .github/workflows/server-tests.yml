@@ -15,19 +15,19 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Fetch Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node JS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 20.17.0
-          cache: npm
+          node-version: 22.11.0
+          cache: "npm"
           cache-dependency-path: server/package-lock.json
 
       - name: Setup PostgreSQL
         uses: harmon758/postgresql-action@v1
         with:
-          postgresql version: "12"
+          postgresql version: "14"
           postgresql db: "velach_bot"
           postgresql user: "velach_bot"
           postgresql password: "pass"

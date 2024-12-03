@@ -1,5 +1,19 @@
-- name: velach_bot server update
+- name: server update
   hosts: all
+  vars:
+    OS_USER: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_USER') }}"
+    OS_PASSWORD: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_PASSWORD') }}"
+    OS_GROUP: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_GROUP') }}"
+    DB_NAME: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_NAME') }}"
+    DB_USER: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_USER') }}"
+    DB_PASSWORD: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_PASSWORD') }}"
+    DB_DUMP_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_DIR') }}"
+    DB_DUMP_FILENAME: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_FILENAME') }}"
+    TELEGRAM_TOKEN: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_TELEGRAM_TOKEN') }}"
+    SERVER_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_DIR') }}"
+    SERVER_DIST_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_DIST_DIR') }}"
+    SERVER_PACKAGE_JSON: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_PACKAGE_JSON') }}"
+    SERVER_PACKAGE_LOCK_JSON: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_PACKAGE_LOCK_JSON') }}"
   tasks:
     - name: stop bot
       block:
@@ -7,22 +21,19 @@
           include_role:
             name: stop_server
 
-        - name: include unschedule_db_backup
+        - name: include stop_db_backup_timer
           include_role:
-            name: unschedule_db_backup
+            name: stop_db_backup_timer
 
-        - name: include stop_db_dump_creation
+        - name: include stop_db_backup_service
           ansible.builtin.systemd:
-            name: stop_db_dump_creation
+            name: stop_db_backup_service
 
-    - name: include place_executables
+    - name: include update_server_files
       include_role:
-        name: place_executables
+        name: update_server_files
 
     - name: include create_db_dump
-      vars:
-        DB_DUMP_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_DIR') }}"
-        DB_DUMP_FILENAME: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_FILENAME') }}"
       include_role:
         name: create_db_dump
 
@@ -40,6 +51,6 @@
           include_role:
             name: start_server
 
-        - name: include schedule_db_backup
+        - name: include start_db_backup_timer
           include_role:
-            name: schedule_db_backup
+            name: start_db_backup_timer

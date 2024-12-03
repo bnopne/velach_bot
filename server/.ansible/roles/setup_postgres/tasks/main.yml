@@ -1,4 +1,4 @@
-- name: setup postgres
+- name: setup PostgreSQL DBMS
   become: true
   become_user: postgres
   block:
@@ -6,13 +6,13 @@
       community.postgresql.postgresql_db:
         name: "{{ DB_NAME }}"
 
-    - name: create database user
+    - name: create user
       community.postgresql.postgresql_user:
         name: "{{ DB_USER }}"
         password: "{{ DB_PASSWORD }}"
         encrypted: true
 
-    - name: grant database privileges
+    - name: grant privileges
       community.postgresql.postgresql_privs:
         database: "{{ DB_NAME }}"
         type: database

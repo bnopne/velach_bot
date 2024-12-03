@@ -1,6 +1,12 @@
 - name: start server
   hosts: all
   tasks:
-    - name: include start_server
-      include_role:
-        name: start_server
+    - name: start server
+      block:
+        - name: include start_server
+          include_role:
+            name: start_server
+
+        - name: include start_db_backup_timer
+          include_role:
+            name: start_db_backup_timer

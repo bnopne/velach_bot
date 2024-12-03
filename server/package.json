@@ -1,6 +1,6 @@
 {
-  "name": "velach_bot",
-  "version": "3.3.0",
+  "name": "velach_bot_server",
+  "version": "3.4.0",
   "description": "Telegram Bot for https://t.me/veloch chat",
   "author": "bnopne",
   "private": true,
@@ -8,11 +8,11 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod:server": "node dist/main",
+    "start:prod:cli": "node dist/cli",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
     "test": "jest",
@@ -29,9 +29,7 @@
     "clean-old-dumps": "npm run execute-ts ./src/cli.ts -- --clean-old-dumps",
     "create-migration": "npm run execute-ts ./src/cli.ts -- --create-migration",
     "apply-migrations": "npm run execute-ts ./src/cli.ts -- --apply-migrations",
-    "build-binary:bot": "pkg --config pkg-bot.config.json dist/main.js",
-    "build-binary:cli": "pkg --config pkg-cli.config.json dist/cli.js",
-    "zip-binaries": "npm run execute-ts ./src/cli.ts -- --zip-binaries"
+    "copy-package-to-vm": "cpy dist package.json package-lock.json .vagrant_data"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -69,8 +67,8 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^8.16.0",
     "@typescript-eslint/parser": "^8.16.0",
-    "@yao-pkg/pkg": "^5.12.1",
     "commander": "^8.3.0",
+    "cpy-cli": "^5.0.0",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -106,6 +104,6 @@
     "testEnvironment": "node"
   },
   "volta": {
-    "node": "20.17.0"
+    "node": "22.11.0"
   }
 }
