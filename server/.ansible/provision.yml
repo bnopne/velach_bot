@@ -32,6 +32,10 @@
       include_role:
         name: create_server_directory
 
+    - name: include create_dump_directory
+      include_role:
+        name: create_dump_directory
+
     - name: include setup_systemd_units
       include_role:
         name: setup_systemd_units

@@ -9,7 +9,6 @@ import { createMigration } from './cli-commands/create-migration';
 import { createTables } from './cli-commands/create-tables';
 import { dropTables } from './cli-commands/drop-tables';
 import { seedTestDb } from './cli-commands/seed-test-db';
-import { cleanDbDumps } from './cli-commands/clean-db-dumps';
 
 config();
 
@@ -38,9 +37,6 @@ if (program.opts().createTables) {
 } else if (program.opts().backupDb) {
   console.debug('execute BACKUP DATABASE');
   command = () => createDbDump(program.args[0], program.args[1]);
-} else if (program.opts().cleanOldDumps) {
-  console.debug('execute CLEAN OLD DUMPS');
-  command = () => cleanDbDumps(program.args[0]);
 } else if (program.opts().createMigration) {
   console.debug('execute CREATE MIGRATION FILE');
   command = () => createMigration(program.args[0]);
