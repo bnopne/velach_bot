@@ -1,8 +1,0 @@
-- name: clean old dumps
-  hosts: all
-  vars:
-    DB_DUMP_DIR: "/tmp"
-  tasks:
-    - name: include clean_old_dumps
-      include_role:
-        name: clean_old_dumps

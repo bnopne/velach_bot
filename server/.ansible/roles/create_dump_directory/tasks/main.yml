@@ -1,0 +1,7 @@
+- name: create dump directory
+  ansible.builtin.file:
+    path: "{{ DB_DUMP_DIR }}"
+    owner: "{{ OS_USER }}"
+    group: "{{ OS_GROUP }}"
+    state: directory
+    recurse: true

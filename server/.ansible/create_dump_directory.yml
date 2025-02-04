@@ -1,0 +1,10 @@
+- name: create dump directory
+  hosts: all
+  vars:
+    OS_USER: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_USER') }}"
+    OS_GROUP: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_OS_GROUP') }}"
+    DB_DUMP_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_DIR') }}"
+  tasks:
+    - name: include create_dump_directory
+      include_role:
+        name: create_dump_directory
