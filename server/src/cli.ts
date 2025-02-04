@@ -9,6 +9,7 @@ import { createMigration } from './cli-commands/create-migration';
 import { createTables } from './cli-commands/create-tables';
 import { dropTables } from './cli-commands/drop-tables';
 import { seedTestDb } from './cli-commands/seed-test-db';
+import { cleanupDumpDirectory } from './cli-commands/cleanup-dump-directory';
 
 config();
 
@@ -18,7 +19,7 @@ const program = createCommand()
   .option('--drop-tables', 'Drops tables and corresponding stuff in DB')
   .option('--seed-test-db', 'Fills DB with test data')
   .option('--backup-db', 'Creates DB dump')
-  .option('--clean-old-dumps', 'Removes old DM dumps')
+  .option('--cleanup-dump-directory', 'Removes old DB dumps')
   .option('--create-migration', 'Creates empty migration file')
   .option('--apply-migrations', 'Applies all pending migrations')
   .parse(process.argv);
@@ -37,6 +38,8 @@ if (program.opts().createTables) {
 } else if (program.opts().backupDb) {
   console.debug('execute BACKUP DATABASE');
   command = () => createDbDump(program.args[0], program.args[1]);
+} else if (program.opts().cleanupDumpDirectory) {
+  command = () => cleanupDumpDirectory(program.args[0]);
 } else if (program.opts().createMigration) {
   console.debug('execute CREATE MIGRATION FILE');
   command = () => createMigration(program.args[0]);

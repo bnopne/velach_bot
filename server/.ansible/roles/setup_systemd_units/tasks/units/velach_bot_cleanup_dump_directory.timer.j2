@@ -1,0 +1,10 @@
+[Unit]
+Description=velach_bot cleanup dump directory timer
+Requires=velach_bot_cleanup_dump_directory.service
+
+[Timer]
+Unit=velach_bot_cleanup_dump_directory.service
+OnCalendar=*-*-* 00:00:00
+
+[Install]
+WantedBy=timers.target
