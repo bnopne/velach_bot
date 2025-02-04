@@ -10,3 +10,7 @@
         - name: include start_db_backup_timer
           include_role:
             name: start_db_backup_timer
+
+        - name: include start_cleanup_dump_directory_timer
+          include_role:
+            name: start_cleanup_dump_directory_timer

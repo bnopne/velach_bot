@@ -10,3 +10,7 @@
         - name: include stop_db_backup_timer
           include_role:
             name: stop_db_backup_timer
+
+        - name: include stop_cleanup_dump_directory_timer
+          include_role:
+            name: stop_cleanup_dump_directory_timer

@@ -1,0 +1,4 @@
+- name: start cleanup dump direrctory timer
+  ansible.builtin.systemd:
+    name: velach_bot_cleanup_dump_directory.timer
+    state: started

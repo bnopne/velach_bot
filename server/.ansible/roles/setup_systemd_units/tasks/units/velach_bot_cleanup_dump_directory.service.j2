@@ -1,0 +1,12 @@
+[Unit]
+Description=velach_bot cleanup dump directory service
+Wants=velach_bot_cleanup_dump_directory.timer
+
+[Service]
+Type=oneshot
+User={{ OS_USER }}
+WorkingDirectory={{ SERVER_DIR }}
+ExecStart=npm run start:prod:cli -- --cleanup-dump-directory {{ DB_DUMP_DIR }}
+
+[Install]
+WantedBy=multi-user.target

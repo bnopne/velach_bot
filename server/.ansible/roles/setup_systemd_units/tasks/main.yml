@@ -13,6 +13,16 @@
     src: units/velach_bot_backup_db.timer.j2
     dest: /lib/systemd/system/velach_bot_backup_db.timer
 
+- name: emit cleanup dump directory unit
+  ansible.builtin.template:
+    src: units/velach_bot_cleanup_dump_directory.service.j2
+    dest: /lib/systemd/system/velach_bot_cleanup_dump_directory.service
+
+- name: emit cleanup dump directory timer
+  ansible.builtin.template:
+    src: units/velach_bot_cleanup_dump_directory.timer.j2
+    dest: /lib/systemd/system/velach_bot_cleanup_dump_directory.timer
+
 - name: reload units
   ansible.builtin.systemd:
     daemon_reload: true
