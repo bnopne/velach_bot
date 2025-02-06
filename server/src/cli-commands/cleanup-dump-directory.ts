@@ -1,4 +1,5 @@
 import { statSync, readdirSync, type Stats, unlinkSync } from 'node:fs';
+import { join } from 'node:path';
 
 const REMAINING_DUMPS_COUNT = 2;
 
@@ -10,7 +11,9 @@ export async function cleanupDumpDirectory(dir: string): Promise<void> {
   }
 
   const dirMap: [string, Stats][] = [];
-  const dirItems = readdirSync(dir).filter((item) => item.endsWith('.sql'));
+  const dirItems = readdirSync(dir)
+    .filter((item) => item.endsWith('.sql'))
+    .map((item) => join(dir, item));
 
   if (dirItems.length <= REMAINING_DUMPS_COUNT) {
     console.debug(`Not enough dumps to cleanup directory`);
