@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PoolConfig } from 'pg';
+import { JwtModuleOptions, type JwtOptionsFactory } from '@nestjs/jwt';
 
 @Injectable()
-export class ConfigurationService {
+export class ConfigurationService implements JwtOptionsFactory {
   readonly poolConfig: PoolConfig;
 
   readonly telegramBotToken: string;
@@ -12,6 +13,7 @@ export class ConfigurationService {
   readonly port: number;
 
   readonly adminPasscodeTTL: number; // in seconds
+  readonly jwtSecret: string;
 
   constructor() {
     /**
@@ -53,6 +55,13 @@ export class ConfigurationService {
       'VELACH_BOT_ADMIN_PASSCODE_TTL',
       60,
     );
+    this.jwtSecret = this.getStringValueOrFail('VELACH_BOT_JWT_SECRET');
+  }
+
+  createJwtOptions(): Promise<JwtModuleOptions> | JwtModuleOptions {
+    return {
+      secret: this.jwtSecret,
+    };
   }
 
   getStringValueOrFail(name: string): string {
