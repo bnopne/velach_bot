@@ -4,7 +4,7 @@ import {
   OnModuleDestroy,
   Logger,
 } from '@nestjs/common';
-import { Pool, PoolClient } from 'pg';
+import { Pool, type PoolClient } from 'pg';
 
 import { ConfigurationService } from 'src/modules/configuration/configuration.service';
 
@@ -21,6 +21,21 @@ export class PgPoolService implements OnModuleInit, OnModuleDestroy {
 
   getConnection(): Promise<PoolClient> {
     return this.pool.connect();
+  }
+
+  async runInTransaction<R>(func: (client: PoolClient) => Promise<R>) {
+    const client = await this.getConnection();
+
+    await client.query('START TRANSACTION');
+
+    try {
+      const result = await func(client);
+      await client.query('COMMIT');
+      return result;
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    }
   }
 
   async onModuleInit(): Promise<void> {
