@@ -1,6 +1,8 @@
 name: Provision
 on:
   workflow_dispatch:
+env:
+  VELACH_BOT_JWT_SECRET: secret
 jobs:
   provision:
     name: Setup New Server
