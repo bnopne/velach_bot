@@ -1,11 +1,13 @@
 /** Types generated for queries found in "src/modules/entities/feature-analytics/queries.sql" */
-import { PreparedQuery } from '@pgtyped/query';
+import { PreparedQuery } from '@pgtyped/runtime';
+
+export type NumberOrString = number | string;
 
 /** 'Insert' parameters type */
 export interface IInsertParams {
-  chatId: string | null | void;
-  feature: string | null | void;
-  userId: string | null | void;
+  chatId?: NumberOrString | null | void;
+  feature?: string | null | void;
+  userId?: NumberOrString | null | void;
 }
 
 /** 'Insert' return type */
@@ -23,34 +25,7 @@ export interface IInsertQuery {
   result: IInsertResult;
 }
 
-const insertIR: any = {
-  name: 'insert',
-  params: [
-    {
-      name: 'feature',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 93, b: 99, line: 3, col: 9 }] },
-    },
-    {
-      name: 'chatId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 103, b: 108, line: 3, col: 19 }] },
-    },
-    {
-      name: 'userId',
-      required: false,
-      transform: { type: 'scalar' },
-      codeRefs: { used: [{ a: 112, b: 117, line: 3, col: 28 }] },
-    },
-  ],
-  usedParamSet: { feature: true, chatId: true, userId: true },
-  statement: {
-    body: 'INSERT INTO "FeatureAnalytics" ("feature", "chatId", "userId")\r\nVALUES (:feature, :chatId, :userId)\r\nRETURNING *',
-    loc: { a: 20, b: 131, line: 2, col: 0 },
-  },
-};
+const insertIR: any = {"usedParamSet":{"feature":true,"chatId":true,"userId":true},"params":[{"name":"feature","required":false,"transform":{"type":"scalar"},"locs":[{"a":71,"b":78}]},{"name":"chatId","required":false,"transform":{"type":"scalar"},"locs":[{"a":81,"b":87}]},{"name":"userId","required":false,"transform":{"type":"scalar"},"locs":[{"a":90,"b":96}]}],"statement":"INSERT INTO \"FeatureAnalytics\" (\"feature\", \"chatId\", \"userId\")\nVALUES (:feature, :chatId, :userId)\nRETURNING *"};
 
 /**
  * Query generated from SQL:
@@ -60,4 +35,6 @@ const insertIR: any = {
  * RETURNING *
  * ```
  */
-export const insert = new PreparedQuery<IInsertParams, IInsertResult>(insertIR);
+export const insert = new PreparedQuery<IInsertParams,IInsertResult>(insertIR);
+
+

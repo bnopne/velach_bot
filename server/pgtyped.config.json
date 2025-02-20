@@ -6,7 +6,7 @@
       "emitTemplate": "{{dir}}/{{name}}.ts"
     }
   ],
-  "srcDir": "./src/modules",
+  "srcDir": "./src/modules/entities/",
   "failOnError": true,
   "camelCaseColumnNames": true,
   "db": {
