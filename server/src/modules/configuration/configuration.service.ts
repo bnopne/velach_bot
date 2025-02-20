@@ -55,7 +55,7 @@ export class ConfigurationService implements JwtOptionsFactory {
       'VELACH_BOT_ADMIN_PASSCODE_TTL',
       60,
     );
-    this.jwtSecret = this.getStringValueOrFail('VELACH_BOT_JWT_SECRET');
+    this.jwtSecret = this.getStringValue('VELACH_BOT_JWT_SECRET', 'secret');
   }
 
   createJwtOptions(): Promise<JwtModuleOptions> | JwtModuleOptions {
