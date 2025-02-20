@@ -37,7 +37,7 @@
     "@nestjs/platform-express": "^8.4.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "date-fns": "^2.28.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "mustache": "^4.2.0",
     "pg": "^8.13.3",
