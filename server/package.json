@@ -1,6 +1,6 @@
 {
   "name": "velach_bot_server",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "description": "Telegram Bot for https://t.me/veloch chat",
   "author": "bnopne",
   "private": true,
