@@ -58,7 +58,7 @@ jobs:
           VELACH_BOT_DB_NAME: ${{ secrets.DB_NAME }}
           VELACH_BOT_DB_USER: ${{ secrets.DB_USER }}
           VELACH_BOT_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          VELACH_BOT_DB_DUMP_DIR: /tmp/velach_bot_dumps
+          VELACH_BOT_DB_DUMP_DIR: /home/${{ secrets.OS_USER }}/dumps
           VELACH_BOT_DB_DUMP_LINK: ${{ secrets.DB_DUMP_LINK }}
           VELACH_BOT_DB_DUMP_FILENAME: velach_bot_provision_dump.sql
           VELACH_BOT_TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
