@@ -30,6 +30,14 @@
           ansible.builtin.systemd:
             name: stop_db_backup_service
 
+        - name: include stop_cleanup_dump_directory_timer
+          ansible.builtin.systemd:
+            name: stop_cleanup_dump_directory_timer
+
+        - name: include stop_cleanup_dump_directory_service
+          ansible.builtin.systemd:
+            name: stop_cleanup_dump_directory_service
+
     - name: include update_server_files
       include_role:
         name: update_server_files
@@ -55,3 +63,7 @@
         - name: include start_db_backup_timer
           include_role:
             name: start_db_backup_timer
+
+        - name: include start_cleanup_dump_directory_timer
+          include_role:
+            name: start_cleanup_dump_directory_timer

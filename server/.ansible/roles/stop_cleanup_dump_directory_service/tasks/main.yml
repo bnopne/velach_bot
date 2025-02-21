@@ -1,0 +1,4 @@
+- name: stop cleanup dump direrctory service
+  ansible.builtin.systemd:
+    name: velach_bot_cleanup_dump_directory.service
+    state: stopped
