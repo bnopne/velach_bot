@@ -1,0 +1,39 @@
+name: Test
+on:
+  workflow_dispatch:
+jobs:
+  update_server:
+    name: Update Server
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Fetch Repo
+        uses: actions/checkout@v4
+
+      - name: Install Node JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.11.0
+          cache: "npm"
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: Build Javascript
+        working-directory: server
+        run: npm run build
+
+      - name: Run Playbook
+        env:
+          VELACH_BOT_SERVER_DIST_DIR: ${{ github.workspace }}/server/dist
+          VELACH_BOT_SERVER_PACKAGE_JSON: ${{ github.workspace }}/server/package.json
+          VELACH_BOT_SERVER_PACKAGE_LOCK_JSON: ${{ github.workspace }}/server/package-lock.json
+        uses: dawidd6/action-ansible-playbook@v3
+        with:
+          playbook: server/.ansible/update_server.yml
+          inventory: |
+            ${{ secrets.INVENTORY }}
+          options: |
+            -vvv

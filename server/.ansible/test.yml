@@ -1,0 +1,16 @@
+- name: test
+  hosts: all
+  vars:
+    SERVER_DIST_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_DIST_DIR') }}"
+    SERVER_PACKAGE_JSON: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_PACKAGE_JSON') }}"
+    SERVER_PACKAGE_LOCK_JSON: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_PACKAGE_LOCK_JSON') }}"
+    REMOTE_PATH: /tmp/velach_bot.tar
+  tasks:
+    - name: test
+      community.general.archive:
+        path:
+          - "{{ SERVER_DIST_DIR }}"
+          - "{{ SERVER_PACKAGE_JSON }}"
+          - "{{ SERVER_PACKAGE_LOCK_JSON }}"
+        dest: "{{ REMOTE_PATH }}"
+        format: tar
