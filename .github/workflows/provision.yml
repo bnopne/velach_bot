@@ -1,8 +1,6 @@
 name: Provision
 on:
   workflow_dispatch:
-env:
-  VELACH_BOT_JWT_SECRET: secret
 jobs:
   provision:
     name: Setup New Server
@@ -66,6 +64,7 @@ jobs:
           VELACH_BOT_SERVER_DIST_DIR: ${{ github.workspace }}/server/dist
           VELACH_BOT_SERVER_PACKAGE_JSON: ${{ github.workspace }}/server/package.json
           VELACH_BOT_SERVER_PACKAGE_LOCK_JSON: ${{ github.workspace }}/server/package-lock.json
+          VELACH_BOT_REMOTE_DIST_ARCHIVE: /tmp/velach_bot_dist.tar
           VELACH_BOT_JWT_SECRET: ${{ secrets.JWT_SECRET }}
         uses: dawidd6/action-ansible-playbook@v2
         with:

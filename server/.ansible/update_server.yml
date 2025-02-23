@@ -14,6 +14,7 @@
     SERVER_DIST_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_DIST_DIR') }}"
     SERVER_PACKAGE_JSON: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_PACKAGE_JSON') }}"
     SERVER_PACKAGE_LOCK_JSON: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_PACKAGE_LOCK_JSON') }}"
+    REMOTE_DIST_ARCHIVE: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_REMOTE_DIST_ARCHIVE') }}"
     JWT_SECRET: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_JWT_SECRET') }}"
   tasks:
     - name: stop bot

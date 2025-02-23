@@ -33,6 +33,8 @@ Vagrant.configure("2") do |config|
       echo "export VELACH_BOT_SERVER_DIR=\"/opt/velach_bot\"" >> /home/vagrant/.profile
       echo "export VELACH_BOT_SERVER_PACKAGE_JSON=\"/vagrant_data/package.json\"" >> /home/vagrant/.profile
       echo "export VELACH_BOT_SERVER_PACKAGE_LOCK_JSON=\"/vagrant_data/package-lock.json\"" >> /home/vagrant/.profile
+      echo "export VELACH_BOT_REMOTE_DIST_ARCHIVE=\"/tmp/velach_bot_dist.tar\"" >> /home/vagrant/.profile
+      echo "export VELACH_BOT_JWT_SECRET=\"vagrant-secret\"" >> /home/vagrant/.profile
     SHELL
 
     master.vm.provision "file", source: ".vagrant_keys/master", destination: "/home/vagrant/.ssh/id_rsa"

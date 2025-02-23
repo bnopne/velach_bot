@@ -1,6 +1,8 @@
 name: Server Tests
 on:
   push:
+    pull_request:
+      types: [opened]
     branches:
       - feature/**
       - fix/**
