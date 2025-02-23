@@ -14,7 +14,7 @@ jobs:
           VELACH_BOT_OS_USER: ${{ secrets.OS_USER }}
           VELACH_BOT_OS_GROUP: ${{ secrets.OS_GROUP }}
           VELACH_BOT_DB_DUMP_DIR: /home/${{ secrets.OS_USER }}/dumps
-        uses: dawidd6/action-ansible-playbook@v2
+        uses: dawidd6/action-ansible-playbook@v3
         with:
           playbook: server/.ansible/create_dump_directory.yml
           inventory: |

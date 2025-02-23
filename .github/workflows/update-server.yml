@@ -67,7 +67,7 @@ jobs:
           VELACH_BOT_SERVER_PACKAGE_JSON: ${{ github.workspace }}/server/package.json
           VELACH_BOT_SERVER_PACKAGE_LOCK_JSON: ${{ github.workspace }}/server/package-lock.json
           VELACH_BOT_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        uses: dawidd6/action-ansible-playbook@v2
+        uses: dawidd6/action-ansible-playbook@v3
         with:
           playbook: server/.ansible/update_server.yml
           inventory: |

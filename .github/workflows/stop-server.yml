@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Playbook
-        uses: dawidd6/action-ansible-playbook@v2
+        uses: dawidd6/action-ansible-playbook@v3
         with:
           playbook: server/.ansible/stop_server.yml
           inventory: |
