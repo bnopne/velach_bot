@@ -1,29 +1,20 @@
-- name: copy compiled js files
+- name: copy archive
   ansible.builtin.copy:
-    src: "{{ SERVER_DIST_DIR }}"
-    dest: "{{ SERVER_DIR }}"
+    src: "{{ DIST_ARCHIVE }}"
+    dest: "{{ REMOTE_ARCHIVE_PATH }}"
     owner: "{{ OS_USER }}"
     group: "{{ OS_GROUP }}"
     mode: "755"
     force: true
 
-- name: copy package.json
-  ansible.builtin.copy:
-    src: "{{ SERVER_PACKAGE_JSON }}"
+- name: extract archive
+  ansible.builtin.unarchive:
+    src: "{{ REMOTE_ARCHIVE_PATH }}"
     dest: "{{ SERVER_DIR }}"
     owner: "{{ OS_USER }}"
     group: "{{ OS_GROUP }}"
     mode: "755"
-    force: true
-
-- name: copy package-lock.json
-  ansible.builtin.copy:
-    src: "{{ SERVER_PACKAGE_LOCK_JSON }}"
-    dest: "{{ SERVER_DIR }}"
-    owner: "{{ OS_USER }}"
-    group: "{{ OS_GROUP }}"
-    mode: "755"
-    force: true
+    remote_src: true
 
 - name: install deps
   become: true
@@ -31,3 +22,8 @@
   community.general.npm:
     path: "{{ SERVER_DIR }}"
     ci: true
+
+- name: delete archive
+  ansible.builtin.file:
+    path: "{{ REMOTE_ARCHIVE_PATH }}"
+    state: absent

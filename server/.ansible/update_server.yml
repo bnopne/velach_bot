@@ -11,9 +11,8 @@
     DB_DUMP_FILENAME: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_FILENAME') }}"
     TELEGRAM_TOKEN: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_TELEGRAM_TOKEN') }}"
     SERVER_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_DIR') }}"
-    SERVER_DIST_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_DIST_DIR') }}"
-    SERVER_PACKAGE_JSON: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_PACKAGE_JSON') }}"
-    SERVER_PACKAGE_LOCK_JSON: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_PACKAGE_LOCK_JSON') }}"
+    DIST_ARCHIVE: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DIST_ARCHIVE') }}"
+    REMOTE_ARCHIVE_PATH: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_REMOTE_ARCHIVE_PATH') }}"
     JWT_SECRET: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_JWT_SECRET') }}"
   tasks:
     - name: stop bot

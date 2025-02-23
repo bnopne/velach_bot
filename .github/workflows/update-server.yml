@@ -51,6 +51,15 @@ jobs:
         working-directory: server
         run: npm run build
 
+      - name: Add dist folder to archive
+        run: tar -cvf ${{ github.workspace }}/velach_bot_${{ github.sha }}.tar -C ${{ github.workspace }}/server dist
+
+      - name: Add package.json to archive
+        run: tar -rvf ${{ github.workspace }}/velach_bot_${{ github.sha }}.tar -C ${{ github.workspace }}/server package.json
+
+      - name: Add package-lock.json to archive
+        run: tar -rvf ${{ github.workspace }}/velach_bot_${{ github.sha }}.tar -C ${{ github.workspace }}/server package-lock.json
+
       - name: Run Playbook
         env:
           VELACH_BOT_OS_USER: ${{ secrets.OS_USER }}
@@ -63,9 +72,8 @@ jobs:
           VELACH_BOT_DB_DUMP_FILENAME: velach_bot_db_dump_pre_deploy_${{ github.sha }}
           VELACH_BOT_TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           VELACH_BOT_SERVER_DIR: /opt/velach_bot
-          VELACH_BOT_SERVER_DIST_DIR: ${{ github.workspace }}/server/dist
-          VELACH_BOT_SERVER_PACKAGE_JSON: ${{ github.workspace }}/server/package.json
-          VELACH_BOT_SERVER_PACKAGE_LOCK_JSON: ${{ github.workspace }}/server/package-lock.json
+          VELACH_BOT_DIST_ARCHIVE: ${{ github.workspace }}/velach_bot_${{ github.sha }}.tar
+          VELACH_BOT_REMOTE_ARCHIVE_PATH: /tmp/velach_bot_${{ github.sha }}.tar
           VELACH_BOT_JWT_SECRET: ${{ secrets.JWT_SECRET }}
         uses: dawidd6/action-ansible-playbook@v3
         with:
