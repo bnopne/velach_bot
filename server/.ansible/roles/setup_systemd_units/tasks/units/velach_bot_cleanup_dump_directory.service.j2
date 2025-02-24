@@ -5,7 +5,7 @@ Wants=velach_bot_cleanup_dump_directory.timer
 [Service]
 Type=oneshot
 User={{ OS_USER }}
-WorkingDirectory={{ SERVER_DIR }}
+WorkingDirectory={{ REMOTE_SERVER_DIR }}
 ExecStart=npm run start:prod:cli -- --cleanup-dump-directory {{ DB_DUMP_DIR }}
 
 [Install]

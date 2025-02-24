@@ -1,7 +1,7 @@
 - name: copy archive
   ansible.builtin.copy:
-    src: "{{ DIST_ARCHIVE }}"
-    dest: "{{ REMOTE_ARCHIVE_PATH }}"
+    src: "{{ LOCAL_DIST_ARCHIVE }}"
+    dest: "{{ REMOTE_DIST_ARCHIVE }}"
     owner: "{{ OS_USER }}"
     group: "{{ OS_GROUP }}"
     mode: "755"
@@ -9,8 +9,8 @@
 
 - name: extract archive
   ansible.builtin.unarchive:
-    src: "{{ REMOTE_ARCHIVE_PATH }}"
-    dest: "{{ SERVER_DIR }}"
+    src: "{{ REMOTE_DIST_ARCHIVE }}"
+    dest: "{{ REMOTE_SERVER_DIR }}"
     owner: "{{ OS_USER }}"
     group: "{{ OS_GROUP }}"
     mode: "755"
@@ -20,10 +20,10 @@
   become: true
   become_user: "{{ OS_USER }}"
   community.general.npm:
-    path: "{{ SERVER_DIR }}"
+    path: "{{ REMOTE_SERVER_DIR }}"
     ci: true
 
 - name: delete archive
   ansible.builtin.file:
-    path: "{{ REMOTE_ARCHIVE_PATH }}"
+    path: "{{ REMOTE_DIST_ARCHIVE }}"
     state: absent

@@ -8,7 +8,7 @@ Environment=VELACH_BOT_DB_USER={{ DB_USER }}
 Environment=VELACH_BOT_DB_PASSWORD={{ DB_PASSWORD }}
 Type=oneshot
 User={{ OS_USER }}
-WorkingDirectory={{ SERVER_DIR }}
+WorkingDirectory={{ REMOTE_SERVER_DIR }}
 ExecStart=npm run start:prod:cli -- --backup-db {{ DB_DUMP_DIR }}
 
 [Install]

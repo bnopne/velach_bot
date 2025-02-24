@@ -11,9 +11,9 @@
     DB_DUMP_LINK: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_LINK') }}"
     DB_DUMP_FILENAME: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DB_DUMP_FILENAME') }}"
     TELEGRAM_TOKEN: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_TELEGRAM_TOKEN') }}"
-    SERVER_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_SERVER_DIR') }}"
-    DIST_ARCHIVE: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_DIST_ARCHIVE') }}"
-    REMOTE_ARCHIVE_PATH: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_REMOTE_ARCHIVE_PATH') }}"
+    REMOTE_SERVER_DIR: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_REMOTE_SERVER_DIR') }}"
+    LOCAL_DIST_ARCHIVE: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_LOCAL_DIST_ARCHIVE') }}"
+    REMOTE_DIST_ARCHIVE: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_REMOTE_DIST_ARCHIVE') }}"
     JWT_SECRET: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_JWT_SECRET') }}"
   tasks:
     - name: include install_basic_software_role
@@ -28,9 +28,9 @@
       include_role:
         name: setup_postgres
 
-    - name: include create_server_directory
+    - name: include create_REMOTE_SERVER_DIRectory
       include_role:
-        name: create_server_directory
+        name: create_REMOTE_SERVER_DIRectory
 
     - name: include create_dump_directory
       include_role:
