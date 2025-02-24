@@ -1,6 +1,6 @@
 - name: create server directory
   ansible.builtin.file:
-    path: "{{ SERVER_DIR }}"
+    path: "{{ REMOTE_SERVER_DIR }}"
     owner: "{{ OS_USER }}"
     group: "{{ OS_GROUP }}"
     state: directory
