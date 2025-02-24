@@ -1,8 +1,6 @@
-name: Provision
+name: Server Provision
 on:
   workflow_dispatch:
-env:
-  VELACH_BOT_JWT_SECRET: secret
 jobs:
   provision:
     name: Setup New Server
@@ -62,9 +60,9 @@ jobs:
           VELACH_BOT_DB_DUMP_LINK: ${{ secrets.DB_DUMP_LINK }}
           VELACH_BOT_DB_DUMP_FILENAME: velach_bot_provision_dump.sql
           VELACH_BOT_TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          VELACH_BOT_SERVER_DIR: /opt/velach_bot
-          VELACH_BOT_DIST_ARCHIVE: ${{ github.workspace }}/velach_bot_${{ github.sha }}.tar
-          VELACH_BOT_REMOTE_ARCHIVE_PATH: /tmp/velach_bot_${{ github.sha }}.tar
+          VELACH_BOT_REMOTE_SERVER_DIR: /opt/velach_bot
+          VELACH_BOT_LOCAL_DIST_ARCHIVE: ${{ github.workspace }}/velach_bot_${{ github.sha }}.tar
+          VELACH_BOT_REMOTE_DIST_ARCHIVE: /tmp/velach_bot_${{ github.sha }}.tar
           VELACH_BOT_JWT_SECRET: ${{ secrets.JWT_SECRET }}
         uses: dawidd6/action-ansible-playbook@v3
         with:

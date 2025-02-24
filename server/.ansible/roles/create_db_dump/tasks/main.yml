@@ -6,5 +6,5 @@
     VELACH_BOT_DB_USER: "{{ DB_USER }}"
     VELACH_BOT_DB_PASSWORD: "{{ DB_PASSWORD }}"
   ansible.builtin.command:
-    chdir: "{{ SERVER_DIR }}"
+    chdir: "{{ REMOTE_SERVER_DIR }}"
     cmd: "npm run start:prod:cli -- --backup-db {{ DB_DUMP_DIR }} {{ DB_DUMP_FILENAME }}"

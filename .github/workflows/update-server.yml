@@ -1,8 +1,6 @@
 name: Update Server
 on:
   workflow_dispatch:
-env:
-  VELACH_BOT_JWT_SECRET: secret
 jobs:
   update_server:
     name: Update Server
@@ -71,9 +69,9 @@ jobs:
           VELACH_BOT_DB_DUMP_DIR: /home/${{ secrets.OS_USER }}/dumps
           VELACH_BOT_DB_DUMP_FILENAME: velach_bot_db_dump_pre_deploy_${{ github.sha }}
           VELACH_BOT_TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          VELACH_BOT_SERVER_DIR: /opt/velach_bot
-          VELACH_BOT_DIST_ARCHIVE: ${{ github.workspace }}/velach_bot_${{ github.sha }}.tar
-          VELACH_BOT_REMOTE_ARCHIVE_PATH: /tmp/velach_bot_${{ github.sha }}.tar
+          VELACH_BOT_REMOTE_SERVER_DIR: /opt/velach_bot
+          VELACH_BOT_LOCAL_DIST_ARCHIVE: ${{ github.workspace }}/velach_bot_${{ github.sha }}.tar
+          VELACH_BOT_REMOTE_DIST_ARCHIVE: /tmp/velach_bot_${{ github.sha }}.tar
           VELACH_BOT_JWT_SECRET: ${{ secrets.JWT_SECRET }}
         uses: dawidd6/action-ansible-playbook@v3
         with:
