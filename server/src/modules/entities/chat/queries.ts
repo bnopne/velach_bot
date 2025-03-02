@@ -105,3 +105,71 @@ const updateChatIR: any = {"usedParamSet":{"type":true,"title":true,"id":true},"
 export const updateChat = new PreparedQuery<IUpdateChatParams,IUpdateChatResult>(updateChatIR);
 
 
+/** 'GetChats' parameters type */
+export interface IGetChatsParams {
+  limit?: NumberOrString | null | void;
+  offset?: NumberOrString | null | void;
+}
+
+/** 'GetChats' return type */
+export interface IGetChatsResult {
+  id: string;
+  title: string | null;
+  type: string | null;
+}
+
+/** 'GetChats' query type */
+export interface IGetChatsQuery {
+  params: IGetChatsParams;
+  result: IGetChatsResult;
+}
+
+const getChatsIR: any = {"usedParamSet":{"limit":true,"offset":true},"params":[{"name":"limit","required":false,"transform":{"type":"scalar"},"locs":[{"a":27,"b":32}]},{"name":"offset","required":false,"transform":{"type":"scalar"},"locs":[{"a":41,"b":47}]}],"statement":"SELECT *\nFROM \"Chat\"\nLIMIT :limit\nOFFSET :offset"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT *
+ * FROM "Chat"
+ * LIMIT :limit
+ * OFFSET :offset
+ * ```
+ */
+export const getChats = new PreparedQuery<IGetChatsParams,IGetChatsResult>(getChatsIR);
+
+
+/** 'GetChatsOfType' parameters type */
+export interface IGetChatsOfTypeParams {
+  chatType?: string | null | void;
+  limit?: NumberOrString | null | void;
+  offset?: NumberOrString | null | void;
+}
+
+/** 'GetChatsOfType' return type */
+export interface IGetChatsOfTypeResult {
+  id: string;
+  title: string | null;
+  type: string | null;
+}
+
+/** 'GetChatsOfType' query type */
+export interface IGetChatsOfTypeQuery {
+  params: IGetChatsOfTypeParams;
+  result: IGetChatsOfTypeResult;
+}
+
+const getChatsOfTypeIR: any = {"usedParamSet":{"chatType":true,"limit":true,"offset":true},"params":[{"name":"chatType","required":false,"transform":{"type":"scalar"},"locs":[{"a":34,"b":42}]},{"name":"limit","required":false,"transform":{"type":"scalar"},"locs":[{"a":50,"b":55}]},{"name":"offset","required":false,"transform":{"type":"scalar"},"locs":[{"a":64,"b":70}]}],"statement":"SELECT *\nFROM \"Chat\"\nWHERE type = :chatType\nLIMIT :limit\nOFFSET :offset"};
+
+/**
+ * Query generated from SQL:
+ * ```
+ * SELECT *
+ * FROM "Chat"
+ * WHERE type = :chatType
+ * LIMIT :limit
+ * OFFSET :offset
+ * ```
+ */
+export const getChatsOfType = new PreparedQuery<IGetChatsOfTypeParams,IGetChatsOfTypeResult>(getChatsOfTypeIR);
+
+

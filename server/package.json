@@ -13,6 +13,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod:server": "node dist/main",
     "start:prod:cli": "node dist/cli",
+    "nest": "nest",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
     "test": "jest",

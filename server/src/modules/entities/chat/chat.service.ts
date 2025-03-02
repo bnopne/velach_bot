@@ -1,8 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { PoolClient } from 'pg';
+import { type PoolClient } from 'pg';
 
 import { Chat } from './chat.entity';
-import { findById, insertChat, updateChat } from './queries';
+import {
+  findById,
+  insertChat,
+  updateChat,
+  getChats,
+  getChatsOfType,
+} from './queries';
 
 @Injectable()
 export class ChatService {
@@ -46,5 +52,23 @@ export class ChatService {
     }
 
     return dbChat;
+  }
+
+  async getChats(
+    client: PoolClient,
+    {
+      limit,
+      offset,
+      chatType,
+    }: {
+      limit: number;
+      offset: number;
+      chatType?: string;
+    },
+  ): Promise<Chat[]> {
+    const rows = chatType
+      ? await getChatsOfType.run({ limit, offset, chatType }, client)
+      : await getChats.run({ limit, offset }, client);
+    return rows.map((row) => Chat.fromTableRow(row));
   }
 }
