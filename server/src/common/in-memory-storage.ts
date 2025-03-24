@@ -36,14 +36,14 @@ export class InMemoryStorage {
     return value as T;
   }
 
-  deleteValue(key: string): void {
+  deleteValue(key: string): boolean {
     const timeoutId = this.timeoutIds.get(key);
 
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
 
-    this.storage.delete(key);
+    return this.storage.delete(key);
   }
 
   destroy(): void {
