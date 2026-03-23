@@ -40,6 +40,7 @@
     "class-validator": "^0.14.1",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
+    "https-proxy-agent": "^7.0.6",
     "mustache": "^4.2.0",
     "pg": "^8.13.3",
     "reflect-metadata": "^0.2.2",

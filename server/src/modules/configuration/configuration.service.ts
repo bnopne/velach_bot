@@ -6,6 +6,8 @@ import { JwtModuleOptions, type JwtOptionsFactory } from '@nestjs/jwt';
 export class ConfigurationService implements JwtOptionsFactory {
   readonly poolConfig: PoolConfig;
 
+  readonly proxyUrl?: string;
+
   readonly telegramBotToken: string;
   readonly maxMessageAge: number; // in seconds
 
@@ -28,6 +30,11 @@ export class ConfigurationService implements JwtOptionsFactory {
       min: this.getNumberValue('VELACH_BOT_DB_MIN_POOL_SIZE', 1),
       max: this.getNumberValue('VELACH_BOT_DB_MAX_POOL_SIZE', 10),
     };
+
+    /**
+     * Proxy setup
+     */
+    this.proxyUrl = this.getStringValue('VELACH_BOT_PROXY_URL');
 
     /**
      * Telegram config setup

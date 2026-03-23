@@ -73,6 +73,7 @@ jobs:
           VELACH_BOT_LOCAL_DIST_ARCHIVE: ${{ github.workspace }}/velach_bot_${{ github.sha }}.tar
           VELACH_BOT_REMOTE_DIST_ARCHIVE: /tmp/velach_bot_${{ github.sha }}.tar
           VELACH_BOT_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          VELACH_BOT_PROXY_URL: ${{ secrets.PROXY_URL }}
         uses: dawidd6/action-ansible-playbook@v3
         with:
           playbook: server/.ansible/update_server.yml

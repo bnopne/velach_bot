@@ -14,6 +14,7 @@
     LOCAL_DIST_ARCHIVE: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_LOCAL_DIST_ARCHIVE') }}"
     REMOTE_DIST_ARCHIVE: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_REMOTE_DIST_ARCHIVE') }}"
     JWT_SECRET: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_JWT_SECRET') }}"
+    PROXY_URL: "{{ lookup('ansible.builtin.env', 'VELACH_BOT_PROXY_URL') }}"
   tasks:
     - name: stop bot
       block:

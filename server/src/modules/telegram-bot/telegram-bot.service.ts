@@ -5,6 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Telegraf } from 'telegraf';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 import { Context } from 'src/common/types/bot';
 import { CommandRouterService } from 'src/modules/telegram-bot/command-router/command-router.service';
@@ -37,6 +38,13 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
 
     this.bot = new Telegraf<Context>(
       this.configurationService.telegramBotToken,
+      {
+        telegram: {
+          agent: this.configurationService.proxyUrl
+            ? new HttpsProxyAgent(this.configurationService.proxyUrl)
+            : undefined,
+        },
+      },
     );
 
     this.bot
