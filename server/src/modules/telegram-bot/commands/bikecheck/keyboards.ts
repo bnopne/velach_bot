@@ -10,13 +10,9 @@ export function getPublicBikecheckKeyboard(
   return {
     inline_keyboard: [
       [
-        getCommandButton(
-          '⬅',
-          CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_BIKECHECK,
-          {
-            bikecheckId: bikecheck.id,
-          },
-        ),
+        getCommandButton('⬅', CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_BIKECHECK, {
+          bikecheckId: bikecheck.id,
+        }),
         getCommandButton('👍', CALLBACK_QUERY_COMMANDS.LIKE, {
           bikecheckId: bikecheck.id,
         }),
@@ -37,13 +33,9 @@ export function getPrivateBikecheckKeyboard(
   return {
     inline_keyboard: [
       [
-        getCommandButton(
-          '⬅',
-          CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_BIKECHECK,
-          {
-            bikecheckId: bikecheck.id,
-          },
-        ),
+        getCommandButton('⬅', CALLBACK_QUERY_COMMANDS.SHOW_PREVIOUS_BIKECHECK, {
+          bikecheckId: bikecheck.id,
+        }),
         getCommandButton('➡', CALLBACK_QUERY_COMMANDS.SHOW_NEXT_BIKECHECK, {
           bikecheckId: bikecheck.id,
         }),
