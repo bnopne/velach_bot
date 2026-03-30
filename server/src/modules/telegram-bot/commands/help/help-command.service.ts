@@ -10,6 +10,7 @@ import { DbMiddlewareService } from 'src/modules/telegram-bot/middlewares/db-mid
 import { PreliminaryDataSaveService } from 'src/modules/telegram-bot/middlewares/preliminary-data-save-middleware.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 @Injectable()
 export class HelpCommandService {
@@ -44,7 +45,9 @@ export class HelpCommandService {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
-      this.featureAnalyticsMiddlewareService.getMiddleware('help-command'),
+      this.featureAnalyticsMiddlewareService.getMiddleware(
+        FEATURE_KEYS['help-command'],
+      ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.processMessage.bind(this),
     ]);

@@ -1,4 +1,4 @@
 /* @name insert */
-INSERT INTO "FeatureAnalytics" ("feature", "chatId", "userId")
-VALUES (:feature, :chatId, :userId)
+INSERT INTO "FeatureAnalytics" ("featureKey", "chatId", "userId")
+VALUES (:featureKey, :chatId, :userId)
 RETURNING *;

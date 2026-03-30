@@ -18,6 +18,7 @@ import { PrivateChatsOnlyMiddlewareService } from 'src/modules/telegram-bot/midd
 import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 const stravaLinkRegexp = /^(https:\/\/)?(www.)?strava.com\/athletes\/[\w-]+$/;
 
@@ -132,7 +133,7 @@ export class SetStravaCommandService {
       this.preliminaryDataSaveService.getMiddleware(),
       this.privateChatsOnlyMiddlewareService.getMiddleware(),
       this.featureAnalyticsMiddlewareService.getMiddleware(
-        'setstrava-command/message-command',
+        FEATURE_KEYS['setstrava-command/message-command'],
       ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.processCommand.bind(this),

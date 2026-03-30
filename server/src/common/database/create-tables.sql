@@ -80,7 +80,7 @@ DROP TABLE IF EXISTS "FeatureAnalytics" CASCADE;
 
 CREATE TABLE "FeatureAnalytics" (
   id bigserial,
-  "feature" varchar(255) NOT NULL,
+  "featureKey" SMALLINT NOT NULL,
   "chatId" int8 NOT NULL,
   "userId" int8 NOT NULL,
   "createdAt" timestamptz NOT NULL DEFAULT NOW(),

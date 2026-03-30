@@ -37,6 +37,7 @@ import {
 } from './keyboards';
 import { InlineQueryResult } from '@telegraf/types';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 @Injectable()
 export class BikecheckCommandService {
@@ -49,7 +50,7 @@ export class BikecheckCommandService {
     private chatService: ChatService,
     private bikecheckService: BikecheckService,
     private bikecheckVoteService: BikecheckVoteService,
-    private featureAnalyticsService: FeatureAnalyticsMiddlewareService,
+    private featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
     private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
@@ -564,8 +565,8 @@ export class BikecheckCommandService {
           this.dbMiddlewareService.getMiddleware(),
           this.preliminaryDataSaveService.getMiddleware(),
           this.privateChatsOnlyMiddlewareService.getMiddleware(),
-          this.featureAnalyticsService.getMiddleware(
-            'bikecheck-command/callback-query/delete',
+          this.featureAnalyticsMiddlewareService.getMiddleware(
+            FEATURE_KEYS['bikecheck-command/callback-query/delete'],
           ),
           this.processDeleteCommand.bind(this),
         ]);
@@ -574,8 +575,8 @@ export class BikecheckCommandService {
           this.dbMiddlewareService.getMiddleware(),
           this.preliminaryDataSaveService.getMiddleware(),
           this.privateChatsOnlyMiddlewareService.getMiddleware(),
-          this.featureAnalyticsService.getMiddleware(
-            'bikecheck-command/callback-query/delete-strava',
+          this.featureAnalyticsMiddlewareService.getMiddleware(
+            FEATURE_KEYS['bikecheck-command/callback-query/delete-strava'],
           ),
           this.deleteStrava.bind(this),
         ]);
@@ -584,8 +585,8 @@ export class BikecheckCommandService {
           this.dbMiddlewareService.getMiddleware(),
           this.preliminaryDataSaveService.getMiddleware(),
           this.privateChatsOnlyMiddlewareService.getMiddleware(),
-          this.featureAnalyticsService.getMiddleware(
-            'bikecheck-command/callback-query/toggle-on-sale',
+          this.featureAnalyticsMiddlewareService.getMiddleware(
+            FEATURE_KEYS['bikecheck-command/callback-query/toggle-on-sale'],
           ),
           this.processToggleOnSaleCommand.bind(this),
         ]);
@@ -593,8 +594,8 @@ export class BikecheckCommandService {
         return composeMiddlewares([
           this.dbMiddlewareService.getMiddleware(),
           this.preliminaryDataSaveService.getMiddleware(),
-          this.featureAnalyticsService.getMiddleware(
-            'bikecheck-command/callback-query/like',
+          this.featureAnalyticsMiddlewareService.getMiddleware(
+            FEATURE_KEYS['bikecheck-command/callback-query/like'],
           ),
           (ctx) => this.processVoteCommand(ctx, 1),
         ]);
@@ -602,8 +603,8 @@ export class BikecheckCommandService {
         return composeMiddlewares([
           this.dbMiddlewareService.getMiddleware(),
           this.preliminaryDataSaveService.getMiddleware(),
-          this.featureAnalyticsService.getMiddleware(
-            'bikecheck-command/callback-query/dislike',
+          this.featureAnalyticsMiddlewareService.getMiddleware(
+            FEATURE_KEYS['bikecheck-command/callback-query/dislike'],
           ),
           (ctx) => this.processVoteCommand(ctx, -1),
         ]);
@@ -611,8 +612,10 @@ export class BikecheckCommandService {
         return composeMiddlewares([
           this.dbMiddlewareService.getMiddleware(),
           this.preliminaryDataSaveService.getMiddleware(),
-          this.featureAnalyticsService.getMiddleware(
-            'bikecheck-command/callback-query/show-next-bikecheck',
+          this.featureAnalyticsMiddlewareService.getMiddleware(
+            FEATURE_KEYS[
+              'bikecheck-command/callback-query/show-next-bikecheck'
+            ],
           ),
           (ctx) => this.switchBikecheck(ctx, 'next'),
         ]);
@@ -620,8 +623,10 @@ export class BikecheckCommandService {
         return composeMiddlewares([
           this.dbMiddlewareService.getMiddleware(),
           this.preliminaryDataSaveService.getMiddleware(),
-          this.featureAnalyticsService.getMiddleware(
-            'bikecheck-command/callback-query/show-previous-bikecheck',
+          this.featureAnalyticsMiddlewareService.getMiddleware(
+            FEATURE_KEYS[
+              'bikecheck-command/callback-query/show-previous-bikecheck'
+            ],
           ),
           (ctx) => this.switchBikecheck(ctx, 'previous'),
         ]);
@@ -636,8 +641,8 @@ export class BikecheckCommandService {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
-      this.featureAnalyticsService.getMiddleware(
-        'bikecheck-command/inline-command',
+      this.featureAnalyticsMiddlewareService.getMiddleware(
+        FEATURE_KEYS['bikecheck-command/inline-command'],
       ),
       this.processInlineQuery.bind(this),
     ]);
@@ -647,8 +652,8 @@ export class BikecheckCommandService {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
-      this.featureAnalyticsService.getMiddleware(
-        'bikecheck-command/message-command',
+      this.featureAnalyticsMiddlewareService.getMiddleware(
+        FEATURE_KEYS['bikecheck-command/message-command'],
       ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.processMessage.bind(this),

@@ -8,6 +8,7 @@ import { EntitiesModule } from 'src/modules/entities/entities.module';
 import { FeatureAnalyticsService } from 'src/modules/entities/feature-analytics/feature-analytics.service';
 
 import { FeatureAnalyticsMiddlewareService } from './feature-analytics-middleware.service';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 describe('Test FeatureAnalyticsMiddlewareService', () => {
   let service: FeatureAnalyticsMiddlewareService;
@@ -57,11 +58,11 @@ describe('Test FeatureAnalyticsMiddlewareService', () => {
     const next = jest.fn();
     entityService.create = jest.fn();
 
-    await service['middleware'](ctx, next, 'test-feature');
+    await service['middleware'](ctx, next, FEATURE_KEYS['checkbike-command']);
 
     expect(entityService.create).toBeCalledWith(
       'test-conn',
-      'test-feature',
+      FEATURE_KEYS['checkbike-command'],
       '265',
       '123',
     );

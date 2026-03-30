@@ -14,6 +14,7 @@ import { PreliminaryDataSaveService } from 'src/modules/telegram-bot/middlewares
 import { PrivateChatsOnlyMiddlewareService } from 'src/modules/telegram-bot/middlewares/private-chats-only-middleware.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 @Injectable()
 export class StartCommandService {
@@ -52,7 +53,7 @@ export class StartCommandService {
       this.preliminaryDataSaveService.getMiddleware(),
       this.privateChatsOnlyMiddlewareService.getMiddleware(),
       this.featureAnalyticsMiddlewareService.getMiddleware(
-        'start-command/message-command',
+        FEATURE_KEYS['start-command/message-command'],
       ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.processMessage.bind(this),

@@ -24,6 +24,7 @@ import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middleware
 
 import { getDeletedKeyboard } from './keyboards';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 function getNextBikecheckIndex(
   currentIndex: number,
@@ -216,7 +217,7 @@ export class DeletedCommandService {
           this.preliminaryDataSaveService.getMiddleware(),
           this.privateChatsOnlyMiddlewareService.getMiddleware(),
           this.featureAnalyticsMiddlewareService.getMiddleware(
-            'deleted-command/callback-query/restore',
+            FEATURE_KEYS['deleted-command/callback-query/restore'],
           ),
           this.processRestoreBikecheckCommand.bind(this),
         ]);
@@ -226,7 +227,7 @@ export class DeletedCommandService {
           this.preliminaryDataSaveService.getMiddleware(),
           this.privateChatsOnlyMiddlewareService.getMiddleware(),
           this.featureAnalyticsMiddlewareService.getMiddleware(
-            'deleted-command/callback-query/show-next',
+            FEATURE_KEYS['deleted-command/callback-query/show-next'],
           ),
           (ctx) => this.switchDeleted(ctx, 'next'),
         ]);
@@ -236,7 +237,7 @@ export class DeletedCommandService {
           this.preliminaryDataSaveService.getMiddleware(),
           this.privateChatsOnlyMiddlewareService.getMiddleware(),
           this.featureAnalyticsMiddlewareService.getMiddleware(
-            'deleted-command/callback-query/show-previous',
+            FEATURE_KEYS['deleted-command/callback-query/show-previous'],
           ),
           (ctx) => this.switchDeleted(ctx, 'previous'),
         ]);
@@ -253,7 +254,7 @@ export class DeletedCommandService {
       this.preliminaryDataSaveService.getMiddleware(),
       this.privateChatsOnlyMiddlewareService.getMiddleware(),
       this.featureAnalyticsMiddlewareService.getMiddleware(
-        'deleted-command/message-command',
+        FEATURE_KEYS['deleted-command/message-command'],
       ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.processCommand.bind(this),

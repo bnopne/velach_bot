@@ -6,7 +6,7 @@ export type NumberOrString = number | string;
 /** 'Insert' parameters type */
 export interface IInsertParams {
   chatId?: NumberOrString | null | void;
-  feature?: string | null | void;
+  featureKey?: number | null | void;
   userId?: NumberOrString | null | void;
 }
 
@@ -14,7 +14,7 @@ export interface IInsertParams {
 export interface IInsertResult {
   chatId: string;
   createdAt: Date;
-  feature: string;
+  featureKey: number;
   id: string;
   userId: string;
 }
@@ -25,13 +25,13 @@ export interface IInsertQuery {
   result: IInsertResult;
 }
 
-const insertIR: any = {"usedParamSet":{"feature":true,"chatId":true,"userId":true},"params":[{"name":"feature","required":false,"transform":{"type":"scalar"},"locs":[{"a":71,"b":78}]},{"name":"chatId","required":false,"transform":{"type":"scalar"},"locs":[{"a":81,"b":87}]},{"name":"userId","required":false,"transform":{"type":"scalar"},"locs":[{"a":90,"b":96}]}],"statement":"INSERT INTO \"FeatureAnalytics\" (\"feature\", \"chatId\", \"userId\")\nVALUES (:feature, :chatId, :userId)\nRETURNING *"};
+const insertIR: any = {"usedParamSet":{"featureKey":true,"chatId":true,"userId":true},"params":[{"name":"featureKey","required":false,"transform":{"type":"scalar"},"locs":[{"a":74,"b":84}]},{"name":"chatId","required":false,"transform":{"type":"scalar"},"locs":[{"a":87,"b":93}]},{"name":"userId","required":false,"transform":{"type":"scalar"},"locs":[{"a":96,"b":102}]}],"statement":"INSERT INTO \"FeatureAnalytics\" (\"featureKey\", \"chatId\", \"userId\")\nVALUES (:featureKey, :chatId, :userId)\nRETURNING *"};
 
 /**
  * Query generated from SQL:
  * ```
- * INSERT INTO "FeatureAnalytics" ("feature", "chatId", "userId")
- * VALUES (:feature, :chatId, :userId)
+ * INSERT INTO "FeatureAnalytics" ("featureKey", "chatId", "userId")
+ * VALUES (:featureKey, :chatId, :userId)
  * RETURNING *
  * ```
  */
