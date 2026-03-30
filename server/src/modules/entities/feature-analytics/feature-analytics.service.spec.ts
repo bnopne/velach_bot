@@ -8,6 +8,7 @@ import {
 } from 'src/common/utils/test-utils';
 
 import { FeatureAnalyticsService } from './feature-analytics.service';
+import { FEATURE_KEYS } from './constants';
 
 describe('Test FeatureAnalyticsService', () => {
   let service: FeatureAnalyticsService;
@@ -35,7 +36,7 @@ describe('Test FeatureAnalyticsService', () => {
     let rows = await client.query('SELECT * FROM "FeatureAnalytics"');
     expect(rows.rowCount).toBe(0);
 
-    await service.create(client, 'test-feature', '1', '1');
+    await service.create(client, FEATURE_KEYS['checkbike-command'], '1', '1');
 
     rows = await client.query('SELECT * FROM "FeatureAnalytics"');
     expect(rows.rowCount).toBe(1);

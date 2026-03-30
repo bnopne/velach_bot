@@ -3,14 +3,14 @@ import { BaseEntity } from 'src/common/database/base-entity';
 export interface IFeatureAnalyticsTableRow {
   chatId: string;
   createdAt: Date;
-  feature: string;
+  featureKey: number;
   id: string;
   userId: string;
 }
 
 export class FeatureAnalytics extends BaseEntity {
   id: string;
-  feature: string;
+  featureKey: number;
   chatId: string;
   userId: string;
   createdAt: Date;
@@ -18,7 +18,7 @@ export class FeatureAnalytics extends BaseEntity {
   static fromTableRow(row: IFeatureAnalyticsTableRow): FeatureAnalytics {
     return new FeatureAnalytics(
       row.id,
-      row.feature,
+      row.featureKey,
       row.chatId,
       row.userId,
       row.createdAt,
@@ -27,7 +27,7 @@ export class FeatureAnalytics extends BaseEntity {
 
   constructor(
     id: string,
-    feature: string,
+    featureKey: number,
     chatId: string,
     userId: string,
     createdAt: Date,
@@ -35,7 +35,7 @@ export class FeatureAnalytics extends BaseEntity {
     super();
 
     this.id = id;
-    this.feature = feature;
+    this.featureKey = featureKey;
     this.chatId = chatId;
     this.userId = userId;
     this.createdAt = createdAt;

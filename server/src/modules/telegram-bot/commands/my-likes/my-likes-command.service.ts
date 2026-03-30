@@ -26,6 +26,7 @@ import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/midd
 import { getMyLikesKeyboard } from './keyboards';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
 import { getNextIndex, getPreviousIndex } from 'src/common/utils/misc';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 @Injectable()
 export class MyLikesCommandService {
@@ -183,7 +184,7 @@ export class MyLikesCommandService {
       this.preliminaryDataSaveService.getMiddleware(),
       this.privateChatsOnlyMiddlewareService.getMiddleware(),
       this.featureAnalyticsService.getMiddleware(
-        'mylikes-command/message-command',
+        FEATURE_KEYS['mylikes-command/message-command'],
       ),
       this.processMessage.bind(this),
     ]);
@@ -196,7 +197,7 @@ export class MyLikesCommandService {
         this.preliminaryDataSaveService.getMiddleware(),
         this.privateChatsOnlyMiddlewareService.getMiddleware(),
         this.featureAnalyticsService.getMiddleware(
-          'mylikes-command/callback-query/show-previous',
+          FEATURE_KEYS['mylikes-command/callback-query/show-previous'],
         ),
         (ctx) => this.switchLikedBikecheck(ctx, 'previous'),
       ]);
@@ -208,7 +209,7 @@ export class MyLikesCommandService {
         this.preliminaryDataSaveService.getMiddleware(),
         this.privateChatsOnlyMiddlewareService.getMiddleware(),
         this.featureAnalyticsService.getMiddleware(
-          'mylikes-command/callback-query/show-next',
+          FEATURE_KEYS['mylikes-command/callback-query/show-next'],
         ),
         (ctx) => this.switchLikedBikecheck(ctx, 'next'),
       ]);

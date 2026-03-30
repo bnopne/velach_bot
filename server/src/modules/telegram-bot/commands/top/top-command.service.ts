@@ -24,6 +24,7 @@ import { getTopKeyboard } from './keyboards';
 import { parseCallbackData } from 'src/common/utils/telegram-keyboard';
 
 import { ITopCallbackQueryData } from './types';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 @Injectable()
 export class TopCommandService {
@@ -145,7 +146,7 @@ export class TopCommandService {
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
       this.featureAnalyticsMiddlewareService.getMiddleware(
-        'top-command/callback-query/show-top',
+        FEATURE_KEYS['top-command/callback-query/show-top'],
       ),
       this.processCallbackQuery.bind(this),
     ]);
@@ -156,7 +157,7 @@ export class TopCommandService {
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
       this.featureAnalyticsMiddlewareService.getMiddleware(
-        'top-command/message-command',
+        FEATURE_KEYS['top-command/message-command'],
       ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.processMessage.bind(this),

@@ -4,6 +4,7 @@ import { Logger } from '@nestjs/common';
 import { FeatureAnalyticsService } from 'src/modules/entities/feature-analytics/feature-analytics.service';
 import { Context, Middleware, MiddlewareNext } from 'src/common/types/bot';
 import { getContextConnectionOrFail } from 'src/common/utils/telegram-context';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 const logger = new Logger('Feature Analytics Middleware Service');
 
@@ -14,7 +15,7 @@ export class FeatureAnalyticsMiddlewareService {
   private async middleware(
     ctx: Context,
     next: MiddlewareNext,
-    feature: string,
+    featureKey: (typeof FEATURE_KEYS)[keyof typeof FEATURE_KEYS],
   ): Promise<void> {
     const client = getContextConnectionOrFail(ctx);
 
@@ -28,7 +29,7 @@ export class FeatureAnalyticsMiddlewareService {
     try {
       await this.featureAnalyticsService.create(
         client,
-        feature,
+        featureKey,
         chatId.toString(),
         userId.toString(),
       );
@@ -39,7 +40,9 @@ export class FeatureAnalyticsMiddlewareService {
     return next();
   }
 
-  getMiddleware(feature: string): Middleware {
-    return (ctx, next) => this.middleware(ctx, next, feature);
+  getMiddleware(
+    featureKey: (typeof FEATURE_KEYS)[keyof typeof FEATURE_KEYS],
+  ): Middleware {
+    return (ctx, next) => this.middleware(ctx, next, featureKey);
   }
 }

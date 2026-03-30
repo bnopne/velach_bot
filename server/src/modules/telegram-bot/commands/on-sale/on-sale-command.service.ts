@@ -24,6 +24,7 @@ import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middleware
 
 import { getOnSaleKeyboard } from './keyboards';
 import { CALLBACK_QUERY_COMMANDS } from 'src/common/constants';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 @Injectable()
 export class OnSaleCommandService {
@@ -155,7 +156,7 @@ export class OnSaleCommandService {
           this.dbMiddlewareService.getMiddleware(),
           this.preliminaryDataSaveService.getMiddleware(),
           this.featureAnalyticsMiddlewareService.getMiddleware(
-            'onsale-command/callback-query/show-previous',
+            FEATURE_KEYS['onsale-command/callback-query/show-previous'],
           ),
           (ctx) => this.switchOnSaleBikecheck(ctx, 'previous'),
         ]);
@@ -164,7 +165,7 @@ export class OnSaleCommandService {
           this.dbMiddlewareService.getMiddleware(),
           this.preliminaryDataSaveService.getMiddleware(),
           this.featureAnalyticsMiddlewareService.getMiddleware(
-            'onsale-command/callback-query/show-next',
+            FEATURE_KEYS['onsale-command/callback-query/show-next'],
           ),
           (ctx) => this.switchOnSaleBikecheck(ctx, 'next'),
         ]);
@@ -180,7 +181,7 @@ export class OnSaleCommandService {
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
       this.featureAnalyticsMiddlewareService.getMiddleware(
-        'onsale command/message-command',
+        FEATURE_KEYS['onsale command/message-command'],
       ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.processMessage.bind(this),

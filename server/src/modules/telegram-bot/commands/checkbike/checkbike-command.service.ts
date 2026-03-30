@@ -16,6 +16,7 @@ import { PreliminaryDataSaveService } from 'src/modules/telegram-bot/middlewares
 import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.service';
 import { FeatureAnalyticsMiddlewareService } from 'src/modules/telegram-bot/middlewares/feature-analytics-middleware.service';
 import { MessageAgeMiddlewareService } from 'src/modules/telegram-bot/middlewares/message-age-middleware.service';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 @Injectable()
 export class CheckbikeCommandService {
@@ -25,7 +26,7 @@ export class CheckbikeCommandService {
     private preliminaryDataSaveService: PreliminaryDataSaveService,
     private userService: UserService,
     private bikecheckService: BikecheckService,
-    private featureAnalyticsService: FeatureAnalyticsMiddlewareService,
+    private featureAnalyticsMiddlewareService: FeatureAnalyticsMiddlewareService,
     private messageAgeMiddlewareService: MessageAgeMiddlewareService,
   ) {}
 
@@ -124,7 +125,9 @@ export class CheckbikeCommandService {
     return composeMiddlewares([
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
-      this.featureAnalyticsService.getMiddleware('checkbike command'),
+      this.featureAnalyticsMiddlewareService.getMiddleware(
+        FEATURE_KEYS['checkbike-command'],
+      ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.processMessage.bind(this),
     ]);

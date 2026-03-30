@@ -17,6 +17,7 @@ import {
 import { TemplatesService } from 'src/modules/telegram-bot/templates/templates.service';
 import { AdminPasscodeService } from 'src/modules/admin-passcode/admin-passcode.service';
 import { composeMiddlewares } from 'src/common/utils/telegram-middlewares';
+import { FEATURE_KEYS } from 'src/modules/entities/feature-analytics/constants';
 
 @Injectable()
 export class GetAdminPasscodeService {
@@ -56,7 +57,7 @@ export class GetAdminPasscodeService {
       this.dbMiddlewareService.getMiddleware(),
       this.preliminaryDataSaveService.getMiddleware(),
       this.featureAnalyticsMiddlewareService.getMiddleware(
-        'deleted-command/message-command',
+        FEATURE_KEYS['deleted-command/message-command'],
       ),
       this.messageAgeMiddlewareService.getMiddleware(),
       this.privateChatsOnlyMiddlewareService.getMiddleware(),
