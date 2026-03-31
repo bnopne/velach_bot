@@ -61,7 +61,6 @@ export async function applyMigrations(): Promise<void> {
     }
 
     await client.query('COMMIT');
-    await client.query('VACUUM FULL VERBOSE "FeatureAnalytics"');
   } catch (err) {
     await client.query('ROLLBACK');
     console.error(`Failed to apply migrations, rollback`);
