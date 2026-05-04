@@ -1,11 +1,13 @@
 - name: create group
+  become: true
   ansible.builtin.group:
     name: "{{ OS_GROUP }}"
     state: present
 
 - name: create user
+  become: true
   ansible.builtin.user:
     name: "{{ OS_USER }}"
     group: "{{ OS_GROUP }}"
-    password: "{{ OS_PASSWORD }}"
+    shell : /usr/sbin/nologin
     state: present
