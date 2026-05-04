@@ -1,21 +1,31 @@
 - name: update all packages to their latest version
+  become: true
   ansible.builtin.apt:
+    update_cache: true
     name: "*"
     state: latest
+  register: update_result
+
+- name: reboot if needed
+  become: true
+  ansible.builtin.reboot:
+    reboot_timeout: 720
+  when: update_result.changed
 
 - name: download Nodesource repo setup script
+  become: true
   ansible.builtin.get_url:
     url: https://deb.nodesource.com/setup_22.x
     dest: /tmp/nodesource_setup.sh
 
 - name: add Nodesource repo
   become: true
-  become_user: "root"
   ansible.builtin.command:
     chdir: "/tmp"
     cmd: "bash nodesource_setup.sh"
 
 - name: install packages
+  become: true
   ansible.builtin.apt:
     update_cache: true
     name:
@@ -25,9 +35,11 @@
     state: present
 
 - name: install psycopg2
+  become: true
   ansible.builtin.pip:
     name: psycopg2-binary
 
 - name: reboot
+  become: true
   ansible.builtin.reboot:
     reboot_timeout: 720

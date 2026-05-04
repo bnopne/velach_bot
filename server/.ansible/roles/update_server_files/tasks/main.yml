@@ -1,4 +1,5 @@
 - name: copy archive
+  become: true
   ansible.builtin.copy:
     src: "{{ LOCAL_DIST_ARCHIVE }}"
     dest: "{{ REMOTE_DIST_ARCHIVE }}"
@@ -8,6 +9,7 @@
     force: true
 
 - name: extract archive
+  become: true
   ansible.builtin.unarchive:
     src: "{{ REMOTE_DIST_ARCHIVE }}"
     dest: "{{ REMOTE_SERVER_DIR }}"
@@ -24,6 +26,7 @@
     ci: true
 
 - name: delete archive
+  become: true
   ansible.builtin.file:
     path: "{{ REMOTE_DIST_ARCHIVE }}"
     state: absent

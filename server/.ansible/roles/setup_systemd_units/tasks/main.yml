@@ -1,28 +1,34 @@
 - name: emit server unit
+  become: true
   ansible.builtin.template:
     src: units/velach_bot_server.service.j2
     dest: /lib/systemd/system/velach_bot_server.service
 
 - name: emit db backup unit
+  become: true
   ansible.builtin.template:
     src: units/velach_bot_backup_db.service.j2
     dest: /lib/systemd/system/velach_bot_backup_db.service
 
 - name: emit db backup timer
+  become: true
   ansible.builtin.template:
     src: units/velach_bot_backup_db.timer.j2
     dest: /lib/systemd/system/velach_bot_backup_db.timer
 
 - name: emit cleanup dump directory unit
+  become: true
   ansible.builtin.template:
     src: units/velach_bot_cleanup_dump_directory.service.j2
     dest: /lib/systemd/system/velach_bot_cleanup_dump_directory.service
 
 - name: emit cleanup dump directory timer
+  become: true
   ansible.builtin.template:
     src: units/velach_bot_cleanup_dump_directory.timer.j2
     dest: /lib/systemd/system/velach_bot_cleanup_dump_directory.timer
 
 - name: reload units
+  become: true
   ansible.builtin.systemd:
     daemon_reload: true

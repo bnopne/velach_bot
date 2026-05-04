@@ -13,5 +13,6 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v3
         with:
           playbook: server/.ansible/start_server.yml
+          key: ${{ secrets.SSH_PRIVATE_MANAGEMENT_KEY }}
           inventory: |
             ${{ secrets.INVENTORY }}
