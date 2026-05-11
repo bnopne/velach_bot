@@ -10,9 +10,9 @@
 
 - name: add Nodesource repo
   become: true
-  become_user: "root"
+  become_user: root
   ansible.builtin.command:
-    chdir: "/tmp"
+    chdir: /tmp
     cmd: "bash nodesource_setup.sh"
 
 - name: install packages
